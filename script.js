@@ -2,47 +2,52 @@ const defaultStoreData = {
     steam: {
         title: "Steam Accounts",
         desc: "Find best accounts pre-loaded with top games at cheap prices.",
+        subFolders: [],
         items: [
-            { id: 1, name: "Random Steam Level 20+ Account", desc: "Contains random premium games + full access.", price: "₹149", status: "Out of Stock" },
-            { id: 2, name: "GTA V Premium Steam Account", desc: "Email change available with instant delivery.", price: "₹299", status: "Out of Stock" }
+            { id: 1, name: "Random Steam Level 20+ Account", desc: "Contains random premium games + full access.", price: "₹149", status: "Active" },
+            { id: 2, name: "GTA V Premium Steam Account", desc: "Email change available with instant delivery.", price: "₹299", status: "Active" }
         ]
     },
     gaming_acc: {
         title: "Gaming Accounts",
         desc: "Pro accounts for BGMI, Free Fire, Valorant, etc.",
+        subFolders: [],
         items: [
-            { id: 3, name: "BGMI Conqueror Tier Account", desc: "Max RP, rare outfits, safe login.", price: "₹799", status: "Out of Stock" },
-            { id: 4, name: "Free Fire Max Old Elite Pass ID", desc: "Level 70+, rare bundles.", price: "₹499", status: "Out of Stock" }
+            { id: 3, name: "BGMI Conqueror Tier Account", desc: "Max RP, rare outfits, safe login.", price: "₹799", status: "Active" },
+            { id: 4, name: "Free Fire Max Old Elite Pass ID", desc: "Level 70+, rare bundles.", price: "₹499", status: "Active" }
         ]
     },
     discord_offer: {
         title: "Discord Offers & Services",
         desc: "Prebuilt servers, custom server setups, and bot builder hiring.",
+        subFolders: [],
         items: [
-            { id: 5, name: "Prebuild Community DC Server", desc: "Ready-made channels, roles, verification system & security bots.", price: "₹50", status: "Out of Stock" },
-            { id: 6, name: "Custom AI Bot Builder Hire", desc: "Hire expert developer to code custom commands and features.", price: "₹99+", status: "Out of Stock" }
+            { id: 5, name: "Prebuild Community DC Server", desc: "Ready-made channels, roles, verification system & security bots.", price: "₹50", status: "Active" },
+            { id: 6, name: "Custom AI Bot Builder Hire", desc: "Hire expert developer to code custom commands and features.", price: "₹99+", status: "Active" }
         ]
     },
     vouchers: {
         title: "Food & Shopping Vouchers",
         desc: "Get discount vouchers for Zomato, Dominos, EGC, and clothing apps.",
+        subFolders: [],
         items: [
-            { id: 7, name: "Zomato / Dominos Food Voucher", desc: "Flat discount voucher code for food delivery apps.", price: "₹49", status: "Out of Stock" },
-            { id: 8, name: "Clothing Brand Gift Card (EGC)", desc: "Redeemable voucher for fashion apps.", price: "₹199", status: "Out of Stock" }
+            { id: 7, name: "Zomato / Dominos Food Voucher", desc: "Flat discount voucher code for food delivery apps.", price: "₹49", status: "Active" },
+            { id: 8, name: "Clothing Brand Gift Card (EGC)", desc: "Redeemable voucher for fashion apps.", price: "₹199", status: "Active" }
         ]
     },
     gaming_vouchers: {
-        title: "Gaming Vouchers & Top-Ups",
-        desc: "Get top-up deals at cheapest prices with maximum value.",
-        items: [
-            { id: 9, name: "300₹ get 300uc", desc: "BGMI UC cheapest top-up with bonus.", price: "₹300", status: "Out of Stock" },
-            { id: 10, name: "400₹ get 400uc", desc: "BGMI UC special mega top-up pack.", price: "₹400", status: "Out of Stock" },
-            { id: 11, name: "Free Fire Extra Diamonds Pack", desc: "Special top-up with double diamond event bonus.", price: "₹90", status: "Out of Stock" }
-        ]
+        title: "Gaming Vouchers",
+        desc: "Select a gaming voucher sub-category below.",
+        subFolders: [
+            { key: "bgmi_uc", name: "BGMI UC Vouchers", desc: "Best selling BGMI UC top-up packs at cheapest prices." }
+        ],
+        items: []
     },
     bgmi_uc: {
-        title: "BGMI UC Vouchers & Top-Up",
+        title: "BGMI UC Vouchers",
         desc: "Best selling BGMI UC packs at cheapest prices with instant secure delivery.",
+        subFolders: [],
+        parentKey: "gaming_vouchers",
         items: [
             { id: 12, name: "360 UC", desc: "Best Sell Price (Reference: ₹380)", price: "₹419", status: "Active" },
             { id: 13, name: "720 UC", desc: "Best Sell Price (Reference: ₹750)", price: "₹819", status: "Active" },
@@ -78,44 +83,72 @@ function switchView(viewId) {
     window.scrollTo(0, 0);
 }
 
-let currentCategoryKey = 'steam';
-
 function loadCategoryData(catKey) {
-    currentCategoryKey = catKey;
     const cat = storeData[catKey];
     document.getElementById('cat-title').innerText = cat.title;
     document.getElementById('cat-desc').innerText = cat.desc;
 
+    const backButton = document.getElementById('back-button');
+    if (cat.parentKey) {
+        backButton.setAttribute('onclick', `loadCategoryData('${cat.parentKey}')`);
+        backButton.innerText = "← Back to Gaming Vouchers";
+    } else {
+        backButton.setAttribute('onclick', "switchView('store-view')");
+        backButton.innerText = "← Back to Store";
+    }
+
+    const subFolderContainer = document.getElementById('sub-folder-container');
+    subFolderContainer.innerHTML = '';
+    
+    if (cat.subFolders && cat.subFolders.length > 0) {
+        subFolderContainer.style.display = 'grid';
+        cat.subFolders.forEach(folder => {
+            const folderCard = document.createElement('div');
+            folderCard.className = 'card';
+            folderCard.innerHTML = `
+                <div>
+                    <h3>📁 ${folder.name}</h3>
+                    <p>${folder.desc}</p>
+                </div>
+                <button class="card-btn" onclick="loadCategoryData('${folder.key}')">Open Folder</button>
+            `;
+            subFolderContainer.appendChild(folderCard);
+        });
+    } else {
+        subFolderContainer.style.display = 'none';
+    }
+
     const listContainer = document.getElementById('dynamic-item-list');
     listContainer.innerHTML = '';
 
-    if(cat.items.length === 0) {
+    if (cat.items && cat.items.length > 0) {
+        cat.items.forEach(item => {
+            let badgeClass = 'nostock';
+            if(item.status === 'Active') badgeClass = 'active';
+            else if(item.status === 'New Stock Available') badgeClass = 'stock';
+            else if(item.status === 'Coming Soon') badgeClass = 'soon';
+            else if(item.status === 'Expired') badgeClass = 'expired';
+
+            const row = document.createElement('div');
+            row.className = 'item-row';
+            row.innerHTML = `
+                <div class="item-details">
+                    <h4>${item.name}</h4>
+                    <span>${item.desc}</span>
+                    <br><span class="badge ${badgeClass}" style="margin-top: 8px; display: inline-block;">${item.status}</span>
+                </div>
+                <div>
+                    <div class="price-tag">${item.price}</div>
+                    <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding: 6px 15px; font-size: 0.85rem; margin-top: 8px;">Join Store DC Server to Buy</a>
+                </div>
+            `;
+            listContainer.appendChild(row);
+        });
+    } else if (!cat.subFolders || cat.subFolders.length === 0) {
         listContainer.innerHTML = '<p style="color:#94a3b8; text-align:center;">No offers available right now.</p>';
-        return;
     }
 
-    cat.items.forEach(item => {
-        let badgeClass = 'nostock';
-        if(item.status === 'Active') badgeClass = 'active';
-        else if(item.status === 'New Stock Available') badgeClass = 'stock';
-        else if(item.status === 'Coming Soon') badgeClass = 'soon';
-        else if(item.status === 'Expired') badgeClass = 'expired';
-
-        const row = document.createElement('div');
-        row.className = 'item-row';
-        row.innerHTML = `
-            <div class="item-details">
-                <h4>${item.name}</h4>
-                <span>${item.desc}</span>
-                <br><span class="badge ${badgeClass}" style="margin-top: 8px; display: inline-block;">${item.status}</span>
-            </div>
-            <div>
-                <div class="price-tag">${item.price}</div>
-                <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding: 6px 15px; font-size: 0.85rem; margin-top: 8px;">Join Store DC Server to Buy</a>
-            </div>
-        `;
-        listContainer.appendChild(row);
-    });
+    switchView('category-view');
 }
 
 function checkAdminLogin() {
@@ -125,7 +158,7 @@ function checkAdminLogin() {
         document.getElementById('admin-dashboard-box').style.display = 'block';
         renderAdminTable();
     } else {
-        alert('Wrong Password! Use default: 1181');
+        alert('Wrong Password! Use default: admin123');
     }
 }
 
@@ -141,27 +174,29 @@ function renderAdminTable() {
 
     for (const catKey in storeData) {
         const cat = storeData[catKey];
-        cat.items.forEach((item, index) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${cat.title}</td>
-                <td><strong>${item.name}</strong><br><small style="color:#94a3b8">${item.desc}</small></td>
-                <td>${item.price}</td>
-                <td>
-                    <select onchange="updateItemStatus('${catKey}', ${index}, this.value)" style="background:#05050a; color:#fff; border:1px solid #38bdf8; padding:4px; border-radius:4px; outline:none;">
-                        <option ${item.status === 'Active' ? 'selected' : ''}>Active</option>
-                        <option ${item.status === 'New Stock Available' ? 'selected' : ''}>New Stock Available</option>
-                        <option ${item.status === 'Out of Stock' ? 'selected' : ''}>Out of Stock</option>
-                        <option ${item.status === 'Coming Soon' ? 'selected' : ''}>Coming Soon</option>
-                        <option ${item.status === 'Expired' ? 'selected' : ''}>Expired</option>
-                    </select>
-                </td>
-                <td>
-                    <button onclick="deleteItem('${catKey}', ${index})" style="background:#dc2626; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Delete</button>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
+        if(cat.items) {
+            cat.items.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${cat.title}</td>
+                    <td><strong>${item.name}</strong><br><small style="color:#94a3b8">${item.desc}</small></td>
+                    <td>${item.price}</td>
+                    <td>
+                        <select onchange="updateItemStatus('${catKey}', ${index}, this.value)" style="background:#05050a; color:#fff; border:1px solid #38bdf8; padding:4px; border-radius:4px; outline:none;">
+                            <option ${item.status === 'Active' ? 'selected' : ''}>Active</option>
+                            <option ${item.status === 'New Stock Available' ? 'selected' : ''}>New Stock Available</option>
+                            <option ${item.status === 'Out of Stock' ? 'selected' : ''}>Out of Stock</option>
+                            <option ${item.status === 'Coming Soon' ? 'selected' : ''}>Coming Soon</option>
+                            <option ${item.status === 'Expired' ? 'selected' : ''}>Expired</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button onclick="deleteItem('${catKey}', ${index})" style="background:#dc2626; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
     }
 }
 
@@ -188,6 +223,10 @@ function addNewItem() {
     if(!name || !price) {
         alert('Please fill item name and price!');
         return;
+    }
+
+    if(!storeData[catKey].items) {
+        storeData[catKey].items = [];
     }
 
     const newItem = {
