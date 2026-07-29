@@ -8,13 +8,11 @@
 </head>
 <body>
 
-    <!-- Header & Menu Button -->
     <header>
         <div class="logo">Developer Gyan</div>
         <button class="menu-btn" onclick="toggleSidebar()">☰</button>
     </header>
 
-    <!-- Sidebar Menu Drawer -->
     <div class="sidebar" id="sidebar">
         <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
         <h3>Quick Navigation</h3>
@@ -25,14 +23,12 @@
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('discord_offer'); toggleSidebar();">Discord Offer</a></li>
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('vouchers'); toggleSidebar();">Vouchers</a></li>
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers'); toggleSidebar();">Gaming Vouchers</a></li>
-            <li><a href="#" onclick="switchView('category-view'); loadCategoryData('bgmi_uc'); toggleSidebar();">BGMI UC Vouchers</a></li>
             <li><a href="#" onclick="switchView('admin-view'); toggleSidebar();">🔒 Admin Panel</a></li>
         </ul>
     </div>
 
     <div class="container">
 
-        <!-- 1. WELCOME PAGE -->
         <div id="welcome-view" class="view active">
             <div style="font-size: 1rem; letter-spacing: 3px; color: #38bdf8; margin-bottom: 15px; text-transform: uppercase;">Developer Gyan Store</div>
             <h1 class="main-heading">Premium Discord Servers, AI Bots & Gaming Accounts</h1>
@@ -42,7 +38,6 @@
             <button class="btn" onclick="switchView('store-view')">Go to Store</button>
         </div>
 
-        <!-- 2. MAIN STORE VIEW (Categories) -->
         <div id="store-view" class="view">
             <h2 class="section-title">Store Categories</h2>
             <p class="section-subtitle">Select a category below to explore offers and pricing</p>
@@ -83,39 +78,30 @@
                 <div class="card">
                     <div>
                         <h3>Gaming Vouchers</h3>
-                        <p>Top up in cheapest price and get more value! Like BGMI UC, Free Fire Diamonds in lowest price.</p>
+                        <p>Top up in cheapest price and get more value! Inside you will find BGMI UC packages and more.</p>
                     </div>
                     <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers');">See Offer</button>
-                </div>
-
-                <div class="card">
-                    <div>
-                        <h3>BGMI UC Vouchers</h3>
-                        <p>Best selling BGMI UC top-up packs with cheapest pricing and instant delivery.</p>
-                    </div>
-                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('bgmi_uc');">See Offer</button>
                 </div>
             </div>
         </div>
 
-        <!-- 3. DYNAMIC CATEGORY VIEW -->
         <div id="category-view" class="view">
             <div class="sub-header">
-                <a href="#" class="back-link" onclick="switchView('store-view')">← Back to Store</a>
+                <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Store</a>
                 <h2 class="section-title" id="cat-title" style="text-align: left;">Category Offers</h2>
                 <p style="color: #94a3b8;" id="cat-desc">Browse available items and check pricing below.</p>
             </div>
 
+            <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
+
             <div class="item-list" id="dynamic-item-list"></div>
 
-            <!-- Terms and Payment Notice Box -->
             <div class="notice-box">
                 <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
                 <p><strong>Payment Method:</strong> Only UPI payment available right now.</p>
             </div>
         </div>
 
-        <!-- 4. ADMIN PROTECTED PANEL -->
         <div id="admin-view" class="view">
             <div class="sub-header">
                 <a href="#" class="back-link" onclick="switchView('store-view')">← Back to Store</a>
@@ -145,8 +131,8 @@
                             <option value="gaming_acc">Gaming Account</option>
                             <option value="discord_offer">Discord Offer</option>
                             <option value="vouchers">Vouchers</option>
-                            <option value="gaming_vouchers">Gaming Vouchers</option>
-                            <option value="bgmi_uc">BGMI UC Vouchers</option>
+                            <option value="gaming_vouchers">Gaming Vouchers (General)</option>
+                            <option value="bgmi_uc">BGMI UC Vouchers (Folder)</option>
                         </select>
                     </div>
                     <div class="admin-form-group">
@@ -164,9 +150,9 @@
                     <div class="admin-form-group">
                         <label>Status</label>
                         <select id="new-item-status">
-                            <option value="Out of Stock" selected>Out of Stock</option>
-                            <option value="Active">Active</option>
+                            <option value="Active" selected>Active</option>
                             <option value="New Stock Available">New Stock Available</option>
+                            <option value="Out of Stock">Out of Stock</option>
                             <option value="Coming Soon">Coming Soon</option>
                             <option value="Expired">Expired</option>
                         </select>
