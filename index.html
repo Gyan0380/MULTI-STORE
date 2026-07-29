@@ -24,13 +24,12 @@
         .view.active { display: block !important; animation: fastFade 0.2s ease-in-out; }
         @keyframes fastFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Updated Welcome Section with Animations */
-        #welcome-view { min-height: calc(100vh - 140px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        /* Updated Welcome Section */
+        #welcome-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding-top: 40px;}
         .main-heading { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; line-height: 1.2; background: linear-gradient(135deg, #ffffff, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .store-description { font-size: 1.05rem; color: #94a3b8; max-width: 650px; margin-bottom: 25px; line-height: 1.6; }
+        .store-description { font-size: 1.05rem; color: #94a3b8; max-width: 650px; margin-bottom: 25px; line-height: 1.6; padding: 0 15px;}
         
-        /* Glowing Badges */
-        .feature-badges { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 35px; }
+        .feature-badges { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 35px; padding: 0 10px;}
         .feature-badge { padding: 8px 18px; border-radius: 25px; font-size: 0.9rem; font-weight: bold; background: rgba(15, 15, 25, 0.8); backdrop-filter: blur(5px); transition: transform 0.2s; }
         .feature-badge:hover { transform: scale(1.05); }
         .badge-1 { color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 10px rgba(168, 85, 247, 0.2); }
@@ -42,17 +41,24 @@
         .btn:hover { filter: brightness(1.15); box-shadow: 0 0 30px rgba(168, 85, 247, 0.6); }
         .btn:active { transform: scale(0.95); }
 
-        /* Moving Ticker Animation below Button */
         .scrolling-wrapper { margin-top: 50px; width: 100vw; max-width: 100%; overflow: hidden; white-space: nowrap; position: relative; background: rgba(56, 189, 248, 0.05); border-top: 1px solid rgba(56, 189, 248, 0.2); border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding: 12px 0; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
         .scrolling-content { display: inline-block; animation: scroll-left 25s linear infinite; }
         .scrolling-content span { display: inline-block; padding: 0 15px; color: #c084fc; font-weight: 600; font-size: 1.05rem; letter-spacing: 1px; }
         @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
+        /* New Trust / Features Section at bottom of Welcome Page */
+        .trust-section { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 50px; padding: 0 20px; max-width: 1000px; width: 100%; }
+        .trust-card { background: rgba(20, 20, 35, 0.6); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 12px; padding: 20px; width: 280px; backdrop-filter: blur(5px); transition: transform 0.3s ease, border-color 0.3s ease; text-align: center; }
+        .trust-card:hover { transform: translateY(-5px); border-color: #38bdf8; box-shadow: 0 5px 15px rgba(56, 189, 248, 0.1); }
+        .t-icon { font-size: 2.2rem; margin-bottom: 12px; display: block; }
+        .trust-card h4 { font-size: 1.1rem; color: #f8fafc; margin-bottom: 8px; }
+        .trust-card p { font-size: 0.9rem; color: #94a3b8; line-height: 1.5; }
+
         /* Store Elements */
         .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 10px; font-weight: bold; color: #f8fafc; }
         .section-subtitle { text-align: center; color: #94a3b8; margin-bottom: 35px; }
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 0 20px;}
-        .card { background: rgba(15, 15, 25, 0.85); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 25px; backdrop-filter: blur(10px); transition: transform 0.15s ease; display: flex; flex-direction: column; justify-content: space-between; }
+        .card { background: rgba(15, 15, 25, 0.85); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 25px; backdrop-filter: blur(10px); transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease; display: flex; flex-direction: column; justify-content: space-between; }
         .card:hover { transform: translateY(-4px); border-color: #38bdf8; box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15); }
         .card h3 { font-size: 1.4rem; margin-bottom: 10px; color: #c084fc; }
         .card p { color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
@@ -104,6 +110,7 @@
 
     <div class="container">
 
+        <!-- 1. UPDATED WELCOME PAGE WITH TRUST SECTION -->
         <div id="welcome-view" class="view active">
             <div style="font-size: 1.1rem; letter-spacing: 3px; color: #38bdf8; margin-bottom: 15px; text-transform: uppercase; font-weight: bold;">Welcome to Developer Gyan</div>
             <h1 class="main-heading">Ultimate Digital Store</h1>
@@ -134,8 +141,28 @@
                     <span>🛒 Food & Shopping Vouchers</span><span>•</span>
                 </div>
             </div>
+
+            <!-- NEW TRUST & FEATURES SECTION (Added Below Scroller) -->
+            <div class="trust-section">
+                <div class="trust-card">
+                    <span class="t-icon">🚀</span>
+                    <h4>Super Fast Delivery</h4>
+                    <p>Get your digital products instantly after the payment confirmation.</p>
+                </div>
+                <div class="trust-card">
+                    <span class="t-icon">🛡️</span>
+                    <h4>100% Secure & Trusted</h4>
+                    <p>Verified seller with a safe community. Your money is completely safe.</p>
+                </div>
+                <div class="trust-card">
+                    <span class="t-icon">💬</span>
+                    <h4>24/7 Discord Support</h4>
+                    <p>We are always available on our Discord server to help you out.</p>
+                </div>
+            </div>
         </div>
 
+        <!-- 2. MAIN STORE VIEW (Categories) -->
         <div id="store-view" class="view">
             <h2 class="section-title">Store Categories</h2>
             <p class="section-subtitle">Select a category below to explore offers and pricing</p>
@@ -183,6 +210,7 @@
             </div>
         </div>
 
+        <!-- 3. DYNAMIC CATEGORY / FOLDER VIEW -->
         <div id="category-view" class="view">
             <div class="sub-header">
                 <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Store</a>
@@ -190,10 +218,13 @@
                 <p style="color: #94a3b8;" id="cat-desc">Browse available items and check pricing below.</p>
             </div>
 
+            <!-- Sub-folder container -->
             <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
 
+            <!-- Items container -->
             <div class="item-list" id="dynamic-item-list"></div>
 
+            <!-- Notice Box -->
             <div class="notice-box">
                 <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
                 <p><strong>Payment Method:</strong> Only UPI payment available right now.</p>
