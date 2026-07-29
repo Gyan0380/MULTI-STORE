@@ -44,11 +44,11 @@ const defaultStoreData = {
         title: "BGMI UC Vouchers & Top-Up",
         desc: "Best selling BGMI UC packs at cheapest prices with instant secure delivery.",
         items: [
-            { id: 12, name: "360 UC", desc: "Best sell BGMI UC top-up pack.", price: "₹419", status: "Out of Stock" },
-            { id: 13, name: "720 UC", desc: "Best sell BGMI UC top-up pack.", price: "₹819", status: "Out of Stock" },
-            { id: 14, name: "1950 UC", desc: "Best sell BGMI UC top-up pack.", price: "₹2,099", status: "Out of Stock" },
-            { id: 15, name: "4050 UC", desc: "Best sell BGMI UC top-up pack.", price: "₹4,199", status: "Out of Stock" },
-            { id: 16, name: "8400 UC", desc: "Best sell BGMI UC top-up pack.", price: "₹8,299", status: "Out of Stock" }
+            { id: 12, name: "360 UC", desc: "Best Sell Price (Reference: ₹380)", price: "₹419", status: "Active" },
+            { id: 13, name: "720 UC", desc: "Best Sell Price (Reference: ₹750)", price: "₹819", status: "Active" },
+            { id: 14, name: "1950 UC", desc: "Best Sell Price (Reference: ₹1,900)", price: "₹2,099", status: "Active" },
+            { id: 15, name: "4050 UC", desc: "Best Sell Price (Reference: ₹3,800)", price: "₹4,199", status: "Active" },
+            { id: 16, name: "8400 UC", desc: "Best Sell Price (Reference: ₹7,500)", price: "₹8,299", status: "Active" }
         ]
     }
 };
@@ -149,9 +149,9 @@ function renderAdminTable() {
                 <td>${item.price}</td>
                 <td>
                     <select onchange="updateItemStatus('${catKey}', ${index}, this.value)" style="background:#05050a; color:#fff; border:1px solid #38bdf8; padding:4px; border-radius:4px; outline:none;">
-                        <option ${item.status === 'Out of Stock' ? 'selected' : ''}>Out of Stock</option>
                         <option ${item.status === 'Active' ? 'selected' : ''}>Active</option>
                         <option ${item.status === 'New Stock Available' ? 'selected' : ''}>New Stock Available</option>
+                        <option ${item.status === 'Out of Stock' ? 'selected' : ''}>Out of Stock</option>
                         <option ${item.status === 'Coming Soon' ? 'selected' : ''}>Coming Soon</option>
                         <option ${item.status === 'Expired' ? 'selected' : ''}>Expired</option>
                     </select>
