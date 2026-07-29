@@ -424,13 +424,11 @@
 </head>
 <body>
 
-    <!-- Header & Menu Button -->
     <header>
         <div class="logo">Developer Gyan</div>
         <button class="menu-btn" onclick="toggleSidebar()">☰</button>
     </header>
 
-    <!-- Sidebar Menu Drawer -->
     <div class="sidebar" id="sidebar">
         <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
         <h3>Quick Navigation</h3>
@@ -447,7 +445,6 @@
 
     <div class="container">
 
-        <!-- 1. WELCOME PAGE -->
         <div id="welcome-view" class="view active">
             <div style="font-size: 1rem; letter-spacing: 3px; color: #38bdf8; margin-bottom: 15px; text-transform: uppercase;">Developer Gyan Store</div>
             <h1 class="main-heading">Premium Discord Servers, AI Bots & Gaming Accounts</h1>
@@ -457,7 +454,6 @@
             <button class="btn" onclick="switchView('store-view')">Go to Store</button>
         </div>
 
-        <!-- 2. MAIN STORE VIEW (Categories) -->
         <div id="store-view" class="view">
             <h2 class="section-title">Store Categories</h2>
             <p class="section-subtitle">Select a category below to explore offers and pricing</p>
@@ -505,7 +501,6 @@
             </div>
         </div>
 
-        <!-- 3. DYNAMIC CATEGORY / FOLDER VIEW -->
         <div id="category-view" class="view">
             <div class="sub-header">
                 <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Store</a>
@@ -513,20 +508,16 @@
                 <p style="color: #94a3b8;" id="cat-desc">Browse available items and check pricing below.</p>
             </div>
 
-            <!-- Sub-folder container -->
             <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
 
-            <!-- Items container -->
             <div class="item-list" id="dynamic-item-list"></div>
 
-            <!-- Notice Box -->
             <div class="notice-box">
                 <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
                 <p><strong>Payment Method:</strong> Only UPI payment available right now.</p>
             </div>
         </div>
 
-        <!-- 4. ADMIN PROTECTED PANEL -->
         <div id="admin-view" class="view">
             <div class="sub-header">
                 <a href="#" class="back-link" onclick="switchView('store-view')">← Back to Store</a>
@@ -536,7 +527,7 @@
 
             <div id="admin-login-box" class="admin-login">
                 <h3>Admin Authentication</h3>
-                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Enter admin password to access controls (Default: <code>admin123</code>)</p>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Enter admin password to access controls</p>
                 <input type="password" id="admin-pass" placeholder="Enter password...">
                 <button class="btn" style="width: 100%;" onclick="checkAdminLogin()">Login</button>
             </div>
@@ -609,7 +600,6 @@
         © 2026 Developer Gyan. All Rights Reserved.
     </div>
 
-    <!-- JavaScript Logic -->
     <script>
         const defaultStoreData = {
             steam: {
@@ -662,11 +652,11 @@
                 subFolders: [],
                 parentKey: "gaming_vouchers",
                 items: [
-                    { id: 12, name: "360 UC", desc: "Best Sell Price (Reference: ₹380)", price: "₹419", status: "Active" },
-                    { id: 13, name: "720 UC", desc: "Best Sell Price (Reference: ₹750)", price: "₹819", status: "Active" },
-                    { id: 14, name: "1950 UC", desc: "Best Sell Price (Reference: ₹1,900)", price: "₹2,099", status: "Active" },
-                    { id: 15, name: "4050 UC", desc: "Best Sell Price (Reference: ₹3,800)", price: "₹4,199", status: "Active" },
-                    { id: 16, name: "8400 UC", desc: "Best Sell Price (Reference: ₹7,500)", price: "₹8,299", status: "Active" }
+                    { id: 12, name: "360 UC", desc: "Selling Price ₹419", price: "₹419", status: "Active" },
+                    { id: 13, name: "720 UC", desc: "Selling Price ₹819", price: "₹819", status: "Active" },
+                    { id: 14, name: "1950 UC", desc: "Selling Price ₹2,099", price: "₹2,099", status: "Active" },
+                    { id: 15, name: "4050 UC", desc: "Selling Price ₹4,199", price: "₹4,199", status: "Active" },
+                    { id: 16, name: "8400 UC", desc: "Selling Price ₹8,299", price: "₹8,299", status: "Active" }
                 ]
             }
         };
@@ -766,12 +756,12 @@
 
         function checkAdminLogin() {
             const pass = document.getElementById('admin-pass').value;
-            if(pass === 'admin123') {
+            if(pass === '123gyan@') {
                 document.getElementById('admin-login-box').style.display = 'none';
                 document.getElementById('admin-dashboard-box').style.display = 'block';
                 renderAdminTable();
             } else {
-                alert('Wrong Password! Use default: admin123');
+                alert('Wrong Password!');
             }
         }
 
@@ -860,7 +850,6 @@
             alert('New item added successfully!');
         }
 
-        // Initialize default view on load
         window.onload = function() {
             switchView('welcome-view');
         }
