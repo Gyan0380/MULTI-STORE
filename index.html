@@ -23,42 +23,61 @@
         .view { display: none !important; }
         .view.active { display: block !important; animation: fastFade 0.2s ease-in-out; }
         @keyframes fastFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Updated Welcome Section with Animations */
         #welcome-view { min-height: calc(100vh - 140px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .main-heading { font-size: 2.6rem; font-weight: 800; margin-bottom: 20px; line-height: 1.2; background: linear-gradient(135deg, #ffffff, #c084fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .store-description { font-size: 1.05rem; color: #94a3b8; max-width: 650px; margin-bottom: 30px; line-height: 1.6; }
-        .btn { background: linear-gradient(135deg, #9333ea, #38bdf8); color: white; border: none; padding: 14px 35px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; box-shadow: 0 0 15px rgba(147, 51, 234, 0.4); transition: transform 0.1s ease; text-decoration: none; display: inline-block; }
-        .btn:hover { filter: brightness(1.15); box-shadow: 0 0 25px rgba(56, 189, 248, 0.6); }
+        .main-heading { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; line-height: 1.2; background: linear-gradient(135deg, #ffffff, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .store-description { font-size: 1.05rem; color: #94a3b8; max-width: 650px; margin-bottom: 25px; line-height: 1.6; }
+        
+        /* Glowing Badges */
+        .feature-badges { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 35px; }
+        .feature-badge { padding: 8px 18px; border-radius: 25px; font-size: 0.9rem; font-weight: bold; background: rgba(15, 15, 25, 0.8); backdrop-filter: blur(5px); transition: transform 0.2s; }
+        .feature-badge:hover { transform: scale(1.05); }
+        .badge-1 { color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 10px rgba(168, 85, 247, 0.2); }
+        .badge-2 { color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+        .badge-3 { color: #34d399; border: 1px solid rgba(52, 211, 153, 0.4); box-shadow: 0 0 10px rgba(52, 211, 153, 0.2); }
+        .badge-4 { color: #f87171; border: 1px solid rgba(248, 113, 113, 0.4); box-shadow: 0 0 10px rgba(248, 113, 113, 0.2); }
+
+        .btn { background: linear-gradient(135deg, #9333ea, #38bdf8); color: white; border: none; padding: 14px 40px; font-size: 1.2rem; font-weight: bold; border-radius: 30px; cursor: pointer; box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease; text-decoration: none; display: inline-block; }
+        .btn:hover { filter: brightness(1.15); box-shadow: 0 0 30px rgba(168, 85, 247, 0.6); }
         .btn:active { transform: scale(0.95); }
+
+        /* Moving Ticker Animation below Button */
+        .scrolling-wrapper { margin-top: 50px; width: 100vw; max-width: 100%; overflow: hidden; white-space: nowrap; position: relative; background: rgba(56, 189, 248, 0.05); border-top: 1px solid rgba(56, 189, 248, 0.2); border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding: 12px 0; mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+        .scrolling-content { display: inline-block; animation: scroll-left 25s linear infinite; }
+        .scrolling-content span { display: inline-block; padding: 0 15px; color: #c084fc; font-weight: 600; font-size: 1.05rem; letter-spacing: 1px; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Store Elements */
         .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 10px; font-weight: bold; color: #f8fafc; }
         .section-subtitle { text-align: center; color: #94a3b8; margin-bottom: 35px; }
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 0 20px;}
         .card { background: rgba(15, 15, 25, 0.85); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 25px; backdrop-filter: blur(10px); transition: transform 0.15s ease; display: flex; flex-direction: column; justify-content: space-between; }
-        .card:hover { transform: translateY(-4px); border-color: #38bdf8; }
+        .card:hover { transform: translateY(-4px); border-color: #38bdf8; box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15); }
         .card h3 { font-size: 1.4rem; margin-bottom: 10px; color: #c084fc; }
         .card p { color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
         .card-btn { background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; text-decoration: none; display: block;}
         .card-btn:hover { background: #38bdf8; color: #05050a; }
+        
         .sub-header { margin-bottom: 30px; padding: 0 20px;}
-        .back-link { color: #38bdf8; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 15px; }
+        .back-link { color: #38bdf8; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 15px; transition: opacity 0.1s; }
+        .back-link:hover { opacity: 0.8; }
         .item-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; padding: 0 20px;}
-        .item-row { background: rgba(15, 15, 25, 0.9); border: 1px solid rgba(168, 85, 247, 0.25); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .item-row { background: rgba(15, 15, 25, 0.9); border: 1px solid rgba(168, 85, 247, 0.25); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; transition: border-color 0.15s ease; }
+        .item-row:hover { border-color: #c084fc; }
         .item-details h4 { font-size: 1.2rem; margin-bottom: 5px; color: #f8fafc; }
         .item-details span { color: #94a3b8; font-size: 0.9rem; }
         .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
         .badge.active { background: rgba(5, 150, 105, 0.2); color: #34d399; border: 1px solid #059669; }
         .badge.stock { background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid #2563eb; }
         .badge.nostock { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid #dc2626; }
+        .badge.soon { background: rgba(217, 119, 6, 0.2); color: #fbbf24; border: 1px solid #d97706; }
+        .badge.expired { background: rgba(75, 85, 99, 0.2); color: #9ca3af; border: 1px solid #4b5563; }
         .price-tag { font-size: 1.4rem; color: #38bdf8; font-weight: bold; }
         .notice-box { background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.4); padding: 15px 20px; border-radius: 12px; margin: 25px 20px 0 20px; color: #94a3b8; font-size: 0.95rem; }
+        .notice-box p { margin: 5px 0; }
         .notice-box strong { color: #38bdf8; }
         .footer { text-align: center; padding: 30px; color: #64748b; font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 60px; }
-        
-        /* Admin */
-        .admin-login, .admin-dashboard { max-width: 800px; margin: 20px auto; background: rgba(15, 15, 25, 0.95); border: 1px solid rgba(168, 85, 247, 0.4); padding: 25px; border-radius: 16px; }
-        .admin-login input, .admin-form-group input, .admin-form-group select { width: 100%; padding: 12px; margin: 10px 0; background: #05050a; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 8px; color: #fff; outline: none; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
-        .admin-table th, .admin-table td { border: 1px solid rgba(168, 85, 247, 0.2); padding: 10px; text-align: left; }
-        .admin-table th { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
     </style>
 </head>
 <body>
@@ -72,25 +91,49 @@
         <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
         <h3>Quick Navigation</h3>
         <ul>
+            <li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home / Welcome</a></li>
             <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">Main Store</a></li>
             <li><a href="discord.html">▶ Discord Offers</a></li>
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('steam'); toggleSidebar();">Steam Account</a></li>
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('gaming_acc'); toggleSidebar();">Gaming Account</a></li>
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('vouchers'); toggleSidebar();">Vouchers</a></li>
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers'); toggleSidebar();">Gaming Vouchers</a></li>
-            <li><a href="#" onclick="switchView('admin-view'); toggleSidebar();">🔒 Admin Panel</a></li>
+            <li><a href="admin.html">🔒 Central Admin Panel</a></li>
         </ul>
     </div>
 
     <div class="container">
 
         <div id="welcome-view" class="view active">
-            <div style="font-size: 1rem; letter-spacing: 3px; color: #38bdf8; margin-bottom: 15px; text-transform: uppercase;">Developer Gyan Store</div>
-            <h1 class="main-heading">Premium Discord Servers, AI Bots & Gaming Accounts</h1>
+            <div style="font-size: 1.1rem; letter-spacing: 3px; color: #38bdf8; margin-bottom: 15px; text-transform: uppercase; font-weight: bold;">Welcome to Developer Gyan</div>
+            <h1 class="main-heading">Ultimate Digital Store</h1>
             <p class="store-description">
-                Welcome to my official store! Yahan aapko milte hain best accounts, gaming offers, prebuild servers aur vouchers sabse cheapest price par. Fast delivery aur 100% trusted service ke sath order karein!
+                Fast delivery aur 100% trusted service ke sath order karein! Sabse cheapest price mein premium quality.
             </p>
+
+            <div class="feature-badges">
+                <span class="feature-badge badge-1">🤖 Custom Discord Bots</span>
+                <span class="feature-badge badge-2">💎 Cheap BGMI UC</span>
+                <span class="feature-badge badge-3">🎮 Gaming & Steam Accs</span>
+                <span class="feature-badge badge-4">🎟️ Gift Vouchers</span>
+            </div>
+
             <button class="btn" onclick="switchView('store-view')">Go to Store</button>
+
+            <div class="scrolling-wrapper">
+                <div class="scrolling-content">
+                    <span>🔥 Premium Steam Accounts</span><span>•</span>
+                    <span>🎮 Conqueror Gaming Accounts</span><span>•</span>
+                    <span>🤖 Custom Discord Bots & Servers</span><span>•</span>
+                    <span>💎 Cheapest BGMI UC Vouchers</span><span>•</span>
+                    <span>🛒 Food & Shopping Vouchers</span><span>•</span>
+                    <span>🔥 Premium Steam Accounts</span><span>•</span>
+                    <span>🎮 Conqueror Gaming Accounts</span><span>•</span>
+                    <span>🤖 Custom Discord Bots & Servers</span><span>•</span>
+                    <span>💎 Cheapest BGMI UC Vouchers</span><span>•</span>
+                    <span>🛒 Food & Shopping Vouchers</span><span>•</span>
+                </div>
+            </div>
         </div>
 
         <div id="store-view" class="view">
@@ -148,44 +191,12 @@
             </div>
 
             <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
+
             <div class="item-list" id="dynamic-item-list"></div>
 
             <div class="notice-box">
                 <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
                 <p><strong>Payment Method:</strong> Only UPI payment available right now.</p>
-            </div>
-        </div>
-
-        <div id="admin-view" class="view">
-            <div class="sub-header">
-                <a href="#" class="back-link" onclick="switchView('store-view')">← Back to Store</a>
-                <h2 class="section-title" style="text-align: left;">🔒 Main Store Admin</h2>
-            </div>
-
-            <div id="admin-login-box" class="admin-login">
-                <h3>Admin Authentication</h3>
-                <input type="password" id="admin-pass" placeholder="Enter password...">
-                <button class="btn" style="width: 100%;" onclick="checkAdminLogin()">Login</button>
-            </div>
-
-            <div id="admin-dashboard-box" class="admin-dashboard" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: #c084fc;">Manage Main Store</h3>
-                    <button class="card-btn" onclick="logoutAdmin()" style="padding: 5px 10px;">Logout</button>
-                </div>
-                
-                <div style="overflow-x: auto;">
-                    <table class="admin-table">
-                        <thead>
-                            <tr>
-                                <th>Category</th>
-                                <th>Item Name</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-items-table-body"></tbody>
-                    </table>
-                </div>
             </div>
         </div>
 
@@ -195,62 +206,22 @@
 
     <script>
         const defaultMainData = {
-            steam: {
-                title: "Steam Accounts",
-                desc: "Find best accounts pre-loaded with top games at cheap prices.",
-                items: [
-                    { id: 1, name: "Random Steam Level 20+ Account", desc: "Contains random premium games + full access.", price: "₹149", status: "Active" },
-                    { id: 2, name: "GTA V Premium Steam Account", desc: "Email change available with instant delivery.", price: "₹299", status: "Active" }
-                ]
-            },
-            gaming_acc: {
-                title: "Gaming Accounts",
-                desc: "Pro accounts for BGMI, Free Fire, Valorant, etc.",
-                items: [
-                    { id: 3, name: "BGMI Conqueror Tier Account", desc: "Max RP, rare outfits, safe login.", price: "₹799", status: "Active" },
-                    { id: 4, name: "Free Fire Max Old Elite Pass ID", desc: "Level 70+, rare bundles.", price: "₹499", status: "Active" }
-                ]
-            },
-            vouchers: {
-                title: "Food & Shopping Vouchers",
-                desc: "Get discount vouchers for Zomato, Dominos, EGC, and clothing apps.",
-                items: [
-                    { id: 7, name: "Zomato / Dominos Food Voucher", desc: "Flat discount voucher code for food delivery apps.", price: "₹49", status: "Active" },
-                    { id: 8, name: "Clothing Brand Gift Card (EGC)", desc: "Redeemable voucher for fashion apps.", price: "₹199", status: "Active" }
-                ]
-            },
-            gaming_vouchers: {
-                title: "Gaming Vouchers",
-                desc: "Select a gaming voucher sub-category below.",
-                subFolders: [
-                    { key: "bgmi_uc", name: "BGMI UC Vouchers", desc: "Best selling BGMI UC top-up packs at cheapest prices." }
-                ],
-                items: []
-            },
-            bgmi_uc: {
-                title: "BGMI UC Vouchers",
-                desc: "Best selling BGMI UC packs at cheapest prices with instant secure delivery.",
-                parentKey: "gaming_vouchers",
-                items: [
-                    { id: 17, name: "360 UC", desc: "Selling in (Pice): ₹380", price: "₹419", status: "Active" },
-                    { id: 18, name: "720 UC", desc: "Selling in (Pice): ₹750", price: "₹819", status: "Active" },
-                    { id: 19, name: "1950 UC", desc: "Selling in (Pice): ₹1,900", price: "₹2,099", status: "Active" },
-                    { id: 20, name: "4050 UC", desc: "Selling in (Pice): ₹3,800", price: "₹4,199", status: "Active" },
-                    { id: 21, name: "8400 UC", desc: "Selling in (Pice): ₹7,500", price: "₹8,299", status: "Active" }
-                ]
-            }
+            steam: { title: "Steam Accounts", desc: "Find best accounts pre-loaded with top games at cheap prices.", items: [{ id: 1, name: "Random Steam Level 20+ Account", desc: "Contains random premium games + full access.", price: "₹149", status: "Active" }, { id: 2, name: "GTA V Premium Steam Account", desc: "Email change available with instant delivery.", price: "₹299", status: "Active" }] },
+            gaming_acc: { title: "Gaming Accounts", desc: "Pro accounts for BGMI, Free Fire, Valorant, etc.", items: [{ id: 3, name: "BGMI Conqueror Tier Account", desc: "Max RP, rare outfits, safe login.", price: "₹799", status: "Active" }, { id: 4, name: "Free Fire Max Old Elite Pass ID", desc: "Level 70+, rare bundles.", price: "₹499", status: "Active" }] },
+            vouchers: { title: "Food & Shopping Vouchers", desc: "Get discount vouchers for Zomato, Dominos, EGC, and clothing apps.", items: [{ id: 7, name: "Zomato / Dominos Food Voucher", desc: "Flat discount voucher code for food delivery apps.", price: "₹49", status: "Active" }, { id: 8, name: "Clothing Brand Gift Card (EGC)", desc: "Redeemable voucher for fashion apps.", price: "₹199", status: "Active" }] },
+            gaming_vouchers: { title: "Gaming Vouchers", desc: "Select a gaming voucher sub-category below.", subFolders: [{ key: "bgmi_uc", name: "BGMI UC Vouchers", desc: "Best selling BGMI UC top-up packs at cheapest prices." }], items: [] },
+            bgmi_uc: { title: "BGMI UC Vouchers", desc: "Best selling BGMI UC packs at cheapest prices with instant secure delivery.", parentKey: "gaming_vouchers", items: [{ id: 17, name: "360 UC", desc: "Selling in (Pice): ₹380", price: "₹419", status: "Active" }, { id: 18, name: "720 UC", desc: "Selling in (Pice): ₹750", price: "₹819", status: "Active" }, { id: 19, name: "1950 UC", desc: "Selling in (Pice): ₹1,900", price: "₹2,099", status: "Active" }, { id: 20, name: "4050 UC", desc: "Selling in (Pice): ₹3,800", price: "₹4,199", status: "Active" }, { id: 21, name: "8400 UC", desc: "Selling in (Pice): ₹7,500", price: "₹8,299", status: "Active" }] }
         };
 
-        let storeData = JSON.parse(localStorage.getItem('devGyanMainData')) || defaultMainData;
-
-        function saveStoreData() { localStorage.setItem('devGyanMainData', JSON.stringify(storeData)); }
+        let storeData = JSON.parse(localStorage.getItem('devGyanMainData'));
+        if(!storeData) { storeData = defaultMainData; localStorage.setItem('devGyanMainData', JSON.stringify(storeData)); }
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-
-        function switchView(viewId) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.getElementById(viewId).classList.add('active');
-            window.scrollTo(0, 0);
+        
+        function switchView(viewId) { 
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); 
+            document.getElementById(viewId).classList.add('active'); 
+            window.scrollTo(0, 0); 
         }
 
         function loadCategoryData(catKey) {
@@ -258,103 +229,28 @@
             document.getElementById('cat-title').innerText = cat.title;
             document.getElementById('cat-desc').innerText = cat.desc;
 
-            const backButton = document.getElementById('back-button');
-            if (cat.parentKey) {
-                backButton.setAttribute('onclick', `loadCategoryData('${cat.parentKey}')`);
-                backButton.innerText = "← Back to " + storeData[cat.parentKey].title;
-            } else {
-                backButton.setAttribute('onclick', "switchView('store-view')");
-                backButton.innerText = "← Back to Store";
-            }
+            const backBtn = document.getElementById('back-button');
+            if(cat.parentKey) { backBtn.setAttribute('onclick', `loadCategoryData('${cat.parentKey}')`); backBtn.innerText = "← Back to " + storeData[cat.parentKey].title; } 
+            else { backBtn.setAttribute('onclick', "switchView('store-view')"); backBtn.innerText = "← Back to Store"; }
 
-            const subFolderContainer = document.getElementById('sub-folder-container');
-            subFolderContainer.innerHTML = '';
-            
-            if (cat.subFolders && cat.subFolders.length > 0) {
-                subFolderContainer.style.display = 'grid';
+            const subContainer = document.getElementById('sub-folder-container');
+            subContainer.innerHTML = '';
+            if(cat.subFolders && cat.subFolders.length > 0) {
+                subContainer.style.display = 'grid';
                 cat.subFolders.forEach(folder => {
-                    const folderCard = document.createElement('div');
-                    folderCard.className = 'card';
-                    folderCard.innerHTML = `
-                        <div>
-                            <h3>📁 ${folder.name}</h3>
-                            <p>${folder.desc}</p>
-                        </div>
-                        <button class="card-btn" onclick="loadCategoryData('${folder.key}')">See Offers</button>
-                    `;
-                    subFolderContainer.appendChild(folderCard);
+                    subContainer.innerHTML += `<div class="card"><div><h3>📁 ${folder.name}</h3><p>${folder.desc}</p></div><button class="card-btn" onclick="loadCategoryData('${folder.key}')">See Offers</button></div>`;
                 });
-            } else {
-                subFolderContainer.style.display = 'none';
-            }
+            } else { subContainer.style.display = 'none'; }
 
             const listContainer = document.getElementById('dynamic-item-list');
             listContainer.innerHTML = '';
-
-            if (cat.items && cat.items.length > 0) {
+            if(cat.items && cat.items.length > 0) {
                 cat.items.forEach(item => {
-                    let badgeClass = 'nostock';
-                    if(item.status === 'Active') badgeClass = 'active';
-                    else if(item.status === 'New Stock Available') badgeClass = 'stock';
-
-                    const row = document.createElement('div');
-                    row.className = 'item-row';
-                    row.innerHTML = `
-                        <div class="item-details">
-                            <h4>${item.name}</h4>
-                            <span>${item.desc}</span><br><span class="badge ${badgeClass}" style="margin-top: 8px; display: inline-block;">${item.status}</span>
-                        </div>
-                        <div>
-                            <div class="price-tag">${item.price}</div>
-                            <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding: 6px 15px; font-size: 0.85rem; margin-top: 8px;">Join Store DC Server</a>
-                        </div>
-                    `;
-                    listContainer.appendChild(row);
+                    let badgeClass = item.status === 'Active' ? 'active' : item.status === 'New Stock Available' ? 'stock' : item.status === 'Coming Soon' ? 'soon' : item.status === 'Expired' ? 'expired' : 'nostock';
+                    listContainer.innerHTML += `<div class="item-row"><div class="item-details"><h4>${item.name}</h4><span>${item.desc}</span><br><span class="badge ${badgeClass}" style="margin-top:8px; display:inline-block;">${item.status}</span></div><div><div class="price-tag">${item.price}</div><a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding:6px 15px; font-size:0.85rem; margin-top:8px;">Join Store DC Server</a></div></div>`;
                 });
             }
             switchView('category-view');
-        }
-
-        function checkAdminLogin() {
-            if(document.getElementById('admin-pass').value === '123gyan@') {
-                document.getElementById('admin-login-box').style.display = 'none';
-                document.getElementById('admin-dashboard-box').style.display = 'block';
-                renderAdminTable();
-            } else { alert('Wrong Password!'); }
-        }
-
-        function logoutAdmin() {
-            document.getElementById('admin-pass').value = '';
-            document.getElementById('admin-dashboard-box').style.display = 'none';
-            document.getElementById('admin-login-box').style.display = 'block';
-        }
-
-        function renderAdminTable() {
-            const tbody = document.getElementById('admin-items-table-body');
-            tbody.innerHTML = '';
-            for (const catKey in storeData) {
-                if(storeData[catKey].items) {
-                    storeData[catKey].items.forEach((item, index) => {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td>${storeData[catKey].title}</td>
-                            <td><strong>${item.name}</strong></td>
-                            <td>
-                                <select onchange="updateItemStatus('${catKey}', ${index}, this.value)">
-                                    <option ${item.status === 'Active' ? 'selected' : ''}>Active</option>
-                                    <option ${item.status === 'Out of Stock' ? 'selected' : ''}>Out of Stock</option>
-                                </select>
-                            </td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                }
-            }
-        }
-
-        function updateItemStatus(catKey, itemIndex, newStatus) {
-            storeData[catKey].items[itemIndex].status = newStatus;
-            saveStoreData();
         }
 
         window.onload = function() { switchView('welcome-view'); }
