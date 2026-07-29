@@ -1,415 +1,189 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    user-select: none;
-}
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Gyan - Digital Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-body {
-    background-color: #05050a;
-    color: #ffffff;
-    background-image: linear-gradient(rgba(147, 51, 234, 0.08) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(56, 189, 248, 0.08) 1px, transparent 1px);
-    background-size: 40px 40px;
-    overflow-x: hidden;
-}
+    <header>
+        <div class="logo">Developer Gyan</div>
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    </header>
 
-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 25px;
-    background: rgba(5, 5, 10, 0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(168, 85, 247, 0.3);
-    z-index: 1000;
-}
+    <div class="sidebar" id="sidebar">
+        <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
+        <h3>Quick Navigation</h3>
+        <ul>
+            <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">Main Store</a></li>
+            <li><a href="#" onclick="switchView('category-view'); loadCategoryData('steam'); toggleSidebar();">Steam Account</a></li>
+            <li><a href="#" onclick="switchView('category-view'); loadCategoryData('gaming_acc'); toggleSidebar();">Gaming Account</a></li>
+            <li><a href="#" onclick="switchView('category-view'); loadCategoryData('discord_offer'); toggleSidebar();">Discord Offer</a></li>
+            <li><a href="#" onclick="switchView('category-view'); loadCategoryData('vouchers'); toggleSidebar();">Vouchers</a></li>
+            <li><a href="#" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers'); toggleSidebar();">Gaming Vouchers</a></li>
+            <li><a href="#" onclick="switchView('admin-view'); toggleSidebar();">🔒 Admin Panel</a></li>
+        </ul>
+    </div>
 
-.logo {
-    font-size: 1.2rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #c084fc, #38bdf8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-}
+    <div class="container">
 
-.menu-btn {
-    font-size: 1.6rem;
-    cursor: pointer;
-    color: #38bdf8;
-    background: none;
-    border: none;
-    transition: transform 0.1s ease;
-}
+        <div id="welcome-view" class="view active">
+            <div style="font-size: 1rem; letter-spacing: 3px; color: #38bdf8; margin-bottom: 15px; text-transform: uppercase;">Developer Gyan Store</div>
+            <h1 class="main-heading">Premium Discord Servers, AI Bots & Gaming Accounts</h1>
+            <p class="store-description">
+                Welcome to my official store! Yahan aapko milte hain best accounts, gaming offers, prebuild servers aur vouchers sabse cheapest price par. Fast delivery aur 100% trusted service ke sath order karein!
+            </p>
+            <button class="btn" onclick="switchView('store-view')">Go to Store</button>
+        </div>
 
-.menu-btn:active {
-    transform: scale(0.9);
-}
+        <div id="store-view" class="view">
+            <h2 class="section-title">Store Categories</h2>
+            <p class="section-subtitle">Select a category below to explore offers and pricing</p>
+            
+            <div class="grid-container">
+                <div class="card">
+                    <div>
+                        <h3>Steam Account</h3>
+                        <p>Here you can find best accounts and buy account in chip and get account with game. Enjoy full features.</p>
+                    </div>
+                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('steam');">See Offer</button>
+                </div>
 
-.sidebar {
-    position: fixed;
-    top: 0;
-    right: -280px;
-    width: 280px;
-    height: 100%;
-    background: #0d0d1a;
-    border-left: 1px solid rgba(168, 85, 247, 0.4);
-    box-shadow: -10px 0 30px rgba(0,0,0,0.8);
-    transition: right 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 1100;
-    padding: 60px 20px 20px 20px;
-}
+                <div class="card">
+                    <div>
+                        <h3>Gaming Account</h3>
+                        <p>Here you can find best and amazing pro accounts like BGMI, Free Fire, Valorant, etc. Enjoy gaming corner.</p>
+                    </div>
+                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_acc');">See Offer</button>
+                </div>
 
-.sidebar.active {
-    right: 0;
-}
+                <div class="card">
+                    <div>
+                        <h3>Discord Offer</h3>
+                        <p>Here you can buy prebuild DC servers, customize your server, and hire bot builders for custom commands.</p>
+                    </div>
+                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('discord_offer');">See Offer</button>
+                </div>
 
-.sidebar h3 {
-    color: #c084fc;
-    margin-bottom: 20px;
-    font-size: 1.2rem;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 10px;
-}
+                <div class="card">
+                    <div>
+                        <h3>Vouchers</h3>
+                        <p>Get food & shopping vouchers like Dominos, Zomato, EGC, clothing apps, and more at discounted prices.</p>
+                    </div>
+                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('vouchers');">See Offer</button>
+                </div>
 
-.sidebar ul {
-    list-style: none;
-}
+                <div class="card">
+                    <div>
+                        <h3>Gaming Vouchers</h3>
+                        <p>Top up in cheapest price and get more value! Inside you will find BGMI UC packages and more.</p>
+                    </div>
+                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers');">See Offer</button>
+                </div>
+            </div>
+        </div>
 
-.sidebar ul li {
-    margin: 15px 0;
-}
+        <div id="category-view" class="view">
+            <div class="sub-header">
+                <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Store</a>
+                <h2 class="section-title" id="cat-title" style="text-align: left;">Category Offers</h2>
+                <p style="color: #94a3b8;" id="cat-desc">Browse available items and check pricing below.</p>
+            </div>
 
-.sidebar ul li a {
-    color: #d1d5db;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: color 0.1s ease, padding-left 0.1s ease;
-    display: block;
-}
+            <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
 
-.sidebar ul li a:hover {
-    color: #38bdf8;
-    padding-left: 8px;
-}
+            <div class="item-list" id="dynamic-item-list"></div>
 
-.close-sidebar {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #fff;
-    background: none;
-    border: none;
-}
+            <div class="notice-box">
+                <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
+                <p><strong>Payment Method:</strong> Only UPI payment available right now.</p>
+            </div>
+        </div>
 
-.container {
-    padding-top: 90px;
-    max-width: 1100px;
-    margin: 0 auto;
-    min-height: 90vh;
-    padding-bottom: 50px;
-}
+        <div id="admin-view" class="view">
+            <div class="sub-header">
+                <a href="#" class="back-link" onclick="switchView('store-view')">← Back to Store</a>
+                <h2 class="section-title" style="text-align: left;">🔒 Admin Control Panel</h2>
+                <p style="color: #94a3b8;">Manage stock, prices, names, and statuses securely.</p>
+            </div>
 
-.view {
-    display: none !important;
-}
+            <div id="admin-login-box" class="admin-login">
+                <h3>Admin Authentication</h3>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Enter admin password to access controls (Default: <code>admin123</code>)</p>
+                <input type="password" id="admin-pass" placeholder="Enter password...">
+                <button class="btn" style="width: 100%;" onclick="checkAdminLogin()">Login</button>
+            </div>
 
-.view.active {
-    display: block !important;
-    animation: fastFade 0.2s ease-in-out;
-}
+            <div id="admin-dashboard-box" class="admin-dashboard" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="color: #c084fc;">Manage Store Items & Pricing</h3>
+                    <button class="card-btn" onclick="logoutAdmin()" style="padding: 5px 10px; font-size: 0.8rem;">Logout</button>
+                </div>
 
-@keyframes fastFade {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+                <div style="background: rgba(56, 189, 248, 0.03); border: 1px solid rgba(56, 189, 248, 0.2); padding: 15px; border-radius: 10px; margin-bottom: 25px;">
+                    <h4 style="color: #38bdf8; margin-bottom: 10px;">Add New Offer / Item</h4>
+                    <div class="admin-form-group">
+                        <label>Select Category</label>
+                        <select id="new-item-cat">
+                            <option value="steam">Steam Account</option>
+                            <option value="gaming_acc">Gaming Account</option>
+                            <option value="discord_offer">Discord Offer</option>
+                            <option value="vouchers">Vouchers</option>
+                            <option value="gaming_vouchers">Gaming Vouchers (General)</option>
+                            <option value="bgmi_uc">BGMI UC Vouchers (Folder)</option>
+                        </select>
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Item Name (e.g. 360 UC)</label>
+                        <input type="text" id="new-item-name" placeholder="Enter item name...">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Description</label>
+                        <input type="text" id="new-item-desc" placeholder="Enter details...">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Price (e.g. ₹419)</label>
+                        <input type="text" id="new-item-price" placeholder="Enter price...">
+                    </div>
+                    <div class="admin-form-group">
+                        <label>Status</label>
+                        <select id="new-item-status">
+                            <option value="Active" selected>Active</option>
+                            <option value="New Stock Available">New Stock Available</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                            <option value="Coming Soon">Coming Soon</option>
+                            <option value="Expired">Expired</option>
+                        </select>
+                    </div>
+                    <button class="btn" style="padding: 10px 20px; font-size: 0.9rem;" onclick="addNewItem()">Add Item</button>
+                </div>
 
-#welcome-view {
-    min-height: calc(100vh - 140px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
+                <h4 style="color: #c084fc; margin-bottom: 10px;">Existing Items List</h4>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Item Name</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-items-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-.main-heading {
-    font-size: 2.6rem;
-    font-weight: 800;
-    margin-bottom: 20px;
-    line-height: 1.2;
-    background: linear-gradient(135deg, #ffffff, #c084fc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+    </div>
 
-.store-description {
-    font-size: 1.05rem;
-    color: #94a3b8;
-    max-width: 650px;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
+    <div class="footer">
+        © 2026 Developer Gyan. All Rights Reserved.
+    </div>
 
-.btn {
-    background: linear-gradient(135deg, #9333ea, #38bdf8);
-    color: white;
-    border: none;
-    padding: 14px 35px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 30px;
-    cursor: pointer;
-    box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
-    transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.1s ease;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.btn:hover {
-    filter: brightness(1.15);
-    box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
-}
-
-.btn:active {
-    transform: scale(0.95);
-}
-
-.section-title {
-    text-align: center;
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-    font-weight: bold;
-    color: #f8fafc;
-}
-
-.section-subtitle {
-    text-align: center;
-    color: #94a3b8;
-    margin-bottom: 35px;
-}
-
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-}
-
-.card {
-    background: rgba(15, 15, 25, 0.85);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    border-radius: 16px;
-    padding: 25px;
-    backdrop-filter: blur(10px);
-    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.card:hover {
-    transform: translateY(-4px);
-    border-color: #38bdf8;
-    box-shadow: 0 8px 25px rgba(56, 189, 248, 0.15);
-}
-
-.card h3 {
-    font-size: 1.4rem;
-    margin-bottom: 10px;
-    color: #c084fc;
-}
-
-.card p {
-    color: #94a3b8;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.card-btn {
-    background: rgba(56, 189, 248, 0.1);
-    border: 1px solid #38bdf8;
-    color: #38bdf8;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.1s ease, color 0.1s ease, transform 0.1s ease;
-    text-align: center;
-}
-
-.card-btn:hover {
-    background: #38bdf8;
-    color: #05050a;
-}
-
-.card-btn:active {
-    transform: scale(0.96);
-}
-
-.sub-header {
-    margin-bottom: 30px;
-}
-
-.back-link {
-    color: #38bdf8;
-    text-decoration: none;
-    font-weight: bold;
-    display: inline-block;
-    margin-bottom: 15px;
-    transition: opacity 0.1s;
-}
-
-.back-link:hover {
-    opacity: 0.8;
-}
-
-.item-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.item-row {
-    background: rgba(15, 15, 25, 0.9);
-    border: 1px solid rgba(168, 85, 247, 0.25);
-    padding: 20px;
-    border-radius: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    transition: border-color 0.15s ease;
-}
-
-.item-row:hover {
-    border-color: #c084fc;
-}
-
-.item-details h4 {
-    font-size: 1.2rem;
-    margin-bottom: 5px;
-    color: #f8fafc;
-}
-
-.item-details span {
-    color: #94a3b8;
-    font-size: 0.9rem;
-}
-
-.badge {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.badge.active { background: rgba(5, 150, 105, 0.2); color: #34d399; border: 1px solid #059669; }
-.badge.stock { background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid #2563eb; }
-.badge.nostock { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid #dc2626; }
-.badge.soon { background: rgba(217, 119, 6, 0.2); color: #fbbf24; border: 1px solid #d97706; }
-.badge.expired { background: rgba(75, 85, 99, 0.2); color: #9ca3af; border: 1px solid #4b5563; }
-
-.price-tag {
-    font-size: 1.4rem;
-    color: #38bdf8;
-    font-weight: bold;
-}
-
-.notice-box {
-    background: rgba(56, 189, 248, 0.05);
-    border: 1px dashed rgba(56, 189, 248, 0.4);
-    padding: 15px 20px;
-    border-radius: 12px;
-    margin-top: 25px;
-    color: #94a3b8;
-    font-size: 0.95rem;
-}
-
-.notice-box p {
-    margin: 5px 0;
-}
-
-.notice-box strong {
-    color: #38bdf8;
-}
-
-.admin-login, .admin-dashboard {
-    max-width: 800px;
-    margin: 20px auto;
-    background: rgba(15, 15, 25, 0.95);
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    padding: 25px;
-    border-radius: 16px;
-}
-
-.admin-login input {
-    width: 100%;
-    padding: 12px;
-    margin: 15px 0;
-    background: #05050a;
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    border-radius: 8px;
-    color: #fff;
-    outline: none;
-}
-
-.admin-form-group {
-    margin-bottom: 15px;
-}
-
-.admin-form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #c084fc;
-    font-size: 0.9rem;
-}
-
-.admin-form-group input, .admin-form-group select {
-    width: 100%;
-    padding: 10px;
-    background: #05050a;
-    border: 1px solid rgba(168, 85, 247, 0.4);
-    border-radius: 6px;
-    color: #fff;
-    outline: none;
-}
-
-.admin-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 0.9rem;
-}
-
-.admin-table th, .admin-table td {
-    border: 1px solid rgba(168, 85, 247, 0.2);
-    padding: 10px;
-    text-align: left;
-}
-
-.admin-table th {
-    background: rgba(168, 85, 247, 0.2);
-    color: #c084fc;
-}
-
-.footer {
-    text-align: center;
-    padding: 30px;
-    color: #64748b;
-    font-size: 0.9rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    margin-top: 60px;
-}
+    <script src="script.js"></script>
+</body>
+</html>
