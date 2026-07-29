@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Gyan - Discord Services</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
+        body { background-color: #05050a; color: #ffffff; background-image: linear-gradient(rgba(147, 51, 234, 0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(56, 189, 248, 0.08) 1px, transparent 1px); background-size: 40px 40px; overflow-x: hidden; }
+        header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: rgba(5, 5, 10, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(168, 85, 247, 0.3); z-index: 1000; }
+        .logo { font-size: 1.2rem; font-weight: 800; background: linear-gradient(135deg, #c084fc, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; text-transform: uppercase; }
+        .menu-btn { font-size: 1.6rem; cursor: pointer; color: #38bdf8; background: none; border: none; transition: transform 0.1s ease; }
+        .menu-btn:active { transform: scale(0.9); }
+        .sidebar { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: #0d0d1a; border-left: 1px solid rgba(168, 85, 247, 0.4); box-shadow: -10px 0 30px rgba(0,0,0,0.8); transition: right 0.2s ease; z-index: 1100; padding: 60px 20px 20px 20px; }
+        .sidebar.active { right: 0; }
+        .sidebar h3 { color: #c084fc; margin-bottom: 20px; font-size: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .sidebar ul { list-style: none; }
+        .sidebar ul li { margin: 15px 0; }
+        .sidebar ul li a { color: #d1d5db; text-decoration: none; font-size: 1rem; transition: color 0.1s ease; display: block; }
+        .sidebar ul li a:hover { color: #38bdf8; padding-left: 8px; }
+        .close-sidebar { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #fff; background: none; border: none; }
+        .container { padding-top: 90px; max-width: 1100px; margin: 0 auto; min-height: 90vh; padding-bottom: 50px; }
+        .view { display: none !important; }
+        .view.active { display: block !important; animation: fastFade 0.2s ease-in-out; }
+        @keyframes fastFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .btn { background: linear-gradient(135deg, #9333ea, #38bdf8); color: white; border: none; padding: 14px 35px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; box-shadow: 0 0 15px rgba(147, 51, 234, 0.4); transition: transform 0.1s ease; text-decoration: none; display: inline-block; }
+        .btn:hover { filter: brightness(1.15); box-shadow: 0 0 25px rgba(56, 189, 248, 0.6); }
+        .btn:active { transform: scale(0.95); }
+        .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 10px; font-weight: bold; color: #f8fafc; }
+        .section-subtitle { text-align: center; color: #94a3b8; margin-bottom: 35px; }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 0 20px;}
+        .card { background: rgba(15, 15, 25, 0.85); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 16px; padding: 25px; backdrop-filter: blur(10px); transition: transform 0.15s ease; display: flex; flex-direction: column; justify-content: space-between; }
+        .card:hover { transform: translateY(-4px); border-color: #38bdf8; }
+        .card h3 { font-size: 1.4rem; margin-bottom: 10px; color: #c084fc; }
+        .card p { color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
+        .card-btn { background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; text-decoration: none; display: block;}
+        .card-btn:hover { background: #38bdf8; color: #05050a; }
+        .sub-header { margin-bottom: 30px; padding: 0 20px;}
+        .back-link { color: #38bdf8; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 15px; }
+        .item-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; padding: 0 20px;}
+        .item-row { background: rgba(15, 15, 25, 0.9); border: 1px solid rgba(168, 85, 247, 0.25); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .item-details h4 { font-size: 1.2rem; margin-bottom: 5px; color: #f8fafc; }
+        .item-details span { color: #94a3b8; font-size: 0.9rem; }
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
+        .badge.active { background: rgba(5, 150, 105, 0.2); color: #34d399; border: 1px solid #059669; }
+        .badge.stock { background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid #2563eb; }
+        .badge.nostock { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid #dc2626; }
+        .badge.soon { background: rgba(217, 119, 6, 0.2); color: #fbbf24; border: 1px solid #d97706; }
+        .price-tag { font-size: 1.4rem; color: #38bdf8; font-weight: bold; }
+        .notice-box { background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.4); padding: 15px 20px; border-radius: 12px; margin: 25px 20px 0 20px; color: #94a3b8; font-size: 0.95rem; }
+        .notice-box strong { color: #38bdf8; }
+        .footer { text-align: center; padding: 30px; color: #64748b; font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.05); margin-top: 60px; }
+        
+        /* Admin Panel */
+        .admin-login, .admin-dashboard { max-width: 800px; margin: 20px auto; background: rgba(15, 15, 25, 0.95); border: 1px solid rgba(168, 85, 247, 0.4); padding: 25px; border-radius: 16px; }
+        .admin-login input, .admin-form-group input, .admin-form-group select { width: 100%; padding: 12px; margin: 10px 0; background: #05050a; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 8px; color: #fff; outline: none; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9rem; }
+        .admin-table th, .admin-table td { border: 1px solid rgba(168, 85, 247, 0.2); padding: 10px; text-align: left; }
+        .admin-table th { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Developer Gyan</div>
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
+        <h3>Quick Navigation</h3>
+        <ul>
+            <li><a href="index.html">🏠 Back to Main Store</a></li>
+            <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">Discord Categories</a></li>
+            <li><a href="#" onclick="switchView('admin-view'); toggleSidebar();">🔒 Admin Panel</a></li>
+        </ul>
+    </div>
+
+    <div class="container">
+
+        <div id="store-view" class="view active">
+            <h2 class="section-title">Discord Offers</h2>
+            <p class="section-subtitle">Select a Discord service sub-category below.</p>
+            
+            <div class="grid-container">
+                <div class="card">
+                    <div>
+                        <h3>Prebuild DC Server</h3>
+                        <p>Ready-made Discord servers with beautiful themes & bots setup.</p>
+                    </div>
+                    <button class="card-btn" onclick="loadCategoryData('prebuild')">See Offers</button>
+                </div>
+                <div class="card">
+                    <div>
+                        <h3>Custom Server Builder</h3>
+                        <p>Build your own completely custom Discord server per your choice.</p>
+                    </div>
+                    <button class="card-btn" onclick="loadCategoryData('custom_server')">See Offers</button>
+                </div>
+                <div class="card">
+                    <div>
+                        <h3>Custom Bot Builder</h3>
+                        <p>Hire developer for custom bots (Command based pricing).</p>
+                    </div>
+                    <button class="card-btn" onclick="loadCategoryData('custom_bot')">See Offers</button>
+                </div>
+            </div>
+            
+            <div style="text-align:center; margin-top: 40px;">
+                <a href="index.html" class="back-link" style="font-size: 1.1rem;">← Go Back to Main Store</a>
+            </div>
+        </div>
+
+        <div id="category-view" class="view">
+            <div class="sub-header">
+                <a href="#" class="back-link" onclick="switchView('store-view')">← Back to Discord Folders</a>
+                <h2 class="section-title" id="cat-title" style="text-align: left;">Category Offers</h2>
+                <p style="color: #94a3b8;" id="cat-desc">Browse available items and check pricing below.</p>
+            </div>
+
+            <div class="item-list" id="dynamic-item-list"></div>
+
+            <div class="notice-box">
+                <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
+                <p><strong>Payment Method:</strong> Only UPI payment available right now.</p>
+                <p id="bot-notice" style="display:none; color:#fbbf24; margin-top:10px;"><strong>Note:</strong> All offers need Monthly fee for bot running (Pricing does not include monthly fee). You can only take max 40 commands offer currently.</p>
+            </div>
+        </div>
+
+        <div id="admin-view" class="view">
+            <div class="sub-header">
+                <a href="#" class="back-link" onclick="switchView('store-view')">← Back to Folders</a>
+                <h2 class="section-title" style="text-align: left;">🔒 Discord Admin Panel</h2>
+            </div>
+
+            <div id="admin-login-box" class="admin-login">
+                <h3>Admin Authentication</h3>
+                <input type="password" id="admin-pass" placeholder="Enter password...">
+                <button class="btn" style="width: 100%;" onclick="checkAdminLogin()">Login</button>
+            </div>
+
+            <div id="admin-dashboard-box" class="admin-dashboard" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="color: #c084fc;">Manage Discord Items</h3>
+                    <button class="card-btn" onclick="logoutAdmin()" style="padding: 5px 10px;">Logout</button>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Item Name</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-items-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer">© 2026 Developer Gyan. All Rights Reserved.</div>
+
+    <script>
+        const defaultDiscordData = {
+            prebuild: {
+                title: "Prebuild DC Server",
+                desc: "Ready-made servers. Fast delivery.",
+                items: [
+                    { id: 1, name: "Only Theme", desc: "Prebuild server with beautiful theme setup.", price: "₹50", status: "Active" },
+                    { id: 2, name: "Theme + Bots Setup", desc: "Theme + complete bots configured and setup.", price: "₹140", status: "Active" }
+                ]
+            },
+            custom_server: {
+                title: "Custom Server Builder",
+                desc: "Build a brand new server customized for you.",
+                items: [
+                    { id: 3, name: "Custom Theme Only", desc: "Custom server with your requested theme design.", price: "₹65", status: "Active" },
+                    { id: 4, name: "Custom Theme + Bots Setup", desc: "Custom theme + your choice of bots + complete setup.", price: "₹170", status: "Active" }
+                ]
+            },
+            custom_bot: {
+                title: "Custom Bot Builder",
+                desc: "Hire expert developer to code custom commands.",
+                isBot: true,
+                items: [
+                    { id: 5, name: "Bot 10 Commands", desc: "Custom bot coded with up to 10 commands.", price: "₹80", status: "Active" },
+                    { id: 6, name: "Bot 20 Commands", desc: "Custom bot coded with up to 20 commands.", price: "₹150", status: "Active" },
+                    { id: 7, name: "Bot 30 Commands", desc: "Custom bot coded with up to 30 commands.", price: "₹230", status: "Active" },
+                    { id: 8, name: "Bot 40 Commands", desc: "Custom bot coded with up to 40 commands.", price: "₹290", status: "Active" },
+                    { id: 9, name: "Bot 40+ Commands", desc: "Need more? Take ₹100 extra per 10 commands.", price: "Custom", status: "Active" },
+                    { id: 10, name: "50+ Commands Offer", desc: "If you take 50+ commands, you will get free own dashboard.", price: "TBD", status: "Coming Soon" }
+                ]
+            }
+        };
+
+        let discordData = JSON.parse(localStorage.getItem('devGyanDiscordData')) || defaultDiscordData;
+
+        function saveDiscordData() { localStorage.setItem('devGyanDiscordData', JSON.stringify(discordData)); }
+
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function loadCategoryData(catKey) {
+            const cat = discordData[catKey];
+            document.getElementById('cat-title').innerText = cat.title;
+            document.getElementById('cat-desc').innerText = cat.desc;
+            
+            // Show Bot Notice only for Custom Bot
+            document.getElementById('bot-notice').style.display = cat.isBot ? 'block' : 'none';
+
+            const listContainer = document.getElementById('dynamic-item-list');
+            listContainer.innerHTML = '';
+
+            cat.items.forEach(item => {
+                let badgeClass = 'nostock';
+                if(item.status === 'Active') badgeClass = 'active';
+                else if(item.status === 'New Stock Available') badgeClass = 'stock';
+                else if(item.status === 'Coming Soon') badgeClass = 'soon';
+
+                const row = document.createElement('div');
+                row.className = 'item-row';
+                row.innerHTML = `
+                    <div class="item-details">
+                        <h4>${item.name}</h4>
+                        <span>${item.desc}</span><br><span class="badge ${badgeClass}" style="margin-top: 8px; display: inline-block;">${item.status}</span>
+                    </div>
+                    <div>
+                        <div class="price-tag">${item.price}</div>
+                        <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding: 6px 15px; font-size: 0.85rem; margin-top: 8px;">Join DC Server</a>
+                    </div>
+                `;
+                listContainer.appendChild(row);
+            });
+            switchView('category-view');
+        }
+
+        function checkAdminLogin() {
+            if(document.getElementById('admin-pass').value === '123gyan@') {
+                document.getElementById('admin-login-box').style.display = 'none';
+                document.getElementById('admin-dashboard-box').style.display = 'block';
+                renderAdminTable();
+            } else { alert('Wrong Password!'); }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('admin-pass').value = '';
+            document.getElementById('admin-dashboard-box').style.display = 'none';
+            document.getElementById('admin-login-box').style.display = 'block';
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('admin-items-table-body');
+            tbody.innerHTML = '';
+            for (const catKey in discordData) {
+                discordData[catKey].items.forEach((item, index) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${discordData[catKey].title}</td>
+                        <td><strong>${item.name}</strong></td>
+                        <td>
+                            <select onchange="updateItemStatus('${catKey}', ${index}, this.value)">
+                                <option ${item.status === 'Active' ? 'selected' : ''}>Active</option>
+                                <option ${item.status === 'Out of Stock' ? 'selected' : ''}>Out of Stock</option>
+                                <option ${item.status === 'Coming Soon' ? 'selected' : ''}>Coming Soon</option>
+                            </select>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        function updateItemStatus(catKey, itemIndex, newStatus) {
+            discordData[catKey].items[itemIndex].status = newStatus;
+            saveDiscordData();
+        }
+    </script>
+</body>
+</html>
+
