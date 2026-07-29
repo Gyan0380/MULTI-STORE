@@ -125,7 +125,7 @@ function checkAdminLogin() {
         document.getElementById('admin-dashboard-box').style.display = 'block';
         renderAdminTable();
     } else {
-        alert('Wrong Password! Use default: admin123');
+        alert('Wrong Password! Use default: 1181');
     }
 }
 
