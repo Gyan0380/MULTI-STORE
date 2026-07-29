@@ -49,11 +49,11 @@ const defaultStoreData = {
         subFolders: [],
         parentKey: "gaming_vouchers",
         items: [
-            { id: 12, name: "360 UC", desc: "Best Sell Price (Reference: ₹380)", price: "₹419", status: "Active" },
-            { id: 13, name: "720 UC", desc: "Best Sell Price (Reference: ₹750)", price: "₹819", status: "Active" },
-            { id: 14, name: "1950 UC", desc: "Best Sell Price (Reference: ₹1,900)", price: "₹2,099", status: "Active" },
-            { id: 15, name: "4050 UC", desc: "Best Sell Price (Reference: ₹3,800)", price: "₹4,199", status: "Active" },
-            { id: 16, name: "8400 UC", desc: "Best Sell Price (Reference: ₹7,500)", price: "₹8,299", status: "Active" }
+            { id: 12, name: "360 UC", desc: "Best Sell Price ₹419", price: "₹419", status: "Active" },
+            { id: 13, name: "720 UC", desc: "Best Sell Price ₹819", price: "₹819", status: "Active" },
+            { id: 14, name: "1950 UC", desc: "Best Sell Price ₹2099", price: "₹2,099", status: "Active" },
+            { id: 15, name: "4050 UC", desc: "Best Sell Price ₹4199", price: "₹4,199", status: "Active" },
+            { id: 16, name: "8400 UC", desc: "Best Sell Price ₹8299", price: "₹8,299", status: "Active" }
         ]
     }
 };
