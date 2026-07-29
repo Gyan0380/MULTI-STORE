@@ -39,13 +39,24 @@ const defaultStoreData = {
             { id: 10, name: "400₹ get 400uc", desc: "BGMI UC special mega top-up pack.", price: "₹400", status: "Out of Stock" },
             { id: 11, name: "Free Fire Extra Diamonds Pack", desc: "Special top-up with double diamond event bonus.", price: "₹90", status: "Out of Stock" }
         ]
+    },
+    bgmi_uc: {
+        title: "BGMI UC Vouchers & Top-Up",
+        desc: "Best selling BGMI UC packs at cheapest prices with instant secure delivery.",
+        items: [
+            { id: 12, name: "360 UC", desc: "Best sell BGMI UC top-up pack.", price: "₹419", status: "Out of Stock" },
+            { id: 13, name: "720 UC", desc: "Best sell BGMI UC top-up pack.", price: "₹819", status: "Out of Stock" },
+            { id: 14, name: "1950 UC", desc: "Best sell BGMI UC top-up pack.", price: "₹2,099", status: "Out of Stock" },
+            { id: 15, name: "4050 UC", desc: "Best sell BGMI UC top-up pack.", price: "₹4,199", status: "Out of Stock" },
+            { id: 16, name: "8400 UC", desc: "Best sell BGMI UC top-up pack.", price: "₹8,299", status: "Out of Stock" }
+        ]
     }
 };
 
-let storeData = JSON.parse(localStorage.getItem('developerPrinceStore')) || defaultStoreData;
+let storeData = JSON.parse(localStorage.getItem('developerGyanStore')) || defaultStoreData;
 
 function saveStoreData() {
-    localStorage.setItem('developerPrinceStore', JSON.stringify(storeData));
+    localStorage.setItem('developerGyanStore', JSON.stringify(storeData));
 }
 
 function toggleSidebar() {
@@ -54,8 +65,16 @@ function toggleSidebar() {
 
 function switchView(viewId) {
     const views = document.querySelectorAll('.view');
-    views.forEach(v => v.classList.remove('active'));
-    document.getElementById(viewId).classList.add('active');
+    views.forEach(v => {
+        v.classList.remove('active');
+        v.style.display = 'none';
+    });
+    
+    const targetView = document.getElementById(viewId);
+    if(targetView) {
+        targetView.classList.add('active');
+        targetView.style.display = 'block';
+    }
     window.scrollTo(0, 0);
 }
 
@@ -188,4 +207,3 @@ function addNewItem() {
     document.getElementById('new-item-price').value = '';
     alert('New item added successfully!');
 }
-
