@@ -24,98 +24,200 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background-color: #05050a; color: #fff; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; }
-        h2 { color: #f87171; text-align: center; margin-bottom: 20px; }
-        .box { background: rgba(20, 20, 30, 0.9); border: 1px solid rgba(168, 85, 247, 0.3); padding: 25px; border-radius: 12px; margin-bottom: 20px; }
-        input, select { width: 100%; padding: 10px; margin: 10px 0; background: #05050a; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 6px; color: #fff; outline: none;}
-        .btn { background: linear-gradient(135deg, #9333ea, #38bdf8); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
-        th, td { border: 1px solid rgba(168, 85, 247, 0.2); padding: 10px; text-align: left; }
-        th { background: rgba(168, 85, 247, 0.1); color: #c084fc; }
-        .del-btn { background: #dc2626; color: #fff; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
-        .edit-btn { background: #f59e0b; color: #fff; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-right: 5px;}
+        .container { max-width: 1000px; margin: 0 auto; }
+        h2 { color: #f87171; text-align: center; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;}
+        .box { background: rgba(20, 20, 30, 0.9); border: 1px solid rgba(168, 85, 247, 0.3); padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        input, select { width: 100%; padding: 12px; margin: 8px 0 15px 0; background: #0a0a14; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 8px; color: #fff; outline: none; font-size: 0.95rem;}
+        input:focus, select:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);}
+        label { color: #cbd5e1; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px; display: block;}
+        .btn { background: linear-gradient(135deg, #9333ea, #38bdf8); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.05rem; transition: 0.2s;}
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1);}
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; background: #0a0a14; border-radius: 8px; overflow: hidden;}
+        th, td { border: 1px solid rgba(168, 85, 247, 0.2); padding: 12px; text-align: left; }
+        th { background: rgba(168, 85, 247, 0.15); color: #e879f9; font-weight: bold;}
+        .del-btn { background: #dc2626; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;}
+        .edit-btn { background: #f59e0b; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-right: 5px; font-weight: bold;}
+        
+        /* Flex rows for forms */
+        .form-row { display: flex; gap: 15px; flex-wrap: wrap;}
+        .form-group { flex: 1; min-width: 250px; }
     </style>
 </head>
 <body>
 
     <div class="container">
         <h2>🔒 Central Secured Admin Dashboard</h2>
-        <div style="text-align: center; margin-bottom: 20px;">
-            <a href="index.html" style="color: #38bdf8; text-decoration: none;">← Go to Main Website</a>
+        <div style="text-align: center; margin-bottom: 30px;">
+            <a href="index.html" style="color: #38bdf8; text-decoration: none; font-weight: bold; padding: 5px 15px; border: 1px solid #38bdf8; border-radius: 20px;">← Go to Main Store</a>
         </div>
 
-        <div id="login-box" class="box">
-            <h3>Secure Admin Authentication</h3>
-            <p style="color:#94a3b8; font-size: 0.9rem; margin-bottom:10px;">Enter your Firebase Admin Email & Password</p>
-            <input type="email" id="admin-email" placeholder="Admin Email (e.g. admin@developergyan.com)">
+        <!-- LOGIN SECTION -->
+        <div id="login-box" class="box" style="max-width: 500px; margin: 0 auto;">
+            <h3 style="color: #38bdf8; margin-bottom: 15px;">Admin Authentication</h3>
+            <label>Admin Email</label>
+            <input type="email" id="admin-email" value="admin@developergyan.com" placeholder="Email...">
+            <label>Password</label>
             <input type="password" id="admin-pass" placeholder="Enter Password...">
-            <button class="btn" onclick="login()">Access Dashboard</button>
+            <button class="btn" onclick="login()" style="margin-top: 10px;">Login to Dashboard</button>
         </div>
 
         <div id="dashboard" style="display: none;">
-            <div class="box" style="border-color: #e879f9;">
-                <h3 style="color: #e879f9;">📢 Post New Advertisement</h3>
-                <label style="color:#e879f9;">Display Location</label>
-                <select id="ad-placement">
-                    <option value="both">Both (Home & Offers Page)</option>
-                    <option value="home">Only Home Page</option>
-                    <option value="offers">Only Offers Page</option>
-                </select>
-                <input type="text" id="ad-title" placeholder="Ad Title (e.g. Mega Sale)">
-                <input type="text" id="ad-image" placeholder="Image URL (Discord link recommended)">
-                <input type="number" id="ad-minutes" placeholder="Auto-Close Timer (Minutes)">
-                <input type="text" id="ad-link" placeholder="Redirect URL (Discord User ID Link)">
-                <button class="btn" onclick="addNewAd()" style="background: linear-gradient(135deg, #e879f9, #a855f7);">Post Live Ad</button>
-                <h4 style="margin-top: 20px; color: #e879f9;">Active Ads</h4>
-                <div style="overflow-x: auto;">
-                    <table><thead><tr><th>Title</th><th>Location</th><th>Action</th></tr></thead><tbody id="ads-table-body"></tbody></table>
+            
+            <!-- ADS MANAGER -->
+            <div class="box" style="border-color: #e879f9; border-top: 4px solid #e879f9;">
+                <h3 style="color: #e879f9; margin-bottom: 15px;">📢 Post New Advertisement</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Display Location</label>
+                        <select id="ad-placement">
+                            <option value="both">Both (Home & Offers Page)</option>
+                            <option value="home">Only Home Page</option>
+                            <option value="offers">Only Offers Page</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ad Title</label>
+                        <input type="text" id="ad-title" placeholder="e.g. Mega Sale">
+                    </div>
                 </div>
-            </div>
-
-            <div class="box" id="add-item-box">
-                <h3 style="color: #38bdf8;" id="form-heading">🏪 Add New Store Item</h3>
-                <label style="color:#38bdf8;">Select Category (Folder or Main)</label>
-                <select id="item-cat">
-                    <option value="steam">Steam Account</option>
-                    <option value="gaming_acc">Gaming Account</option>
-                    <option value="prebuild_server">Prebuild DC Server</option>
-                    <option value="custom_server">Custom Server Builder</option>
-                    <option value="custom_bot">Custom Bot Builder</option>
-                    <option value="vouchers">Vouchers</option>
-                    <option value="bgmi_uc">BGMI UC Vouchers (Inside Gaming Vouchers)</option>
-                </select>
-                <input type="text" id="item-name" placeholder="Item Name (e.g. Conqueror Account)">
-                <input type="text" id="item-desc" placeholder="Description details...">
-                <input type="text" id="item-price" placeholder="Price (e.g. ₹799)">
-                <select id="item-status">
-                    <option value="Active">Active</option>
-                    <option value="New Stock Available">New Stock Available</option>
-                    <option value="Out of Stock">Out of Stock</option>
-                    <option value="Coming Soon">Coming Soon</option>
-                </select>
-                <button class="btn" id="save-item-btn" onclick="saveItem()">Add Live Store Item</button>
-                <button class="btn" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none; background: #4b5563; margin-top:10px;">Cancel Edit</button>
-
-                <h4 style="margin-top: 20px; color: #38bdf8;">Store Inventory</h4>
+                <div class="form-row">
+                    <div class="form-group"><label>Image URL</label><input type="text" id="ad-image" placeholder="Discord image link"></div>
+                    <div class="form-group"><label>Timer (Minutes)</label><input type="number" id="ad-minutes" placeholder="60"></div>
+                </div>
+                <label>Redirect URL</label>
+                <input type="text" id="ad-link" placeholder="Discord User ID Link">
+                <button class="btn" onclick="addNewAd()" style="background: linear-gradient(135deg, #e879f9, #a855f7);">Post Live Ad</button>
+                
+                <h4 style="margin-top: 25px; color: #e879f9;">Active Ads</h4>
                 <div style="overflow-x: auto;">
                     <table>
-                        <thead><tr><th>Category</th><th>Item</th><th>Status</th><th>Actions</th></tr></thead>
-                        <tbody id="items-table-body"></tbody>
+                        <thead><tr><th>Title</th><th>Location</th><th>Action</th></tr></thead>
+                        <tbody id="ads-table-body"></tbody>
                     </table>
                 </div>
             </div>
 
-            <button class="del-btn" style="width: 100%; padding: 12px; font-size: 1.1rem; font-weight: bold;" onclick="logout()">Logout / Lock Dashboard</button>
+            <!-- DEDICATED EDIT SECTION (HIDDEN BY DEFAULT) -->
+            <div class="box" id="edit-box" style="display: none; border-color: #f59e0b; border-top: 4px solid #f59e0b; animation: fastFade 0.3s ease;">
+                <h3 style="color: #f59e0b; margin-bottom: 15px;">✏️ Edit Item / Folder Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Change Name / Title</label>
+                        <input type="text" id="edit-name" placeholder="Name...">
+                    </div>
+                    <div class="form-group">
+                        <label>Change Description</label>
+                        <input type="text" id="edit-desc" placeholder="Details...">
+                    </div>
+                </div>
+                <div class="form-row" id="edit-price-status-row">
+                    <div class="form-group">
+                        <label>Change Price</label>
+                        <input type="text" id="edit-price" placeholder="e.g. ₹499">
+                    </div>
+                    <div class="form-group">
+                        <label>Change Status</label>
+                        <select id="edit-status">
+                            <option value="Active">Active</option>
+                            <option value="New Stock Available">New Stock Available</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                            <option value="Coming Soon">Coming Soon</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 10px;">
+                    <button class="btn" onclick="saveEdit()" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">Save Changes</button>
+                    <button class="btn" onclick="closeEdit()" style="background: #4b5563;">Cancel</button>
+                </div>
+            </div>
+
+            <!-- ADD NEW STORE ITEM / FOLDER -->
+            <div class="box" style="border-top: 4px solid #38bdf8;">
+                <h3 style="color: #38bdf8; margin-bottom: 15px;">🏪 Add New Store Item / Folder</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>1. Select Main Category</label>
+                        <select id="add-main-cat" onchange="updateSubCatDropdown()">
+                            <option value="discord_offer">Discord Services</option>
+                            <option value="bgmi_uc">BGMI UC Vouchers</option>
+                            <option value="steam">Steam Accounts</option>
+                            <option value="gaming_acc">Gaming Accounts</option>
+                            <option value="vouchers">Gift Vouchers</option>
+                            <option value="gaming_vouchers">Gaming Vouchers (Main)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="sub-cat-container" style="display: none;">
+                        <label>2. Inside Folder? (Optional)</label>
+                        <select id="add-sub-cat">
+                            <option value="">-- No, put in main category --</option>
+                            <!-- Dynamically filled -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>3. Type (Item or Folder?)</label>
+                        <select id="add-type" onchange="togglePriceFields('add')">
+                            <option value="item">Product Item (Direct Buy)</option>
+                            <option value="folder">Sub-Folder (Category 'See Offer')</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>4. Name / Title</label>
+                        <input type="text" id="add-name" placeholder="Item or Folder Name">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>5. Description Details</label>
+                    <input type="text" id="add-desc" placeholder="Details about this item/folder...">
+                </div>
+
+                <div class="form-row" id="add-price-row">
+                    <div class="form-group">
+                        <label>6. Price</label>
+                        <input type="text" id="add-price" placeholder="e.g. ₹99">
+                    </div>
+                    <div class="form-group">
+                        <label>7. Status</label>
+                        <select id="add-status">
+                            <option value="Active">Active</option>
+                            <option value="New Stock Available">New Stock Available</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                            <option value="Coming Soon">Coming Soon</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn" onclick="addEntity()">➕ Add to Live Store</button>
+            </div>
+
+            <!-- LIVE INVENTORY TABLE -->
+            <div class="box">
+                <h3 style="color: #34d399; margin-bottom: 15px;">📦 Store Inventory (Live)</h3>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead><tr><th>Location</th><th>Name (Type)</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="inventory-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <button class="del-btn" style="width: 100%; padding: 12px; font-size: 1.1rem;" onclick="logout()">Logout Dashboard</button>
         </div>
     </div>
 
+    <!-- LINK ADS SCRIPT -->
     <script src="ads.js"></script>
     
     <script>
         let appData = {};
-        let editMode = false;
-        let editCategory = '';
-        let editIndex = -1;
+        
+        // State for Edit Box
+        let editData = { active: false, type: '', catKey: '', itemIndex: -1, folderKey: '' };
 
         function login() {
             const email = document.getElementById('admin-email').value;
@@ -128,7 +230,7 @@
                     document.getElementById('dashboard').style.display = 'block';
                     listenLiveData(); 
                 })
-                .catch((error) => alert("Authentication Failed: Wrong Email or Password."));
+                .catch((e) => alert("Login Failed. Check details."));
         }
 
         function logout() { auth.signOut().then(() => location.reload()); }
@@ -137,37 +239,126 @@
             db.ref('storeData').on('value', (snapshot) => {
                 if (snapshot.exists()) {
                     appData = snapshot.val();
-                    renderStoreTable();
+                    updateSubCatDropdown();
+                    renderInventory();
                 }
             });
         }
 
-        function saveStoreToDB() { db.ref('storeData').set(appData); }
+        function saveToDB() { db.ref('storeData').set(appData); }
 
-        function renderAdsTable() {
-            const tbody = document.getElementById('ads-table-body');
-            tbody.innerHTML = '';
-            getActiveAds().forEach(ad => {
-                const loc = ad.placement === 'both' ? 'Both' : ad.placement === 'home' ? 'Home' : 'Offers';
-                tbody.innerHTML += `<tr><td><strong>${ad.title}</strong></td><td>${loc}</td><td><button class="del-btn" onclick="deleteAd(${ad.id})">Delete</button></td></tr>`;
-            });
+        // --- DYNAMIC DROPDOWN LOGIC ---
+        function updateSubCatDropdown() {
+            const mainCat = document.getElementById('add-main-cat').value;
+            const subSelect = document.getElementById('add-sub-cat');
+            const subContainer = document.getElementById('sub-cat-container');
+            
+            subSelect.innerHTML = '<option value="">-- Direct in Main Category --</option>';
+            
+            if(appData[mainCat] && appData[mainCat].subFolders && appData[mainCat].subFolders.length > 0) {
+                appData[mainCat].subFolders.forEach(folder => {
+                    subSelect.innerHTML += `<option value="${folder.key}">📁 ${folder.name}</option>`;
+                });
+                subContainer.style.display = 'block';
+            } else {
+                subContainer.style.display = 'none';
+            }
         }
 
-        function renderStoreTable() {
-            const tbody = document.getElementById('items-table-body');
+        // --- SHOW/HIDE PRICE FIELDS ---
+        function togglePriceFields(mode) {
+            const type = document.getElementById(mode + '-type').value;
+            const row = document.getElementById(mode + '-price-row');
+            if(type === 'folder') row.style.display = 'none';
+            else row.style.display = 'flex';
+        }
+
+        // --- ADD NEW ITEM OR FOLDER ---
+        function addEntity() {
+            const mainCat = document.getElementById('add-main-cat').value;
+            const subCat = document.getElementById('add-sub-cat').value;
+            const type = document.getElementById('add-type').value; // 'item' or 'folder'
+            
+            const name = document.getElementById('add-name').value.trim();
+            const desc = document.getElementById('add-desc').value.trim();
+            const price = document.getElementById('add-price').value.trim();
+            const status = document.getElementById('add-status').value;
+
+            if(!name) return alert("Name is required!");
+
+            // Determine Target Category
+            const targetCatKey = subCat ? subCat : mainCat;
+
+            if (type === 'folder') {
+                if(subCat) return alert("You cannot create a folder inside another folder. Select 'Direct in Main' first.");
+                if(!desc) return alert("Folder description is required!");
+                
+                // Create Folder logic
+                const newKey = 'cat_' + Date.now();
+                if(!appData[mainCat].subFolders) appData[mainCat].subFolders = [];
+                
+                // Add to parent's folder list
+                appData[mainCat].subFolders.push({ key: newKey, name: name, desc: desc });
+                // Create the actual new category bucket
+                appData[newKey] = { title: name, desc: desc, parentKey: mainCat, items: [] };
+                
+                alert(`Folder '${name}' created successfully!`);
+            } else {
+                // Create Item logic
+                if(!price) return alert("Item price is required!");
+                if(!appData[targetCatKey].items) appData[targetCatKey].items = [];
+                
+                appData[targetCatKey].items.push({ id: Date.now(), name, desc, price, status });
+                alert(`Item '${name}' added successfully!`);
+            }
+
+            // Clear inputs
+            document.getElementById('add-name').value = '';
+            document.getElementById('add-desc').value = '';
+            document.getElementById('add-price').value = '';
+            
+            saveToDB();
+        }
+
+        // --- INVENTORY TABLE RENDERING ---
+        function renderInventory() {
+            const tbody = document.getElementById('inventory-table-body');
             tbody.innerHTML = '';
-            for(let cat in appData) {
-                if(appData[cat].items) {
-                    appData[cat].items.forEach((item, index) => {
+            
+            // Render top level categories and their subfolders/items
+            for(let key in appData) {
+                const cat = appData[key];
+                const catName = cat.title || key;
+
+                // 1. Render SubFolders of this category
+                if(cat.subFolders) {
+                    cat.subFolders.forEach(folder => {
+                        tbody.innerHTML += `
+                            <tr style="background: rgba(56, 189, 248, 0.05);">
+                                <td>${catName}</td>
+                                <td style="color:#38bdf8;"><strong>📁 ${folder.name}</strong> <small>(Folder)</small></td>
+                                <td>-</td>
+                                <td style="white-space:nowrap;">
+                                    <button class="edit-btn" onclick="openEdit('folder', '${key}', -1, '${folder.key}')">✏️ Edit</button>
+                                    <button class="del-btn" onclick="deleteEntity('folder', '${key}', -1, '${folder.key}')">🗑️</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+
+                // 2. Render Items of this category
+                if(cat.items) {
+                    cat.items.forEach((item, index) => {
                         let statusColor = item.status === 'Active' ? '#34d399' : item.status === 'Out of Stock' ? '#f87171' : '#fbbf24';
                         tbody.innerHTML += `
                             <tr>
-                                <td>${appData[cat].title || cat}</td>
+                                <td>${catName}</td>
                                 <td><strong>${item.name}</strong><br><small style="color:#94a3b8">${item.price}</small></td>
                                 <td style="color:${statusColor}; font-weight:bold;">${item.status}</td>
-                                <td style="white-space: nowrap;">
-                                    <button class="edit-btn" onclick="startEdit('${cat}', ${index})">✏️ Edit</button>
-                                    <button class="del-btn" onclick="deleteItem('${cat}', ${index})">🗑️</button>
+                                <td style="white-space:nowrap;">
+                                    <button class="edit-btn" onclick="openEdit('item', '${key}', ${index}, '')">✏️ Edit</button>
+                                    <button class="del-btn" onclick="deleteEntity('item', '${key}', ${index}, '')">🗑️</button>
                                 </td>
                             </tr>
                         `;
@@ -176,78 +367,95 @@
             }
         }
 
-        // NEW EDIT SYSTEM LOGIC
-        function startEdit(cat, idx) {
-            editMode = true;
-            editCategory = cat;
-            editIndex = idx;
-            const item = appData[cat].items[idx];
+        // --- EDIT SECTION LOGIC ---
+        function openEdit(type, parentCat, itemIndex, folderKey) {
+            editData = { active: true, type, catKey: parentCat, itemIndex, folderKey };
+            const editBox = document.getElementById('edit-box');
+            editBox.style.display = 'block';
+            window.scrollTo(0, editBox.offsetTop - 20);
 
-            document.getElementById('form-heading').innerText = "✏️ Edit Store Item";
-            document.getElementById('form-heading').style.color = "#f59e0b";
-            
-            document.getElementById('item-cat').value = cat;
-            document.getElementById('item-name').value = item.name;
-            document.getElementById('item-desc').value = item.desc;
-            document.getElementById('item-price').value = item.price;
-            document.getElementById('item-status').value = item.status;
-            
-            document.getElementById('save-item-btn').innerText = "Update Changes";
-            document.getElementById('save-item-btn').style.background = "linear-gradient(135deg, #f59e0b, #ea580c)";
-            document.getElementById('cancel-edit-btn').style.display = "block";
-            
-            window.scrollTo(0, document.getElementById('add-item-box').offsetTop - 50);
-        }
-
-        function cancelEdit() {
-            editMode = false;
-            editCategory = '';
-            editIndex = -1;
-            
-            document.getElementById('form-heading').innerText = "🏪 Add New Store Item";
-            document.getElementById('form-heading').style.color = "#38bdf8";
-            
-            document.getElementById('item-name').value = '';
-            document.getElementById('item-desc').value = '';
-            document.getElementById('item-price').value = '';
-            
-            document.getElementById('save-item-btn').innerText = "Add Live Store Item";
-            document.getElementById('save-item-btn').style.background = "linear-gradient(135deg, #9333ea, #38bdf8)";
-            document.getElementById('cancel-edit-btn').style.display = "none";
-        }
-
-        function saveItem() {
-            const cat = document.getElementById('item-cat').value;
-            const name = document.getElementById('item-name').value;
-            const desc = document.getElementById('item-desc').value;
-            const price = document.getElementById('item-price').value;
-            const status = document.getElementById('item-status').value;
-
-            if(!name || !price) return alert("Fill Name & Price!");
-            
-            if(editMode) {
-                // UPDATE EXISTING
-                appData[editCategory].items[editIndex] = { id: appData[editCategory].items[editIndex].id, name, desc, price, status };
-                alert("Item Updated Successfully!");
-                cancelEdit(); // Reset form
+            if(type === 'folder') {
+                const folderRef = appData[parentCat].subFolders.find(f => f.key === folderKey);
+                document.getElementById('edit-name').value = folderRef.name;
+                document.getElementById('edit-desc').value = folderRef.desc;
+                document.getElementById('edit-price-status-row').style.display = 'none'; // Hide price/status
             } else {
-                // ADD NEW
-                if(!appData[cat].items) appData[cat].items = [];
-                appData[cat].items.push({ id: Date.now(), name, desc, price, status });
-                alert("Live Item Added to Store!");
-                document.getElementById('item-name').value = '';
-                document.getElementById('item-desc').value = '';
-                document.getElementById('item-price').value = '';
+                const item = appData[parentCat].items[itemIndex];
+                document.getElementById('edit-name').value = item.name;
+                document.getElementById('edit-desc').value = item.desc;
+                document.getElementById('edit-price').value = item.price;
+                document.getElementById('edit-status').value = item.status;
+                document.getElementById('edit-price-status-row').style.display = 'flex';
             }
-            saveStoreToDB();
         }
 
-        function deleteItem(cat, idx) {
-            if(confirm("Delete this Live Item?")) {
-                appData[cat].items.splice(idx, 1);
-                saveStoreToDB();
-                if(editMode && editCategory === cat && editIndex === idx) cancelEdit();
+        function closeEdit() {
+            editData.active = false;
+            document.getElementById('edit-box').style.display = 'none';
+        }
+
+        function saveEdit() {
+            if(!editData.active) return;
+            const name = document.getElementById('edit-name').value.trim();
+            const desc = document.getElementById('edit-desc').value.trim();
+            const price = document.getElementById('edit-price').value.trim();
+            const status = document.getElementById('edit-status').value;
+
+            if(!name) return alert("Name cannot be empty!");
+
+            if(editData.type === 'folder') {
+                // Update in Parent's subFolder list
+                const folderIndex = appData[editData.catKey].subFolders.findIndex(f => f.key === editData.folderKey);
+                if(folderIndex > -1) {
+                    appData[editData.catKey].subFolders[folderIndex].name = name;
+                    appData[editData.catKey].subFolders[folderIndex].desc = desc;
+                }
+                // Update the actual category block
+                if(appData[editData.folderKey]) {
+                    appData[editData.folderKey].title = name;
+                    appData[editData.folderKey].desc = desc;
+                }
+            } else {
+                // Update Item
+                if(!price) return alert("Price cannot be empty!");
+                appData[editData.catKey].items[editData.itemIndex].name = name;
+                appData[editData.catKey].items[editData.itemIndex].desc = desc;
+                appData[editData.catKey].items[editData.itemIndex].price = price;
+                appData[editData.catKey].items[editData.itemIndex].status = status;
             }
+
+            saveToDB();
+            closeEdit();
+            alert("Changes Saved to Live Store!");
+        }
+
+        // --- DELETE LOGIC ---
+        function deleteEntity(type, parentCat, itemIndex, folderKey) {
+            if(!confirm(`Are you sure you want to delete this ${type}?`)) return;
+
+            if(type === 'folder') {
+                // Remove from parent subFolder list
+                appData[parentCat].subFolders = appData[parentCat].subFolders.filter(f => f.key !== folderKey);
+                // Remove the actual category data
+                delete appData[folderKey];
+            } else {
+                // Remove Item
+                appData[parentCat].items.splice(itemIndex, 1);
+            }
+            saveToDB();
+            if(editData.active && editData.type === type && editData.catKey === parentCat && (editData.itemIndex === itemIndex || editData.folderKey === folderKey)) {
+                closeEdit();
+            }
+        }
+
+        // Ads Table (Kept exactly as before)
+        function renderAdsTable() {
+            const tbody = document.getElementById('ads-table-body');
+            tbody.innerHTML = '';
+            getActiveAds().forEach(ad => {
+                const loc = ad.placement === 'both' ? 'Both' : ad.placement === 'home' ? 'Home' : 'Offers';
+                tbody.innerHTML += `<tr><td><strong>${ad.title}</strong></td><td>${loc}</td><td><button class="del-btn" onclick="deleteAd(${ad.id})">Delete</button></td></tr>`;
+            });
         }
     </script>
 </body>
