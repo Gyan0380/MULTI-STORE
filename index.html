@@ -8,10 +8,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
+        // FIXED SERVER LINK (Singapore Server)
         const firebaseConfig = {
             apiKey: "AIzaSyDc8SBATauI9wMiwvIsrYsIuyXD_QOCKB8",
             authDomain: "developer-ab7cb.firebaseapp.com",
-            databaseURL: "https://developer-ab7cb-default-rtdb.firebaseio.com",
+            databaseURL: "https://developer-ab7cb-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "developer-ab7cb",
             storageBucket: "developer-ab7cb.firebasestorage.app",
             messagingSenderId: "178491860220",
@@ -167,7 +168,7 @@
                 <div class="tilt-card tc-discord" onclick="switchView('category-view'); loadCategoryData('discord_offer');">
                     <span class="t-icon">🤖</span><h4>Discord Offers</h4><p>Custom Discord servers and advanced AI bots.</p>
                 </div>
-                <div class="tilt-card tc-bgmi" onclick="switchView('category-view'); loadCategoryData('bgmi_uc');">
+                <div class="tilt-card tc-bgmi" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers');">
                     <span class="t-icon">💎</span><h4>BGMI UC Vouchers</h4><p>Instant BGMI UC top-ups at the lowest market prices.</p>
                 </div>
                 <div class="tilt-card tc-vouchers" onclick="switchView('category-view'); loadCategoryData('vouchers');">
@@ -197,7 +198,6 @@
             </div>
         </div>
 
-        <!-- DYNAMIC ITEMS/FOLDER VIEW -->
         <div id="category-view" class="view">
             <div class="sub-header">
                 <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Store</a>
@@ -233,7 +233,6 @@
         db.ref('storeData').on('value', (snapshot) => {
             if (snapshot.exists()) {
                 appData = snapshot.val();
-                // Safety check: ensure core folders aren't lost
                 for(let key in defaultStoreData) {
                     if(!appData[key]) appData[key] = defaultStoreData[key];
                 }
@@ -257,12 +256,10 @@
             }
         }
 
-        // LOAD CATEGORY WITH BLANK PROTECTION
         function loadCategoryData(catKey) {
             currentCategory = catKey;
             const cat = appData[catKey];
             
-            // If Category was deleted or missing, show error state securely
             if(!cat) {
                 document.getElementById('cat-title').innerText = "Empty Category";
                 document.getElementById('cat-desc').innerText = "No data found for this section.";
