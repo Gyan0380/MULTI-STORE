@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Developer Gyan</title>
+    
+    <!-- Firebase SDK Setup for Auth and Database -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDc8SBATauI9wMiwvIsrYsIuyXD_QOCKB8",
+            authDomain: "developer-ab7cb.firebaseapp.com",
+            databaseURL: "https://developer-ab7cb-default-rtdb.firebaseio.com",
+            projectId: "developer-ab7cb",
+            storageBucket: "developer-ab7cb.firebasestorage.app",
+            messagingSenderId: "178491860220",
+            appId: "1:178491860220:web:d874ac1cb68954c2d02379"
+        };
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+        const auth = firebase.auth();
+    </script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background-color: #05050a; color: #fff; padding: 20px; }
@@ -11,7 +33,7 @@
         h2 { color: #f87171; text-align: center; margin-bottom: 20px; }
         
         .box { background: rgba(20, 20, 30, 0.9); border: 1px solid rgba(168, 85, 247, 0.3); padding: 25px; border-radius: 12px; margin-bottom: 20px; }
-        input, select { width: 100%; padding: 10px; margin: 10px 0; background: #05050a; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 6px; color: #fff; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; background: #05050a; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 6px; color: #fff; outline: none;}
         .btn { background: linear-gradient(135deg, #9333ea, #38bdf8); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; }
         
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
@@ -23,42 +45,49 @@
 <body>
 
     <div class="container">
-        <h2>🔒 Central Admin Dashboard</h2>
+        <h2>🔒 Central Secured Admin Dashboard</h2>
         <div style="text-align: center; margin-bottom: 20px;">
             <a href="index.html" style="color: #38bdf8; text-decoration: none;">← Go to Main Website</a>
         </div>
 
         <div id="login-box" class="box">
-            <h3>Login Required</h3>
+            <h3>Secure Admin Authentication</h3>
+            <p style="color:#94a3b8; font-size: 0.9rem; margin-bottom:10px;">Enter your Firebase Admin Email & Password</p>
+            <input type="email" id="admin-email" placeholder="Admin Email (e.g. admin@developergyan.com)">
             <input type="password" id="admin-pass" placeholder="Enter Password...">
             <button class="btn" onclick="login()">Access Dashboard</button>
         </div>
 
         <div id="dashboard" style="display: none;">
             
+            <!-- ADS MANAGER -->
             <div class="box" style="border-color: #e879f9;">
                 <h3 style="color: #e879f9;">📢 Post New Advertisement</h3>
-                <label>Display Location</label>
+                <label style="color:#e879f9;">Display Location</label>
                 <select id="ad-placement">
                     <option value="both">Both (Home & Offers Page)</option>
-                    <option value="home">Only Home Page (Under Go to Store)</option>
+                    <option value="home">Only Home Page</option>
                     <option value="offers">Only Offers Page</option>
                 </select>
                 <input type="text" id="ad-title" placeholder="Ad Title (e.g. Mega Sale)">
                 <input type="text" id="ad-image" placeholder="Image URL (Discord link recommended)">
                 <input type="number" id="ad-minutes" placeholder="Auto-Close Timer (Minutes)">
                 <input type="text" id="ad-link" placeholder="Redirect URL (Discord User ID Link)">
-                <button class="btn" onclick="addNewAd()">Post Ad</button>
+                <button class="btn" onclick="addNewAd()" style="background: linear-gradient(135deg, #e879f9, #a855f7);">Post Live Ad</button>
                 
                 <h4 style="margin-top: 20px; color: #e879f9;">Active Ads</h4>
-                <table>
-                    <thead><tr><th>Title</th><th>Location</th><th>Action</th></tr></thead>
-                    <tbody id="ads-table-body"></tbody>
-                </table>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead><tr><th>Title</th><th>Location</th><th>Action</th></tr></thead>
+                        <tbody id="ads-table-body"></tbody>
+                    </table>
+                </div>
             </div>
 
+            <!-- STORE MANAGER -->
             <div class="box">
                 <h3 style="color: #38bdf8;">🏪 Add New Store Item</h3>
+                <label style="color:#38bdf8;">Select Category</label>
                 <select id="item-cat">
                     <option value="steam">Steam Account</option>
                     <option value="gaming_acc">Gaming Account</option>
@@ -77,90 +106,95 @@
                     <option value="Out of Stock">Out of Stock</option>
                     <option value="Coming Soon">Coming Soon</option>
                 </select>
-                <button class="btn" onclick="addNewItem()">Add Store Item</button>
+                <button class="btn" onclick="addNewItem()">Add Live Store Item</button>
 
                 <h4 style="margin-top: 20px; color: #38bdf8;">Store Inventory</h4>
-                <table>
-                    <thead><tr><th>Category</th><th>Item</th><th>Status</th><th>Action</th></tr></thead>
-                    <tbody id="items-table-body"></tbody>
-                </table>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead><tr><th>Category</th><th>Item</th><th>Status</th><th>Action</th></tr></thead>
+                        <tbody id="items-table-body"></tbody>
+                    </table>
+                </div>
             </div>
 
-            <button class="del-btn" style="width: 100%; padding: 12px;" onclick="location.reload()">Logout</button>
+            <button class="del-btn" style="width: 100%; padding: 12px; font-size: 1.1rem; font-weight: bold;" onclick="logout()">Logout / Lock Dashboard</button>
         </div>
     </div>
 
+    <!-- LINK ADS LOGIC (Provides getActiveAds(), deleteAd(), etc.) -->
+    <script src="ads.js"></script>
+    
     <script>
-        const STORE_KEY = 'devGyanDataV6';
-        const ADS_KEY = 'devGyanAdsData_v2';
+        let appData = {};
 
         function login() {
-            if(document.getElementById('admin-pass').value === '123gyan@') {
-                document.getElementById('login-box').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                renderStoreTable();
-                renderAdsTable();
-            } else { alert("Wrong Password!"); }
+            const email = document.getElementById('admin-email').value;
+            const pass = document.getElementById('admin-pass').value;
+            
+            if(!email || !pass) {
+                alert("Please enter both Email and Password!");
+                return;
+            }
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .then((userCredential) => {
+                    document.getElementById('login-box').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'block';
+                    listenLiveData(); // Start syncing data after login
+                })
+                .catch((error) => {
+                    alert("Authentication Failed: Wrong Email or Password.");
+                });
         }
 
-        // --- ADS LOGIC ---
-        function getAds() {
-            let ads = JSON.parse(localStorage.getItem(ADS_KEY)) || [];
-            return ads.filter(ad => Date.now() < ad.expiryTime);
+        function logout() {
+            auth.signOut().then(() => {
+                location.reload();
+            });
+        }
+
+        function listenLiveData() {
+            // Listen to Live Store Data
+            db.ref('storeData').on('value', (snapshot) => {
+                if (snapshot.exists()) {
+                    appData = snapshot.val();
+                    renderStoreTable();
+                } else {
+                    // Inject default structure if database is completely empty
+                    const defaultStoreData = { steam: { title: "Steam Accounts", items: [] }, gaming_acc: { title: "Gaming Accounts", items: [] }, prebuild_server: { title: "Prebuild DC Server", items: [] }, custom_server: { title: "Custom Server Builder", items: [] }, custom_bot: { title: "Custom Bot Builder", items: [] }, vouchers: { title: "Food & Shopping Vouchers", items: [] }, bgmi_uc: { title: "BGMI UC Vouchers", items: [] } };
+                    appData = defaultStoreData;
+                    db.ref('storeData').set(defaultStoreData);
+                }
+            });
+        }
+
+        function saveStore() {
+            db.ref('storeData').set(appData);
         }
 
         function renderAdsTable() {
             const tbody = document.getElementById('ads-table-body');
             tbody.innerHTML = '';
-            getAds().forEach(ad => {
+            getActiveAds().forEach(ad => {
                 const loc = ad.placement === 'both' ? 'Both' : ad.placement === 'home' ? 'Home' : 'Offers';
-                tbody.innerHTML += `<tr><td>${ad.title}</td><td>${loc}</td><td><button class="del-btn" onclick="deleteAd(${ad.id})">Delete</button></td></tr>`;
+                tbody.innerHTML += `<tr><td><strong>${ad.title}</strong></td><td>${loc}</td><td><button class="del-btn" onclick="deleteAd(${ad.id})">Delete</button></td></tr>`;
             });
         }
 
-        function addNewAd() {
-            const title = document.getElementById('ad-title').value.trim();
-            const imgUrl = document.getElementById('ad-image').value.trim();
-            const minutes = parseInt(document.getElementById('ad-minutes').value);
-            const link = document.getElementById('ad-link').value.trim();
-            const placement = document.getElementById('ad-placement').value;
-
-            if(!title || !minutes || !link) return alert("Fill Title, Minutes, Link!");
-
-            let ads = getAds();
-            ads.push({ id: Date.now(), title, imgUrl, link, placement, expiryTime: Date.now() + (minutes * 60000) });
-            localStorage.setItem(ADS_KEY, JSON.stringify(ads));
-            
-            alert("Ad Posted!");
-            renderAdsTable();
-        }
-
-        function deleteAd(id) {
-            if(confirm("Delete Ad?")) {
-                let ads = getAds().filter(ad => ad.id !== id);
-                localStorage.setItem(ADS_KEY, JSON.stringify(ads));
-                renderAdsTable();
-            }
-        }
-
-        // --- STORE LOGIC ---
-        function getStore() { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
-        function saveStore(data) { localStorage.setItem(STORE_KEY, JSON.stringify(data)); }
-
         function renderStoreTable() {
-            const data = getStore();
             const tbody = document.getElementById('items-table-body');
             tbody.innerHTML = '';
-            for(let cat in data) {
-                if(data[cat].items) {
-                    data[cat].items.forEach((item, index) => {
+            for(let cat in appData) {
+                if(appData[cat].items) {
+                    appData[cat].items.forEach((item, index) => {
                         tbody.innerHTML += `
                             <tr>
-                                <td>${data[cat].title}</td>
-                                <td>${item.name}</td>
+                                <td>${appData[cat].title || cat}</td>
+                                <td><strong>${item.name}</strong></td>
                                 <td>
-                                    <select onchange="updateStatus('${cat}', ${index}, this.value)">
+                                    <select onchange="updateStatus('${cat}', ${index}, this.value)" style="background:#05050a; color:#fff; border:1px solid #38bdf8; padding:4px; border-radius:4px;">
                                         <option ${item.status==='Active'?'selected':''}>Active</option>
+                                        <option ${item.status==='New Stock Available'?'selected':''}>New Stock Available</option>
                                         <option ${item.status==='Out of Stock'?'selected':''}>Out of Stock</option>
                                         <option ${item.status==='Coming Soon'?'selected':''}>Coming Soon</option>
                                     </select>
@@ -182,30 +216,27 @@
 
             if(!name || !price) return alert("Fill Name & Price!");
             
-            let data = getStore();
-            if(!data[cat].items) data[cat].items = [];
-            data[cat].items.push({ id: Date.now(), name, desc, price, status });
-            saveStore(data);
+            if(!appData[cat].items) appData[cat].items = [];
+            appData[cat].items.push({ id: Date.now(), name, desc, price, status });
+            saveStore();
             
-            alert("Item Added!");
-            renderStoreTable();
+            alert("Live Item Added to Store!");
+            document.getElementById('item-name').value = '';
+            document.getElementById('item-desc').value = '';
+            document.getElementById('item-price').value = '';
         }
 
         function updateStatus(cat, idx, status) {
-            let data = getStore();
-            data[cat].items[idx].status = status;
-            saveStore(data);
+            appData[cat].items[idx].status = status;
+            saveStore();
         }
 
         function deleteItem(cat, idx) {
-            if(confirm("Delete Item?")) {
-                let data = getStore();
-                data[cat].items.splice(idx, 1);
-                saveStore(data);
-                renderStoreTable();
+            if(confirm("Delete this Live Item?")) {
+                appData[cat].items.splice(idx, 1);
+                saveStore();
             }
         }
     </script>
 </body>
 </html>
-
