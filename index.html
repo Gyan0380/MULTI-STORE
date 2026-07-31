@@ -8,13 +8,15 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
         body { background-color: #05050a; color: #ffffff; background-image: linear-gradient(rgba(147, 51, 234, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px); background-size: 40px 40px; overflow-x: hidden; }
         
-        /* Header */
-        header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: rgba(5, 5, 10, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(168, 85, 247, 0.3); z-index: 1000; }
-        .logo { font-size: 1.3rem; font-weight: 800; background: linear-gradient(135deg, #e879f9, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; text-transform: uppercase; }
+        header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: rgba(5, 5, 10, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 20px rgba(168, 85, 247, 0.15); z-index: 1000; }
+        .logo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, #e879f9, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; text-transform: uppercase; }
+        
+        /* Top Corner Ad Button & Menu */
+        .header-icons { display: flex; align-items: center; gap: 20px; }
+        .top-ad-btn { background: rgba(232, 121, 249, 0.2); border: 1px solid #e879f9; color: #e879f9; padding: 5px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; text-decoration: none; animation: pulseGlow 2s infinite alternate; }
         .menu-btn { font-size: 1.8rem; cursor: pointer; color: #38bdf8; background: none; border: none; transition: transform 0.1s ease; }
         .menu-btn:active { transform: scale(0.9); }
         
-        /* Sidebar */
         .sidebar { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: #0d0d1a; border-left: 1px solid rgba(168, 85, 247, 0.4); box-shadow: -5px 0 20px rgba(0,0,0,0.8); transition: right 0.3s ease; z-index: 1100; padding: 60px 20px 20px 20px; }
         .sidebar.active { right: 0; }
         .sidebar h3 { color: #e879f9; margin-bottom: 20px; font-size: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
@@ -24,13 +26,11 @@
         .sidebar ul li a:hover { color: #38bdf8; padding-left: 8px; }
         .close-sidebar { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #fff; background: none; border: none; }
         
-        /* Layout */
         .container { padding-top: 90px; max-width: 1100px; margin: 0 auto; min-height: 90vh; padding-bottom: 50px; }
         .view { display: none !important; }
-        .view.active { display: block !important; animation: fastFade 0.3s ease-in-out; }
-        @keyframes fastFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .view.active { display: block !important; animation: fastFade 0.2s ease-in-out; }
+        @keyframes fastFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Welcome Section */
         #welcome-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding-top: 30px;}
         .main-heading { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; line-height: 1.2; background: linear-gradient(135deg, #ffffff, #7dd3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .store-description { font-size: 1.05rem; color: #cbd5e1; max-width: 650px; margin-bottom: 25px; line-height: 1.6; padding: 0 15px; }
@@ -42,17 +42,19 @@
         .badge-3 { color: #34d399; border-color: rgba(52, 211, 153, 0.4); }
         .badge-4 { color: #f87171; border-color: rgba(248, 113, 113, 0.4); }
 
-        .btn { background: linear-gradient(135deg, #9333ea, #0ea5e9); color: white; border: none; padding: 14px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; transition: transform 0.1s ease, filter 0.2s ease; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);}
+        .btn { background: linear-gradient(135deg, #9333ea, #0ea5e9); color: white; border: none; padding: 14px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; transition: transform 0.1s ease, filter 0.2s ease; text-transform: uppercase; letter-spacing: 1px; }
         .btn:hover { filter: brightness(1.15); transform: translateY(-2px); }
         .btn:active { transform: scale(0.95); }
 
-        /* Ticker Animation */
+        /* BIG WELCOME AD CONTAINER */
+        #welcome-ad-container { margin-top: 40px; width: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 20px;}
+
         .scrolling-wrapper { margin-top: 50px; width: 100vw; max-width: 100%; overflow: hidden; white-space: nowrap; position: relative; background: rgba(56, 189, 248, 0.05); border-top: 1px solid rgba(56, 189, 248, 0.2); border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding: 12px 0; }
         .scrolling-content { display: inline-block; animation: scroll-left 25s linear infinite; }
         .scrolling-content span { display: inline-block; padding: 0 20px; color: #e879f9; font-weight: 600; font-size: 1.05rem; letter-spacing: 1px; }
         @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 5px currentColor; } 100% { box-shadow: 0 0 15px currentColor; } }
 
-        /* 3D Tilt Category Cards */
         .category-highlights { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 50px; padding: 0 20px; max-width: 1100px; width: 100%; perspective: 1000px;}
         .tilt-card { background: rgba(15, 15, 25, 0.9); border: 1px solid #38bdf8; border-radius: 12px; padding: 25px; width: 300px; transition: box-shadow 0.3s ease; text-align: center; cursor: pointer; transform-style: preserve-3d; }
         .tilt-card .t-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; transform: translateZ(30px); }
@@ -65,48 +67,21 @@
         .tc-bgmi { border-color: rgba(14, 165, 233, 0.5); }
         .tc-vouchers { border-color: rgba(16, 185, 129, 0.5); }
 
-        /* 🌟 NEW MAIN STORE (SERVICES) LAYOUT 🌟 */
-        
-        .seller-banner { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 20px; padding: 25px; text-align: center; max-width: 700px; margin: 0 auto 40px auto; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .seller-banner h3 { color: #f8fafc; font-size: 1.5rem; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px;}
-        .seller-banner .banner-links { color: #cbd5e1; font-size: 0.9rem; margin-bottom: 20px; font-weight: 600;}
-        .seller-banner .banner-links span { color: #38bdf8; }
-
         .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 10px; font-weight: bold; color: #f8fafc; }
         .section-subtitle { text-align: center; color: #94a3b8; margin-bottom: 35px; font-size: 1rem;}
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 20px;}
         
-        /* New Vertical Services Container */
-        .services-container { display: flex; flex-direction: column; gap: 30px; align-items: center; padding: 0 20px; }
+        .card { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 25px; transition: transform 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column; justify-content: space-between; }
+        .card:hover { transform: translateY(-4px); border-color: #38bdf8; }
+        .card h3 { font-size: 1.3rem; margin-bottom: 10px; color: #c084fc; }
+        .card p { color: #cbd5e1; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
+        .card-btn { background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; display: block; }
+        .card-btn:hover { background: #38bdf8; color: #05050a; }
         
-        /* Large Vertical Premium Cards */
-        .service-card { width: 100%; max-width: 650px; background: rgba(15, 15, 25, 0.6); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 24px; padding: 35px 20px; text-align: center; backdrop-filter: blur(10px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        
-        /* Hover Top Neon Line */
-        .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #c084fc, #38bdf8); transform: scaleX(0); transition: transform 0.3s ease; transform-origin: left; }
-        .service-card:hover { transform: translateY(-8px); border-color: rgba(56, 189, 248, 0.5); box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(56, 189, 248, 0.1); background: rgba(20, 20, 30, 0.8); }
-        .service-card:hover::before { transform: scaleX(1); }
-        
-        .sc-icon { font-size: 4rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); display: block;}
-        .service-card h3 { font-size: 1.6rem; margin-bottom: 12px; color: #f8fafc; font-weight: 800;}
-        .service-card p { color: #94a3b8; font-size: 1rem; line-height: 1.6; margin-bottom: 20px; max-width: 80%; margin-left: auto; margin-right: auto;}
-        
-        .sc-price { margin-top: 10px; font-size: 1.1rem; color: #38bdf8; font-weight: bold; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); display: inline-block; padding: 8px 25px; border-radius: 30px; letter-spacing: 0.5px;}
-
-        /* Inner Folder Layout Elements */
         .sub-header { margin-bottom: 30px; padding: 0 20px;}
         .back-link { color: #38bdf8; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 15px; font-size: 1rem; }
         .back-link:hover { color: #e879f9; }
         
-        /* Sub Folder Grid (Kept grid for folders) */
-        .sub-folder-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 20px; margin-bottom: 25px;}
-        .folder-card { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s;}
-        .folder-card:hover { border-color: #38bdf8; transform: translateY(-3px);}
-        .folder-card h3 { color: #c084fc; margin-bottom: 10px;}
-        .folder-card p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;}
-        .card-btn { background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; display: block; width: 100%;}
-        .card-btn:hover { background: #38bdf8; color: #05050a; }
-
-        /* Items List */
         .item-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; padding: 0 20px;}
         .item-row { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.2); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; transition: border-color 0.2s ease; }
         .item-row:hover { border-color: #c084fc; }
@@ -120,7 +95,6 @@
         .badge.soon { background: rgba(217, 119, 6, 0.2); color: #fbbf24; border: 1px solid #d97706; }
         
         .price-tag { font-size: 1.3rem; color: #38bdf8; font-weight: bold; }
-        
         .notice-box { background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.4); padding: 15px 20px; border-radius: 8px; margin: 25px 20px 0 20px; color: #cbd5e1; font-size: 0.95rem; }
         .notice-box p { margin: 5px 0; }
         .notice-box strong { color: #38bdf8; }
@@ -134,27 +108,24 @@
         .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.85rem; }
         .admin-table th, .admin-table td { border: 1px solid rgba(168, 85, 247, 0.2); padding: 10px; text-align: left; }
         .admin-table th { background: rgba(168, 85, 247, 0.1); color: #c084fc; }
-
-        /* 🌟 FLOATING ACTION BUTTON (Discord) 🌟 */
-        .fab-discord { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: linear-gradient(135deg, #5865F2, #7c85f5); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 5px 20px rgba(88, 101, 242, 0.6); cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; z-index: 1000; text-decoration: none; border: 2px solid rgba(255,255,255,0.2);}
-        .fab-discord:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 10px 25px rgba(88, 101, 242, 0.8); }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">Developer Gyan</div>
-        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <div class="header-icons">
+            <a href="#" class="top-ad-btn" onclick="switchView('ads-view')">📢 Offers</a>
+            <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        </div>
     </header>
-
-    <!-- Floating Discord Button -->
-    <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="fab-discord" title="Join Our Discord">🎧</a>
 
     <div class="sidebar" id="sidebar">
         <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
         <h3>Quick Navigation</h3>
         <ul>
             <li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home / Welcome</a></li>
+            <li><a href="#" onclick="switchView('ads-view'); toggleSidebar();" style="color: #e879f9;">📢 Special Offers (Ads)</a></li>
             <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">🏪 Main Store</a></li>
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('discord_offer'); toggleSidebar();">▶ Discord Offers</a></li>
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('steam'); toggleSidebar();">🎮 Steam Account</a></li>
@@ -167,7 +138,6 @@
 
     <div class="container">
 
-        <!-- WELCOME PAGE -->
         <div id="welcome-view" class="view active">
             <div style="font-size: 1.1rem; letter-spacing: 2px; color: #7dd3fc; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">Welcome to Developer Gyan</div>
             <h1 class="main-heading">Ultimate Digital Store</h1>
@@ -181,6 +151,8 @@
             </div>
 
             <button class="btn" onclick="switchView('store-view')">Go to Store</button>
+
+            <div id="welcome-ad-container"></div>
 
             <div class="scrolling-wrapper">
                 <div class="scrolling-content">
@@ -216,71 +188,53 @@
             </div>
         </div>
 
-        <!-- 🌟 UPDATED MAIN STORE VIEW (VERTICAL PREMIUM LAYOUT) 🌟 -->
-        <div id="store-view" class="view">
-            
-            <!-- Trusted Seller Banner -->
-            <div class="seller-banner">
-                <h3>🛡️ Trusted & Verified Seller</h3>
-                <div class="banner-links">
-                    <span>Home</span> &nbsp;|&nbsp; <span>Services</span> &nbsp;|&nbsp; <span>Pricing</span> &nbsp;|&nbsp; <span>Team</span>
-                </div>
-                <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding: 10px 30px; font-size: 1rem; border-radius: 8px;">Join Discord</a>
+        <div id="ads-view" class="view">
+            <div class="sub-header">
+                <a href="#" class="back-link" onclick="switchView('welcome-view')">← Back to Home</a>
+                <h2 class="section-title" style="text-align: left; color: #e879f9;">📢 Special Offers & Ads</h2>
+                <p style="color: #94a3b8;">Hurry up! These offers are available for a limited time only.</p>
             </div>
+            
+            <div id="ads-page-container" style="display: flex; flex-direction: column; align-items: center; padding: 0 20px;">
+                </div>
+        </div>
 
-            <h2 class="section-title">Our Services</h2>
+        <div id="store-view" class="view">
+            <h2 class="section-title">Store Categories</h2>
             <p class="section-subtitle">Select a category below to explore offers and pricing</p>
             
-            <!-- Vertical Large Cards Layout -->
-            <div class="services-container">
-                
-                <div class="service-card" onclick="switchView('category-view'); loadCategoryData('discord_offer');">
-                    <span class="sc-icon">👾</span>
-                    <h3>Discord Services</h3>
-                    <p>Premium Family, Market, Roleplay and Custom Built Servers & AI Bots.</p>
-                    <div class="sc-price">Starting ₹50</div>
+            <div class="grid-container">
+                <div class="card">
+                    <div><h3>Discord Offer</h3><p>Prebuild servers, custom bots & servers.</p></div>
+                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('discord_offer');">See Offer</button>
                 </div>
-
-                <div class="service-card" onclick="switchView('category-view'); loadCategoryData('bgmi_uc');">
-                    <span class="sc-icon">💎</span>
-                    <h3>BGMI UC Vouchers</h3>
-                    <p>Instant BGMI UC top-ups at the lowest market prices guaranteed directly to player ID.</p>
-                    <div class="sc-price">Starting ₹419</div>
+                <div class="card">
+                    <div><h3>Steam Account</h3><p>Best accounts with pre-loaded top games.</p></div>
+                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('steam');">See Offer</button>
                 </div>
-
-                <div class="service-card" onclick="switchView('category-view'); loadCategoryData('steam');">
-                    <span class="sc-icon">🎮</span>
-                    <h3>Steam Accounts</h3>
-                    <p>Find best accounts pre-loaded with top tier games at cheap prices.</p>
-                    <div class="sc-price">Starting ₹149</div>
+                <div class="card">
+                    <div><h3>Gaming Account</h3><p>Find amazing pro accounts like BGMI, Free Fire.</p></div>
+                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_acc');">See Offer</button>
                 </div>
-
-                <div class="service-card" onclick="switchView('category-view'); loadCategoryData('gaming_acc');">
-                    <span class="sc-icon">🔥</span>
-                    <h3>Gaming Accounts</h3>
-                    <p>Find amazing pro level accounts like BGMI Conqueror, Free Fire, Valorant, etc.</p>
-                    <div class="sc-price">Starting ₹499</div>
+                <div class="card">
+                    <div><h3>Vouchers</h3><p>Discount vouchers for Zomato, Dominos, EGC.</p></div>
+                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('vouchers');">See Offer</button>
                 </div>
-
-                <div class="service-card" onclick="switchView('category-view'); loadCategoryData('vouchers');">
-                    <span class="sc-icon">🎟️</span>
-                    <h3>Gift Vouchers</h3>
-                    <p>Get food & shopping vouchers like Dominos, Zomato, EGC, clothing apps at discounted prices.</p>
-                    <div class="sc-price">Starting ₹49</div>
+                <div class="card">
+                    <div><h3>Gaming Vouchers</h3><p>Top up in cheapest price! Inside: BGMI UC packages.</p></div>
+                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers');">See Offer</button>
                 </div>
-
             </div>
         </div>
 
-        <!-- ITEMS / FOLDER VIEW -->
         <div id="category-view" class="view">
             <div class="sub-header">
-                <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Services</a>
+                <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Store</a>
                 <h2 class="section-title" id="cat-title" style="text-align: left;">Category Offers</h2>
                 <p style="color: #94a3b8;" id="cat-desc">Browse available items and check pricing below.</p>
             </div>
 
-            <div class="sub-folder-container" id="sub-folder-container" style="display: none;"></div>
+            <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
             <div class="item-list" id="dynamic-item-list"></div>
 
             <div class="notice-box">
@@ -290,7 +244,6 @@
             </div>
         </div>
 
-        <!-- ADMIN PANEL -->
         <div id="admin-view" class="view">
             <div class="sub-header">
                 <a href="#" class="back-link" onclick="switchView('welcome-view')">← Back to Home</a>
@@ -306,12 +259,27 @@
 
             <div id="admin-dashboard-box" class="admin-dashboard" style="display: none;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: #c084fc;">Manage Store Items & Pricing</h3>
-                    <button class="btn" onclick="logoutAdmin()" style="padding: 8px 15px; font-size: 0.9rem;">Logout</button>
+                    <h3 style="color: #c084fc;">Manage Store Items & Ads</h3>
+                    <button class="card-btn" onclick="logoutAdmin()" style="padding: 5px 10px; font-size: 0.8rem;">Logout</button>
+                </div>
+
+                <div style="background: rgba(232, 121, 249, 0.05); border: 1px solid rgba(232, 121, 249, 0.3); padding: 15px; border-radius: 8px; margin-bottom: 25px;">
+                    <h4 style="color: #e879f9; margin-bottom: 10px;">📢 Post New Advertisement</h4>
+                    <div class="admin-form-group"><label>Ad Title / Heading</label><input type="text" id="ad-title" placeholder="E.g. Mega Discount Sale!"></div>
+                    <div class="admin-form-group"><label>Photo URL (Image Link)</label><input type="text" id="ad-image" placeholder="Paste image link here (optional)..."></div>
+                    <div class="admin-form-group"><label>Auto-Close Timer (in Minutes)</label><input type="number" id="ad-minutes" placeholder="E.g. 60 (for 1 hour)"></div>
+                    <div class="admin-form-group"><label>Contact Link (Redirect URL)</label><input type="text" id="ad-link" placeholder="E.g. https://discord.gg/yourlink"></div>
+                    <button class="btn" style="background: linear-gradient(135deg, #e879f9, #a855f7); padding: 10px 20px; font-size: 0.9rem; width:100%" onclick="addNewAd()">Post Advertisement</button>
+                    
+                    <h4 style="color: #e879f9; margin-top: 20px; margin-bottom: 10px;">Active Ads</h4>
+                    <table class="admin-table">
+                        <thead><tr><th>Ad Title</th><th>Status</th><th>Link</th><th>Action</th></tr></thead>
+                        <tbody id="admin-ads-table-body"></tbody>
+                    </table>
                 </div>
 
                 <div style="background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.2); padding: 15px; border-radius: 8px; margin-bottom: 25px;">
-                    <h4 style="color: #38bdf8; margin-bottom: 10px;">Add New Offer / Item</h4>
+                    <h4 style="color: #38bdf8; margin-bottom: 10px;">Add New Store Offer</h4>
                     <div class="admin-form-group">
                         <label>Select Category</label>
                         <select id="new-item-cat">
@@ -324,18 +292,9 @@
                             <option value="bgmi_uc">BGMI UC Vouchers</option>
                         </select>
                     </div>
-                    <div class="admin-form-group">
-                        <label>Item Name</label>
-                        <input type="text" id="new-item-name" placeholder="Enter item name...">
-                    </div>
-                    <div class="admin-form-group">
-                        <label>Description</label>
-                        <input type="text" id="new-item-desc" placeholder="Enter details...">
-                    </div>
-                    <div class="admin-form-group">
-                        <label>Price</label>
-                        <input type="text" id="new-item-price" placeholder="Enter price...">
-                    </div>
+                    <div class="admin-form-group"><label>Item Name</label><input type="text" id="new-item-name" placeholder="Enter item name..."></div>
+                    <div class="admin-form-group"><label>Description</label><input type="text" id="new-item-desc" placeholder="Enter details..."></div>
+                    <div class="admin-form-group"><label>Price</label><input type="text" id="new-item-price" placeholder="Enter price..."></div>
                     <div class="admin-form-group">
                         <label>Status</label>
                         <select id="new-item-status">
@@ -348,17 +307,11 @@
                     <button class="btn" style="padding: 10px 20px; font-size: 0.9rem;" onclick="addNewItem()">Add Item</button>
                 </div>
 
-                <h4 style="color: #c084fc; margin-bottom: 10px;">Existing Items List</h4>
+                <h4 style="color: #c084fc; margin-bottom: 10px;">Existing Store Items</h4>
                 <div style="overflow-x: auto;">
                     <table class="admin-table">
                         <thead>
-                            <tr>
-                                <th>Category</th>
-                                <th>Item Name</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
+                            <tr><th>Category</th><th>Item Name</th><th>Price</th><th>Status</th><th>Action</th></tr>
                         </thead>
                         <tbody id="admin-items-table-body"></tbody>
                     </table>
@@ -370,33 +323,25 @@
 
     <div class="footer">© 2026 Developer Gyan. All Rights Reserved.</div>
 
+    <script src="ads.js"></script>
+
     <script>
         const defaultStoreData = {
             steam: { title: "Steam Accounts", desc: "Find best accounts pre-loaded with top games at cheap prices.", items: [{ id: 1, name: "Random Steam Level 20+ Account", desc: "Contains random premium games + full access.", price: "₹149", status: "Active" }, { id: 2, name: "GTA V Premium Steam Account", desc: "Email change available with instant delivery.", price: "₹299", status: "Active" }] },
             gaming_acc: { title: "Gaming Accounts", desc: "Pro accounts for BGMI, Free Fire, Valorant, etc.", items: [{ id: 3, name: "BGMI Conqueror Tier Account", desc: "Max RP, rare outfits, safe login.", price: "₹799", status: "Active" }, { id: 4, name: "Free Fire Max Old Elite Pass ID", desc: "Level 70+, rare bundles.", price: "₹499", status: "Active" }] },
-            
-            discord_offer: { 
-                title: "Discord Offers", desc: "Select a Discord service sub-category below.", 
-                subFolders: [
-                    { key: "prebuild_server", name: "Prebuild DC Server", desc: "Ready-made Discord servers with themes & bots." },
-                    { key: "custom_server", name: "Custom Server Builder", desc: "Build your own completely custom Discord server." },
-                    { key: "custom_bot", name: "Custom Bot Builder", desc: "Hire developer for custom bots." }
-                ], items: [] 
-            },
+            discord_offer: { title: "Discord Offers", desc: "Select a Discord service sub-category below.", subFolders: [{ key: "prebuild_server", name: "Prebuild DC Server", desc: "Ready-made Discord servers with themes & bots." },{ key: "custom_server", name: "Custom Server Builder", desc: "Build your own completely custom Discord server." },{ key: "custom_bot", name: "Custom Bot Builder", desc: "Hire developer for custom bots." }], items: [] },
             prebuild_server: { title: "Prebuild DC Server", desc: "Ready-made servers. Fast delivery.", parentKey: "discord_offer", items: [{ id: 5, name: "Only Theme", desc: "Prebuild server with beautiful theme setup.", price: "₹50", status: "Active" }, { id: 6, name: "Theme + Bots Setup", desc: "Theme + complete bots configured and setup.", price: "₹140", status: "Active" }] },
             custom_server: { title: "Custom Server Builder", desc: "Build a brand new server customized for you.", parentKey: "discord_offer", items: [{ id: 7, name: "Custom Theme Only", desc: "Custom server with your requested theme design.", price: "₹65", status: "Active" }, { id: 8, name: "Custom Theme + Bots Setup", desc: "Custom theme + your choice of bots + complete setup.", price: "₹170", status: "Active" }] },
             custom_bot: { title: "Custom Bot Builder", desc: "Hire expert developer to code custom commands.", parentKey: "discord_offer", isBot: true, items: [{ id: 9, name: "Bot 10 Commands", desc: "Custom bot coded with up to 10 commands.", price: "₹80", status: "Active" }, { id: 10, name: "Bot 20 Commands", desc: "Custom bot coded with up to 20 commands.", price: "₹150", status: "Active" }, { id: 11, name: "Bot 30 Commands", desc: "Custom bot coded with up to 30 commands.", price: "₹230", status: "Active" }, { id: 12, name: "Bot 40 Commands", desc: "Custom bot coded with up to 40 commands.", price: "₹290", status: "Active" }, { id: 13, name: "Bot 40+ Commands", desc: "Need more? Take ₹100 extra per 10 commands.", price: "Custom", status: "Active" }, { id: 14, name: "50+ Commands Offer", desc: "If you take 50+ commands, you will get free own dashboard.", price: "TBD", status: "Coming Soon" }] },
-
             vouchers: { title: "Food & Shopping Vouchers", desc: "Get discount vouchers for Zomato, Dominos, EGC, and clothing apps.", items: [{ id: 15, name: "Zomato / Dominos Food Voucher", desc: "Flat discount voucher code for food delivery apps.", price: "₹49", status: "Active" }, { id: 16, name: "Clothing Brand Gift Card (EGC)", desc: "Redeemable voucher for fashion apps.", price: "₹199", status: "Active" }] },
-            
             gaming_vouchers: { title: "Gaming Vouchers", desc: "Select a gaming voucher sub-category below.", subFolders: [{ key: "bgmi_uc", name: "BGMI UC Vouchers", desc: "Best selling BGMI UC top-up packs at cheapest prices." }], items: [] },
             bgmi_uc: { title: "BGMI UC Vouchers", desc: "Best selling BGMI UC packs at cheapest prices with instant secure delivery.", parentKey: "gaming_vouchers", items: [{ id: 17, name: "360 UC", desc: "Selling in (Pice): ₹380", price: "₹419", status: "Active" }, { id: 18, name: "720 UC", desc: "Selling in (Pice): ₹750", price: "₹819", status: "Active" }, { id: 19, name: "1950 UC", desc: "Selling in (Pice): ₹1,900", price: "₹2,099", status: "Active" }, { id: 20, name: "4050 UC", desc: "Selling in (Pice): ₹3,800", price: "₹4,199", status: "Active" }, { id: 21, name: "8400 UC", desc: "Selling in (Pice): ₹7,500", price: "₹8,299", status: "Active" }] }
         };
 
-        let appData = JSON.parse(localStorage.getItem('devGyanDataV5'));
-        if(!appData) { appData = defaultStoreData; localStorage.setItem('devGyanDataV5', JSON.stringify(appData)); }
+        let appData = JSON.parse(localStorage.getItem('devGyanDataV6'));
+        if(!appData) { appData = defaultStoreData; localStorage.setItem('devGyanDataV6', JSON.stringify(appData)); }
 
-        function saveAppData() { localStorage.setItem('devGyanDataV5', JSON.stringify(appData)); }
+        function saveAppData() { localStorage.setItem('devGyanDataV6', JSON.stringify(appData)); }
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
         
@@ -404,6 +349,8 @@
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); 
             document.getElementById(viewId).classList.add('active'); 
             window.scrollTo(0, 0); 
+            // Call render public ads in case user navigates to ads view
+            if(typeof renderPublicAds === 'function') renderPublicAds();
         }
 
         function loadCategoryData(catKey) {
@@ -420,7 +367,7 @@
                 backBtn.innerText = "← Back to " + appData[cat.parentKey].title; 
             } else { 
                 backBtn.setAttribute('onclick', "switchView('store-view')"); 
-                backBtn.innerText = "← Back to Services"; 
+                backBtn.innerText = "← Back to Store"; 
             }
 
             const subContainer = document.getElementById('sub-folder-container');
@@ -428,11 +375,7 @@
             if(cat.subFolders && cat.subFolders.length > 0) {
                 subContainer.style.display = 'grid';
                 cat.subFolders.forEach(folder => {
-                    subContainer.innerHTML += `
-                        <div class="folder-card">
-                            <div><h3>📁 ${folder.name}</h3><p>${folder.desc}</p></div>
-                            <button class="btn" style="width:100%; padding: 10px; font-size:1rem;" onclick="loadCategoryData('${folder.key}')">See Offers</button>
-                        </div>`;
+                    subContainer.innerHTML += `<div class="card"><div><h3>📁 ${folder.name}</h3><p>${folder.desc}</p></div><button class="card-btn" onclick="loadCategoryData('${folder.key}')">See Offers</button></div>`;
                 });
             } else { subContainer.style.display = 'none'; }
 
@@ -450,7 +393,7 @@
                             </div>
                             <div>
                                 <div class="price-tag">${item.price}</div>
-                                <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding:8px 20px; font-size:0.9rem; margin-top:8px; border-radius:8px;">Buy via Discord</a>
+                                <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding:6px 15px; font-size:0.85rem; margin-top:8px;">Join DC Server</a>
                             </div>
                         </div>`;
                 });
@@ -479,12 +422,12 @@
             });
         }
 
-        // Admin Functions
         function checkAdminLogin() {
             if(document.getElementById('admin-pass').value === '123gyan@') {
                 document.getElementById('admin-login-box').style.display = 'none';
                 document.getElementById('admin-dashboard-box').style.display = 'block';
                 renderAdminTable();
+                if(typeof renderAdminAdsTable === 'function') renderAdminAdsTable();
             } else { alert('Wrong Password!'); }
         }
 
@@ -558,6 +501,7 @@
         window.onload = function() { 
             switchView('welcome-view'); 
             initTiltEffect();
+            if(typeof renderPublicAds === 'function') renderPublicAds(); // Load ads on startup
         }
     </script>
 </body>
