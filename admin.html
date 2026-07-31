@@ -38,8 +38,6 @@
         th { background: rgba(168, 85, 247, 0.15); color: #e879f9; font-weight: bold;}
         .del-btn { background: #dc2626; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;}
         .edit-btn { background: #f59e0b; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-right: 5px; font-weight: bold;}
-        
-        /* Flex rows for forms */
         .form-row { display: flex; gap: 15px; flex-wrap: wrap;}
         .form-group { flex: 1; min-width: 250px; }
     </style>
@@ -52,7 +50,6 @@
             <a href="index.html" style="color: #38bdf8; text-decoration: none; font-weight: bold; padding: 5px 15px; border: 1px solid #38bdf8; border-radius: 20px;">← Go to Main Store</a>
         </div>
 
-        <!-- LOGIN SECTION -->
         <div id="login-box" class="box" style="max-width: 500px; margin: 0 auto;">
             <h3 style="color: #38bdf8; margin-bottom: 15px;">Admin Authentication</h3>
             <label>Admin Email</label>
@@ -64,7 +61,6 @@
 
         <div id="dashboard" style="display: none;">
             
-            <!-- ADS MANAGER -->
             <div class="box" style="border-color: #e879f9; border-top: 4px solid #e879f9;">
                 <h3 style="color: #e879f9; margin-bottom: 15px;">📢 Post New Advertisement</h3>
                 <div class="form-row">
@@ -76,46 +72,27 @@
                             <option value="offers">Only Offers Page</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>Ad Title</label>
-                        <input type="text" id="ad-title" placeholder="e.g. Mega Sale">
-                    </div>
+                    <div class="form-group"><label>Ad Title</label><input type="text" id="ad-title" placeholder="e.g. Mega Sale"></div>
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>Image URL</label><input type="text" id="ad-image" placeholder="Discord image link"></div>
                     <div class="form-group"><label>Timer (Minutes)</label><input type="number" id="ad-minutes" placeholder="60"></div>
                 </div>
-                <label>Redirect URL</label>
-                <input type="text" id="ad-link" placeholder="Discord User ID Link">
+                <label>Redirect URL</label><input type="text" id="ad-link" placeholder="Discord User ID Link">
                 <button class="btn" onclick="addNewAd()" style="background: linear-gradient(135deg, #e879f9, #a855f7);">Post Live Ad</button>
-                
                 <h4 style="margin-top: 25px; color: #e879f9;">Active Ads</h4>
-                <div style="overflow-x: auto;">
-                    <table>
-                        <thead><tr><th>Title</th><th>Location</th><th>Action</th></tr></thead>
-                        <tbody id="ads-table-body"></tbody>
-                    </table>
-                </div>
+                <div style="overflow-x: auto;"><table><thead><tr><th>Title</th><th>Location</th><th>Action</th></tr></thead><tbody id="ads-table-body"></tbody></table></div>
             </div>
 
-            <!-- DEDICATED EDIT SECTION (HIDDEN BY DEFAULT) -->
-            <div class="box" id="edit-box" style="display: none; border-color: #f59e0b; border-top: 4px solid #f59e0b; animation: fastFade 0.3s ease;">
+            <!-- EDIT SECTION -->
+            <div class="box" id="edit-box" style="display: none; border-color: #f59e0b; border-top: 4px solid #f59e0b;">
                 <h3 style="color: #f59e0b; margin-bottom: 15px;">✏️ Edit Item / Folder Details</h3>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Change Name / Title</label>
-                        <input type="text" id="edit-name" placeholder="Name...">
-                    </div>
-                    <div class="form-group">
-                        <label>Change Description</label>
-                        <input type="text" id="edit-desc" placeholder="Details...">
-                    </div>
+                    <div class="form-group"><label>Change Name / Title</label><input type="text" id="edit-name"></div>
+                    <div class="form-group"><label>Change Description</label><input type="text" id="edit-desc"></div>
                 </div>
                 <div class="form-row" id="edit-price-status-row">
-                    <div class="form-group">
-                        <label>Change Price</label>
-                        <input type="text" id="edit-price" placeholder="e.g. ₹499">
-                    </div>
+                    <div class="form-group"><label>Change Price</label><input type="text" id="edit-price"></div>
                     <div class="form-group">
                         <label>Change Status</label>
                         <select id="edit-status">
@@ -132,28 +109,23 @@
                 </div>
             </div>
 
-            <!-- ADD NEW STORE ITEM / FOLDER -->
+            <!-- ADD NEW STORE ITEM -->
             <div class="box" style="border-top: 4px solid #38bdf8;">
                 <h3 style="color: #38bdf8; margin-bottom: 15px;">🏪 Add New Store Item / Folder</h3>
-                
                 <div class="form-row">
                     <div class="form-group">
                         <label>1. Select Main Category</label>
                         <select id="add-main-cat" onchange="updateSubCatDropdown()">
                             <option value="discord_offer">Discord Services</option>
-                            <option value="bgmi_uc">BGMI UC Vouchers</option>
                             <option value="steam">Steam Accounts</option>
                             <option value="gaming_acc">Gaming Accounts</option>
+                            <option value="gaming_vouchers">Gaming Vouchers</option>
                             <option value="vouchers">Gift Vouchers</option>
-                            <option value="gaming_vouchers">Gaming Vouchers (Main)</option>
                         </select>
                     </div>
-                    <div class="form-group" id="sub-cat-container" style="display: none;">
+                    <div class="form-group" id="sub-cat-container">
                         <label>2. Inside Folder? (Optional)</label>
-                        <select id="add-sub-cat">
-                            <option value="">-- No, put in main category --</option>
-                            <!-- Dynamically filled -->
-                        </select>
+                        <select id="add-sub-cat"><option value="">-- Direct in Main Category --</option></select>
                     </div>
                 </div>
 
@@ -165,22 +137,11 @@
                             <option value="folder">Sub-Folder (Category 'See Offer')</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label>4. Name / Title</label>
-                        <input type="text" id="add-name" placeholder="Item or Folder Name">
-                    </div>
+                    <div class="form-group"><label>4. Name / Title</label><input type="text" id="add-name" placeholder="Item or Folder Name"></div>
                 </div>
-
-                <div class="form-group">
-                    <label>5. Description Details</label>
-                    <input type="text" id="add-desc" placeholder="Details about this item/folder...">
-                </div>
-
+                <div class="form-group"><label>5. Description Details</label><input type="text" id="add-desc" placeholder="Details..."></div>
                 <div class="form-row" id="add-price-row">
-                    <div class="form-group">
-                        <label>6. Price</label>
-                        <input type="text" id="add-price" placeholder="e.g. ₹99">
-                    </div>
+                    <div class="form-group"><label>6. Price</label><input type="text" id="add-price" placeholder="e.g. ₹99"></div>
                     <div class="form-group">
                         <label>7. Status</label>
                         <select id="add-status">
@@ -191,11 +152,9 @@
                         </select>
                     </div>
                 </div>
-
                 <button class="btn" onclick="addEntity()">➕ Add to Live Store</button>
             </div>
 
-            <!-- LIVE INVENTORY TABLE -->
             <div class="box">
                 <h3 style="color: #34d399; margin-bottom: 15px;">📦 Store Inventory (Live)</h3>
                 <div style="overflow-x: auto;">
@@ -205,132 +164,116 @@
                     </table>
                 </div>
             </div>
-
             <button class="del-btn" style="width: 100%; padding: 12px; font-size: 1.1rem;" onclick="logout()">Logout Dashboard</button>
         </div>
     </div>
 
-    <!-- LINK ADS SCRIPT -->
     <script src="ads.js"></script>
-    
     <script>
         let appData = {};
-        
-        // State for Edit Box
         let editData = { active: false, type: '', catKey: '', itemIndex: -1, folderKey: '' };
+
+        // Ensure Base Categories Always Exist To Prevent Errors
+        const BASE_CATEGORIES = {
+            discord_offer: "Discord Services", steam: "Steam Accounts", 
+            gaming_acc: "Gaming Accounts", vouchers: "Gift Vouchers", gaming_vouchers: "Gaming Vouchers"
+        };
+
+        function ensureBaseCategories() {
+            for(let key in BASE_CATEGORIES) {
+                if(!appData[key]) appData[key] = { title: BASE_CATEGORIES[key], items: [], subFolders: [] };
+            }
+        }
 
         function login() {
             const email = document.getElementById('admin-email').value;
             const pass = document.getElementById('admin-pass').value;
             if(!email || !pass) return alert("Please enter Email and Password!");
-
             auth.signInWithEmailAndPassword(email, pass)
                 .then(() => {
                     document.getElementById('login-box').style.display = 'none';
                     document.getElementById('dashboard').style.display = 'block';
                     listenLiveData(); 
                 })
-                .catch((e) => alert("Login Failed. Check details."));
+                .catch((e) => alert("Login Failed."));
         }
 
         function logout() { auth.signOut().then(() => location.reload()); }
 
         function listenLiveData() {
             db.ref('storeData').on('value', (snapshot) => {
-                if (snapshot.exists()) {
-                    appData = snapshot.val();
-                    updateSubCatDropdown();
-                    renderInventory();
-                }
+                appData = snapshot.val() || {};
+                ensureBaseCategories(); // Fixes missing data bug
+                updateSubCatDropdown();
+                renderInventory();
             });
         }
 
         function saveToDB() { db.ref('storeData').set(appData); }
 
-        // --- DYNAMIC DROPDOWN LOGIC ---
         function updateSubCatDropdown() {
             const mainCat = document.getElementById('add-main-cat').value;
             const subSelect = document.getElementById('add-sub-cat');
-            const subContainer = document.getElementById('sub-cat-container');
-            
             subSelect.innerHTML = '<option value="">-- Direct in Main Category --</option>';
             
             if(appData[mainCat] && appData[mainCat].subFolders && appData[mainCat].subFolders.length > 0) {
                 appData[mainCat].subFolders.forEach(folder => {
                     subSelect.innerHTML += `<option value="${folder.key}">📁 ${folder.name}</option>`;
                 });
-                subContainer.style.display = 'block';
-            } else {
-                subContainer.style.display = 'none';
             }
         }
 
-        // --- SHOW/HIDE PRICE FIELDS ---
         function togglePriceFields(mode) {
             const type = document.getElementById(mode + '-type').value;
             const row = document.getElementById(mode + '-price-row');
-            if(type === 'folder') row.style.display = 'none';
-            else row.style.display = 'flex';
+            row.style.display = type === 'folder' ? 'none' : 'flex';
         }
 
-        // --- ADD NEW ITEM OR FOLDER ---
         function addEntity() {
             const mainCat = document.getElementById('add-main-cat').value;
             const subCat = document.getElementById('add-sub-cat').value;
-            const type = document.getElementById('add-type').value; // 'item' or 'folder'
-            
+            const type = document.getElementById('add-type').value;
             const name = document.getElementById('add-name').value.trim();
             const desc = document.getElementById('add-desc').value.trim();
             const price = document.getElementById('add-price').value.trim();
             const status = document.getElementById('add-status').value;
 
             if(!name) return alert("Name is required!");
-
-            // Determine Target Category
-            const targetCatKey = subCat ? subCat : mainCat;
+            ensureBaseCategories();
 
             if (type === 'folder') {
                 if(subCat) return alert("You cannot create a folder inside another folder. Select 'Direct in Main' first.");
                 if(!desc) return alert("Folder description is required!");
                 
-                // Create Folder logic
                 const newKey = 'cat_' + Date.now();
                 if(!appData[mainCat].subFolders) appData[mainCat].subFolders = [];
                 
-                // Add to parent's folder list
                 appData[mainCat].subFolders.push({ key: newKey, name: name, desc: desc });
-                // Create the actual new category bucket
-                appData[newKey] = { title: name, desc: desc, parentKey: mainCat, items: [] };
-                
+                appData[newKey] = { title: name, desc: desc, parentKey: mainCat, items: [], subFolders: [] };
                 alert(`Folder '${name}' created successfully!`);
             } else {
-                // Create Item logic
                 if(!price) return alert("Item price is required!");
-                if(!appData[targetCatKey].items) appData[targetCatKey].items = [];
+                const targetCat = subCat ? subCat : mainCat;
+                if(!appData[targetCat]) appData[targetCat] = { title: targetCat, items: [], subFolders: [] };
+                if(!appData[targetCat].items) appData[targetCat].items = [];
                 
-                appData[targetCatKey].items.push({ id: Date.now(), name, desc, price, status });
+                appData[targetCat].items.push({ id: Date.now(), name, desc, price, status });
                 alert(`Item '${name}' added successfully!`);
             }
 
-            // Clear inputs
-            document.getElementById('add-name').value = '';
-            document.getElementById('add-desc').value = '';
-            document.getElementById('add-price').value = '';
-            
+            document.getElementById('add-name').value = ''; document.getElementById('add-desc').value = ''; document.getElementById('add-price').value = '';
             saveToDB();
         }
 
-        // --- INVENTORY TABLE RENDERING ---
         function renderInventory() {
             const tbody = document.getElementById('inventory-table-body');
             tbody.innerHTML = '';
             
-            // Render top level categories and their subfolders/items
             for(let key in appData) {
                 const cat = appData[key];
+                if(!cat) continue;
                 const catName = cat.title || key;
 
-                // 1. Render SubFolders of this category
                 if(cat.subFolders) {
                     cat.subFolders.forEach(folder => {
                         tbody.innerHTML += `
@@ -346,8 +289,6 @@
                         `;
                     });
                 }
-
-                // 2. Render Items of this category
                 if(cat.items) {
                     cat.items.forEach((item, index) => {
                         let statusColor = item.status === 'Active' ? '#34d399' : item.status === 'Out of Stock' ? '#f87171' : '#fbbf24';
@@ -367,7 +308,6 @@
             }
         }
 
-        // --- EDIT SECTION LOGIC ---
         function openEdit(type, parentCat, itemIndex, folderKey) {
             editData = { active: true, type, catKey: parentCat, itemIndex, folderKey };
             const editBox = document.getElementById('edit-box');
@@ -378,7 +318,7 @@
                 const folderRef = appData[parentCat].subFolders.find(f => f.key === folderKey);
                 document.getElementById('edit-name').value = folderRef.name;
                 document.getElementById('edit-desc').value = folderRef.desc;
-                document.getElementById('edit-price-status-row').style.display = 'none'; // Hide price/status
+                document.getElementById('edit-price-status-row').style.display = 'none';
             } else {
                 const item = appData[parentCat].items[itemIndex];
                 document.getElementById('edit-name').value = item.name;
@@ -404,42 +344,33 @@
             if(!name) return alert("Name cannot be empty!");
 
             if(editData.type === 'folder') {
-                // Update in Parent's subFolder list
                 const folderIndex = appData[editData.catKey].subFolders.findIndex(f => f.key === editData.folderKey);
                 if(folderIndex > -1) {
                     appData[editData.catKey].subFolders[folderIndex].name = name;
                     appData[editData.catKey].subFolders[folderIndex].desc = desc;
                 }
-                // Update the actual category block
                 if(appData[editData.folderKey]) {
                     appData[editData.folderKey].title = name;
                     appData[editData.folderKey].desc = desc;
                 }
             } else {
-                // Update Item
                 if(!price) return alert("Price cannot be empty!");
                 appData[editData.catKey].items[editData.itemIndex].name = name;
                 appData[editData.catKey].items[editData.itemIndex].desc = desc;
                 appData[editData.catKey].items[editData.itemIndex].price = price;
                 appData[editData.catKey].items[editData.itemIndex].status = status;
             }
-
             saveToDB();
             closeEdit();
             alert("Changes Saved to Live Store!");
         }
 
-        // --- DELETE LOGIC ---
         function deleteEntity(type, parentCat, itemIndex, folderKey) {
             if(!confirm(`Are you sure you want to delete this ${type}?`)) return;
-
             if(type === 'folder') {
-                // Remove from parent subFolder list
                 appData[parentCat].subFolders = appData[parentCat].subFolders.filter(f => f.key !== folderKey);
-                // Remove the actual category data
                 delete appData[folderKey];
             } else {
-                // Remove Item
                 appData[parentCat].items.splice(itemIndex, 1);
             }
             saveToDB();
@@ -448,7 +379,6 @@
             }
         }
 
-        // Ads Table (Kept exactly as before)
         function renderAdsTable() {
             const tbody = document.getElementById('ads-table-body');
             tbody.innerHTML = '';
@@ -460,3 +390,4 @@
     </script>
 </body>
 </html>
+Q
