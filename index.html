@@ -30,7 +30,6 @@
         .top-ad-btn { background: rgba(232, 121, 249, 0.2); border: 1px solid #e879f9; color: #e879f9; padding: 5px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; text-decoration: none; animation: pulseGlow 2s infinite alternate; }
         .menu-btn { font-size: 1.8rem; cursor: pointer; color: #38bdf8; background: none; border: none; transition: transform 0.1s ease; }
         .menu-btn:active { transform: scale(0.9); }
-        
         .sidebar { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: #0d0d1a; border-left: 1px solid rgba(168, 85, 247, 0.4); box-shadow: -5px 0 20px rgba(0,0,0,0.8); transition: right 0.3s ease; z-index: 1100; padding: 60px 20px 20px 20px; }
         .sidebar.active { right: 0; }
         .sidebar h3 { color: #e879f9; margin-bottom: 20px; font-size: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
@@ -48,16 +47,22 @@
         #welcome-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding-top: 30px;}
         .main-heading { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; line-height: 1.2; background: linear-gradient(135deg, #ffffff, #7dd3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .store-description { font-size: 1.05rem; color: #cbd5e1; max-width: 650px; margin-bottom: 25px; line-height: 1.6; padding: 0 15px; }
+        
         .feature-badges { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 35px; padding: 0 10px;}
         .feature-badge { padding: 8px 16px; border-radius: 30px; font-size: 0.9rem; font-weight: bold; background: rgba(15, 15, 25, 0.8); border: 1px solid rgba(255,255,255,0.1); }
         .badge-1 { color: #e879f9; border-color: rgba(232, 121, 249, 0.4); }
         .badge-2 { color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); }
+        .badge-3 { color: #34d399; border-color: rgba(52, 211, 153, 0.4); }
+        .badge-4 { color: #f87171; border-color: rgba(248, 113, 113, 0.4); }
         .btn { background: linear-gradient(135deg, #9333ea, #0ea5e9); color: white; border: none; padding: 14px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; transition: transform 0.1s ease; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);}
         .btn:hover { filter: brightness(1.15); transform: translateY(-2px); }
         
         #welcome-ad-container { margin-top: 40px; width: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 20px;}
+        .scrolling-wrapper { margin-top: 50px; width: 100vw; max-width: 100%; overflow: hidden; white-space: nowrap; position: relative; background: rgba(56, 189, 248, 0.05); border-top: 1px solid rgba(56, 189, 248, 0.2); border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding: 12px 0; }
+        .scrolling-content { display: inline-block; animation: scroll-left 25s linear infinite; }
+        .scrolling-content span { display: inline-block; padding: 0 20px; color: #e879f9; font-weight: 600; font-size: 1.05rem; letter-spacing: 1px; }
+        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         
-        /* DYNAMIC TILT CARDS */
         .category-highlights { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 50px; padding: 0 20px; max-width: 1100px; width: 100%; perspective: 1000px;}
         .tilt-card { background: rgba(15, 15, 25, 0.9); border: 1px solid #38bdf8; border-radius: 12px; padding: 25px; width: 300px; transition: box-shadow 0.3s ease; text-align: center; cursor: pointer; transform-style: preserve-3d; }
         .tilt-card .t-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; transform: translateZ(30px); }
@@ -67,7 +72,6 @@
         .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 10px; font-weight: bold; color: #f8fafc; }
         .section-subtitle { text-align: center; color: #94a3b8; margin-bottom: 35px; font-size: 1rem;}
         
-        /* DYNAMIC STORE CARDS */
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 20px;}
         .card { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 25px; transition: transform 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column; justify-content: space-between; }
         .card:hover { transform: translateY(-4px); border-color: #38bdf8; }
@@ -75,16 +79,29 @@
         .card p { color: #cbd5e1; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
         .card-btn { background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; display: block; }
         
-        .sub-header { margin-bottom: 30px; padding: 0 20px;}
+        .sub-header { margin-bottom: 20px; padding: 0 20px;}
         .back-link { color: #38bdf8; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 15px; font-size: 1rem; }
+        
+        .category-alert-box { background: rgba(20,20,30,0.8); padding: 15px 20px; border-radius: 8px; margin: 0 20px 25px 20px; border: 1px dashed rgba(255,255,255,0.2); }
+        .alert-item { margin: 5px 0; font-size: 0.95rem; line-height: 1.4; }
         
         .sub-folder-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 20px; margin-bottom: 25px;}
         .folder-card { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s;}
         .folder-card h3 { color: #c084fc; margin-bottom: 10px;}
         
-        .item-row { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.2); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom:15px; margin-left:20px; margin-right:20px;}
+        /* NEW ITEM CARD CSS (Notices at bottom) */
+        .item-card-wrapper { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 12px; padding: 20px; margin: 0 20px 15px 20px; transition: border-color 0.2s ease; }
+        .item-card-wrapper:hover { border-color: #c084fc; }
+        .item-top-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .item-details { flex: 1; min-width: 250px;}
         .item-details h4 { font-size: 1.15rem; margin-bottom: 5px; color: #ffffff; }
-        .item-details span { color: #94a3b8; font-size: 0.9rem; }
+        .item-details span { color: #94a3b8; font-size: 0.9rem; display:block; margin-bottom:8px; line-height: 1.4;}
+        
+        .item-alert-box { margin-top: 15px; padding: 12px; border-radius: 6px; background: rgba(0,0,0,0.4); font-size: 0.85rem; border-left: 3px solid; width: 100%; line-height: 1.5; }
+        .c-warn { color: #fca5a5; border-color: #ef4444; }
+        .c-note { color: #fde047; border-color: #eab308; }
+        .c-tc { color: #bae6fd; border-color: #0ea5e9; }
+
         .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
         .badge.active { background: rgba(5, 150, 105, 0.2); color: #34d399; border: 1px solid #059669; }
         .badge.stock { background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid #2563eb; }
@@ -92,7 +109,6 @@
         .badge.soon { background: rgba(217, 119, 6, 0.2); color: #fbbf24; border: 1px solid #d97706; }
         .price-tag { font-size: 1.3rem; color: #38bdf8; font-weight: bold; }
         
-        .notice-box { background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.4); padding: 15px 20px; border-radius: 8px; margin: 25px 20px 0 20px; color: #cbd5e1; font-size: 0.95rem; }
         .fab-discord { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: linear-gradient(135deg, #5865F2, #7c85f5); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 5px 20px rgba(88, 101, 242, 0.6); cursor: pointer; z-index: 1000; text-decoration: none; border: 2px solid rgba(255,255,255,0.2);}
     </style>
 </head>
@@ -111,37 +127,34 @@
     <div class="sidebar" id="sidebar">
         <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
         <h3>Menu</h3>
-        <ul id="dynamic-sidebar">
-            <li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home</a></li>
-            <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">🏪 Main Store</a></li>
-            <li><a href="admin.html" style="color: #f87171;">🔒 Admin Login</a></li>
-        </ul>
+        <ul id="dynamic-sidebar"></ul>
     </div>
 
     <div class="container">
         <!-- WELCOME PAGE -->
         <div id="welcome-view" class="view active">
-            <div style="font-size: 1.1rem; letter-spacing: 2px; color: #7dd3fc; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">Developer Gyan</div>
+            <div style="font-size: 1.1rem; letter-spacing: 2px; color: #7dd3fc; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">Welcome to Developer Gyan</div>
             <h1 class="main-heading">Ultimate Digital Store</h1>
+            <p class="store-description">Fast delivery aur 100% trusted service ke sath order karein! Sabse cheapest price mein premium quality.</p>
+            <div class="feature-badges">
+                <span class="feature-badge badge-1">🤖 Custom Discord Bots</span>
+                <span class="feature-badge badge-2">💎 Cheap BGMI UC</span>
+                <span class="feature-badge badge-3">🎮 Gaming & Steam Accs</span>
+            </div>
             <button class="btn" onclick="switchView('store-view')">Go to Store</button>
             <div id="welcome-ad-container"></div>
-            
-            <!-- DYNAMIC TILT CARDS HERE -->
+            <div class="scrolling-wrapper"><div class="scrolling-content" id="dynamic-scrolling-text"></div></div>
             <div class="category-highlights" id="dynamic-home-cards"></div>
         </div>
 
         <div id="ads-view" class="view">
-            <div class="sub-header">
-                <a href="#" class="back-link" onclick="switchView('welcome-view')">← Back</a>
-                <h2 class="section-title" style="text-align: left; color: #e879f9;">📢 Special Offers & Ads</h2>
-            </div>
+            <div class="sub-header"><a href="#" class="back-link" onclick="switchView('welcome-view')">← Back</a><h2 class="section-title" style="text-align: left; color: #e879f9;">📢 Special Offers & Ads</h2></div>
             <div id="ads-page-container" style="display: flex; flex-direction: column; align-items: center; padding: 0 20px;"></div>
         </div>
 
         <div id="store-view" class="view">
             <h2 class="section-title">Store Categories</h2>
             <p class="section-subtitle">Select a category below to explore offers</p>
-            <!-- DYNAMIC MAIN CATEGORY STORE CARDS HERE -->
             <div class="grid-container" id="dynamic-store-grid"></div>
         </div>
 
@@ -151,12 +164,11 @@
                 <h2 class="section-title" id="cat-title" style="text-align: left;">Category Offers</h2>
                 <p style="color: #94a3b8;" id="cat-desc"></p>
             </div>
+            
+            <div id="dynamic-category-alert"></div>
+
             <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
             <div id="dynamic-item-list"></div>
-            <div class="notice-box">
-                <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
-                <p><strong>Payment Method:</strong> Only UPI payment available right now.</p>
-            </div>
         </div>
     </div>
 
@@ -169,18 +181,15 @@
         const icons = ['🔥', '💎', '🎮', '👾', '🛒', '🚀', '⭐', '🎁'];
         const colors = ['rgba(239, 68, 68, 0.5)', 'rgba(14, 165, 233, 0.5)', 'rgba(245, 158, 11, 0.5)', 'rgba(99, 102, 241, 0.5)', 'rgba(16, 185, 129, 0.5)'];
 
-        // Default Data Setup
         function ensureDefaultsIfEmpty() {
             if (Object.keys(appData).length === 0) {
                 const defaults = {
-                    discord_offer: {title:"Discord Services", desc:"Prebuild servers & bots."},
+                    discord_offer: {title:"Discord Services", desc:"Prebuild servers & bots.", terms:"Need 100% advance"},
                     steam: {title:"Steam Accounts", desc:"Top accounts with games."},
-                    gaming_acc: {title:"Gaming Accounts", desc:"Pro accounts like BGMI."},
-                    vouchers: {title:"Gift Vouchers", desc:"Discount vouchers."},
                     gaming_vouchers: {title:"Gaming Vouchers", desc:"BGMI UC packages."}
                 };
                 for(let key in defaults) {
-                    appData[key] = { title: defaults[key].title, desc: defaults[key].desc, items: [], subFolders: [] };
+                    appData[key] = { title: defaults[key].title, desc: defaults[key].desc, terms: defaults[key].terms||'', note:'', warning:'', items: [], subFolders: [] };
                 }
                 db.ref('storeData').set(appData);
             }
@@ -189,8 +198,7 @@
         db.ref('storeData').on('value', (snapshot) => {
             appData = snapshot.val() || {};
             ensureDefaultsIfEmpty();
-            renderDynamicWebsite(); // Generate Store, Menu, and Home Cards
-            
+            renderDynamicWebsite(); 
             if (currentCategory && document.getElementById('category-view').classList.contains('active')) {
                 loadCategoryData(currentCategory);
             }
@@ -206,57 +214,39 @@
             }
         }
 
-        // --- THE MAGIC: GENERATE EVERYTHING DYNAMICALLY ---
         function renderDynamicWebsite() {
             const storeGrid = document.getElementById('dynamic-store-grid');
             const homeCards = document.getElementById('dynamic-home-cards');
             const sidebar = document.getElementById('dynamic-sidebar');
+            const scrollingText = document.getElementById('dynamic-scrolling-text');
             
-            storeGrid.innerHTML = '';
-            homeCards.innerHTML = '';
+            storeGrid.innerHTML = ''; homeCards.innerHTML = ''; let tickerHtml = '';
             
-            // Keep base links in sidebar
-            sidebar.innerHTML = `
-                <li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home</a></li>
+            sidebar.innerHTML = `<li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home</a></li>
                 <li><a href="#" onclick="switchView('ads-view'); toggleSidebar();" style="color: #e879f9;">📢 Special Offers</a></li>
-                <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">🏪 Main Store</a></li>
-            `;
+                <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">🏪 Main Store</a></li>`;
 
-            let i = 0;
-            let hasCat = false;
+            let i = 0; let hasCat = false;
 
             for(let key in appData) {
-                if(!appData[key].parentKey && appData[key].title) { // It's a Main Category
-                    hasCat = true;
-                    let icon = icons[i % icons.length];
-                    let color = colors[i % colors.length];
+                if(!appData[key].parentKey && appData[key].title) {
+                    hasCat = true; let icon = icons[i % icons.length]; let color = colors[i % colors.length];
 
-                    // 1. Generate Store Page Cards
-                    storeGrid.innerHTML += `
-                        <div class="card">
-                            <div><h3>${appData[key].title}</h3><p>${appData[key].desc || ''}</p></div>
-                            <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('${key}');">See Offers</button>
-                        </div>
-                    `;
+                    tickerHtml += `<span>${icon} Premium ${appData[key].title}</span><span style="color: rgba(255,255,255,0.2);">•</span>`;
 
-                    // 2. Generate Home Page 3D Cards
-                    homeCards.innerHTML += `
-                        <div class="tilt-card" style="border-color: ${color};" onclick="switchView('category-view'); loadCategoryData('${key}');">
-                            <span class="t-icon">${icon}</span><h4>${appData[key].title}</h4><p>${appData[key].desc || ''}</p>
-                        </div>
-                    `;
+                    storeGrid.innerHTML += `<div class="card"><div><h3>${appData[key].title}</h3><p>${appData[key].desc || ''}</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('${key}');">See Offers</button></div>`;
 
-                    // 3. Generate Sidebar Links
+                    homeCards.innerHTML += `<div class="tilt-card" style="border-color: ${color};" onclick="switchView('category-view'); loadCategoryData('${key}');"><span class="t-icon">${icon}</span><h4>${appData[key].title}</h4><p>${appData[key].desc || ''}</p></div>`;
+
                     sidebar.innerHTML += `<li><a href="#" onclick="switchView('category-view'); loadCategoryData('${key}'); toggleSidebar();">▶ ${appData[key].title}</a></li>`;
                     i++;
                 }
             }
 
+            if(scrollingText) { scrollingText.innerHTML = tickerHtml + tickerHtml + tickerHtml + tickerHtml + tickerHtml; }
             sidebar.innerHTML += `<li><a href="admin.html" style="color: #f87171;">🔒 Admin Login</a></li>`;
 
-            if(!hasCat) {
-                storeGrid.innerHTML = '<p style="color:#94a3b8; text-align:center; grid-column: 1/-1;">Store is currently empty. Add categories from Admin Panel.</p>';
-            }
+            if(!hasCat) storeGrid.innerHTML = '<p style="color:#94a3b8; text-align:center; grid-column: 1/-1;">Store is empty.</p>';
             initTiltEffect();
         }
 
@@ -266,13 +256,9 @@
             
             if(!cat) {
                 document.getElementById('cat-title').innerText = "Empty Category";
-                document.getElementById('cat-desc').innerText = "No data found.";
-                document.getElementById('sub-folder-container').style.display = 'none';
+                document.getElementById('dynamic-category-alert').innerHTML = '';
                 document.getElementById('dynamic-item-list').innerHTML = '<p style="color:#f87171; text-align:center;">This category has been removed.</p>';
-                document.getElementById('back-button').setAttribute('onclick', "switchView('store-view')");
-                document.getElementById('back-button').innerText = "← Back to Store";
-                switchView('category-view');
-                return;
+                switchView('category-view'); return;
             }
 
             document.getElementById('cat-title').innerText = cat.title;
@@ -280,12 +266,20 @@
 
             const backBtn = document.getElementById('back-button');
             if(cat.parentKey && appData[cat.parentKey]) { 
-                backBtn.setAttribute('onclick', `loadCategoryData('${cat.parentKey}')`); 
-                backBtn.innerText = "← Back to " + appData[cat.parentKey].title; 
+                backBtn.setAttribute('onclick', `loadCategoryData('${cat.parentKey}')`); backBtn.innerText = "← Back to " + appData[cat.parentKey].title; 
             } else { 
-                backBtn.setAttribute('onclick', "switchView('store-view')"); 
-                backBtn.innerText = "← Back to Store"; 
+                backBtn.setAttribute('onclick', "switchView('store-view')"); backBtn.innerText = "← Back to Store"; 
             }
+
+            let catAlertHtml = '';
+            if (cat.warning || cat.note || cat.terms) {
+                catAlertHtml += `<div class="category-alert-box">`;
+                if(cat.warning) catAlertHtml += `<div class="alert-item" style="color:#fca5a5;"><strong>⚠️ Warning:</strong> ${cat.warning}</div>`;
+                if(cat.note) catAlertHtml += `<div class="alert-item" style="color:#fde047;"><strong>📌 Note:</strong> ${cat.note}</div>`;
+                if(cat.terms) catAlertHtml += `<div class="alert-item" style="color:#bae6fd;"><strong>📜 T&C:</strong> ${cat.terms}</div>`;
+                catAlertHtml += `</div>`;
+            }
+            document.getElementById('dynamic-category-alert').innerHTML = catAlertHtml;
 
             const subContainer = document.getElementById('sub-folder-container');
             subContainer.innerHTML = '';
@@ -301,17 +295,32 @@
             if(cat.items && cat.items.length > 0) {
                 cat.items.forEach(item => {
                     let badgeClass = item.status === 'Active' ? 'active' : item.status === 'New Stock Available' ? 'stock' : item.status === 'Coming Soon' ? 'soon' : 'nostock';
+                    
+                    // --- NEW: NOTICES AT THE BOTTOM OF THE CARD ---
+                    let itemNoticeHtml = '';
+                    if (item.warning || item.note || item.terms) {
+                        itemNoticeHtml += `<div class="item-alert-box ${item.warning ? 'c-warn' : item.note ? 'c-note' : 'c-tc'}">`;
+                        if(item.warning) itemNoticeHtml += `<div style="margin-bottom:5px;"><strong>⚠️ Warning:</strong> ${item.warning}</div>`;
+                        if(item.note) itemNoticeHtml += `<div style="margin-bottom:5px;"><strong>📌 Note:</strong> ${item.note}</div>`;
+                        if(item.terms) itemNoticeHtml += `<div><strong>📜 T&C:</strong> ${item.terms}</div>`;
+                        itemNoticeHtml += `</div>`;
+                    }
+
+                    // --- NEW: CARD WRAPPER & TOP ROW STRUCTURE ---
                     listContainer.innerHTML += `
-                        <div class="item-row">
-                            <div class="item-details">
-                                <h4>${item.name}</h4>
-                                <span>${item.desc}</span><br>
-                                <span class="badge ${badgeClass}" style="margin-top:8px; display:inline-block;">${item.status}</span>
+                        <div class="item-card-wrapper">
+                            <div class="item-top-row">
+                                <div class="item-details">
+                                    <h4>${item.name}</h4>
+                                    <span>${item.desc}</span>
+                                    <div style="margin-top: 10px;"><span class="badge ${badgeClass}">${item.status}</span></div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div class="price-tag">${item.price}</div>
+                                    <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding:8px 20px; font-size:0.9rem; margin-top:15px; display:inline-block; border-radius:8px;">Buy via Discord</a>
+                                </div>
                             </div>
-                            <div>
-                                <div class="price-tag">${item.price}</div>
-                                <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding:8px 20px; font-size:0.9rem; margin-top:8px; border-radius:8px;">Buy via Discord</a>
-                            </div>
+                            ${itemNoticeHtml}
                         </div>`;
                 });
             } else if (!cat.subFolders || cat.subFolders.length === 0) {
@@ -334,3 +343,4 @@
     </script>
 </body>
 </html>
+
