@@ -8,7 +8,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
-        // FIXED SERVER LINK (Singapore Server)
         const firebaseConfig = {
             apiKey: "AIzaSyDc8SBATauI9wMiwvIsrYsIuyXD_QOCKB8",
             authDomain: "developer-ab7cb.firebaseapp.com",
@@ -31,6 +30,7 @@
         .top-ad-btn { background: rgba(232, 121, 249, 0.2); border: 1px solid #e879f9; color: #e879f9; padding: 5px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; text-decoration: none; animation: pulseGlow 2s infinite alternate; }
         .menu-btn { font-size: 1.8rem; cursor: pointer; color: #38bdf8; background: none; border: none; transition: transform 0.1s ease; }
         .menu-btn:active { transform: scale(0.9); }
+        
         .sidebar { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: #0d0d1a; border-left: 1px solid rgba(168, 85, 247, 0.4); box-shadow: -5px 0 20px rgba(0,0,0,0.8); transition: right 0.3s ease; z-index: 1100; padding: 60px 20px 20px 20px; }
         .sidebar.active { right: 0; }
         .sidebar h3 { color: #e879f9; margin-bottom: 20px; font-size: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
@@ -39,10 +39,12 @@
         .sidebar ul li a { color: #d1d5db; text-decoration: none; font-size: 1.05rem; transition: color 0.2s ease; display: block; font-weight: 600;}
         .sidebar ul li a:hover { color: #38bdf8; padding-left: 8px; }
         .close-sidebar { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #fff; background: none; border: none; }
+        
         .container { padding-top: 90px; max-width: 1100px; margin: 0 auto; min-height: 90vh; padding-bottom: 50px; }
         .view { display: none !important; }
         .view.active { display: block !important; animation: fastFade 0.2s ease-in-out; }
         @keyframes fastFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
         #welcome-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding-top: 30px;}
         .main-heading { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; line-height: 1.2; background: linear-gradient(135deg, #ffffff, #7dd3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .store-description { font-size: 1.05rem; color: #cbd5e1; max-width: 650px; margin-bottom: 25px; line-height: 1.6; padding: 0 15px; }
@@ -50,47 +52,37 @@
         .feature-badge { padding: 8px 16px; border-radius: 30px; font-size: 0.9rem; font-weight: bold; background: rgba(15, 15, 25, 0.8); border: 1px solid rgba(255,255,255,0.1); }
         .badge-1 { color: #e879f9; border-color: rgba(232, 121, 249, 0.4); }
         .badge-2 { color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); }
-        .badge-3 { color: #34d399; border-color: rgba(52, 211, 153, 0.4); }
-        .badge-4 { color: #f87171; border-color: rgba(248, 113, 113, 0.4); }
-        .btn { background: linear-gradient(135deg, #9333ea, #0ea5e9); color: white; border: none; padding: 14px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; transition: transform 0.1s ease, filter 0.2s ease; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);}
+        .btn { background: linear-gradient(135deg, #9333ea, #0ea5e9); color: white; border: none; padding: 14px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; transition: transform 0.1s ease; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);}
         .btn:hover { filter: brightness(1.15); transform: translateY(-2px); }
-        .btn:active { transform: scale(0.95); }
+        
         #welcome-ad-container { margin-top: 40px; width: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 20px;}
-        .scrolling-wrapper { margin-top: 50px; width: 100vw; max-width: 100%; overflow: hidden; white-space: nowrap; position: relative; background: rgba(56, 189, 248, 0.05); border-top: 1px solid rgba(56, 189, 248, 0.2); border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding: 12px 0; }
-        .scrolling-content { display: inline-block; animation: scroll-left 25s linear infinite; }
-        .scrolling-content span { display: inline-block; padding: 0 20px; color: #e879f9; font-weight: 600; font-size: 1.05rem; letter-spacing: 1px; }
-        @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-        @keyframes pulseGlow { 0% { box-shadow: 0 0 5px currentColor; } 100% { box-shadow: 0 0 15px currentColor; } }
+        
+        /* DYNAMIC TILT CARDS */
         .category-highlights { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 50px; padding: 0 20px; max-width: 1100px; width: 100%; perspective: 1000px;}
         .tilt-card { background: rgba(15, 15, 25, 0.9); border: 1px solid #38bdf8; border-radius: 12px; padding: 25px; width: 300px; transition: box-shadow 0.3s ease; text-align: center; cursor: pointer; transform-style: preserve-3d; }
         .tilt-card .t-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; transform: translateZ(30px); }
         .tilt-card h4 { font-size: 1.2rem; color: #f8fafc; margin-bottom: 8px; font-weight: bold; transform: translateZ(20px); }
         .tilt-card p { font-size: 0.9rem; color: #94a3b8; line-height: 1.5; transform: translateZ(10px); }
-        .tc-steam { border-color: rgba(239, 68, 68, 0.5); }
-        .tc-gaming { border-color: rgba(245, 158, 11, 0.5); }
-        .tc-discord { border-color: rgba(99, 102, 241, 0.5); }
-        .tc-bgmi { border-color: rgba(14, 165, 233, 0.5); }
-        .tc-vouchers { border-color: rgba(16, 185, 129, 0.5); }
+
         .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 10px; font-weight: bold; color: #f8fafc; }
         .section-subtitle { text-align: center; color: #94a3b8; margin-bottom: 35px; font-size: 1rem;}
+        
+        /* DYNAMIC STORE CARDS */
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 20px;}
         .card { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 25px; transition: transform 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column; justify-content: space-between; }
         .card:hover { transform: translateY(-4px); border-color: #38bdf8; }
         .card h3 { font-size: 1.3rem; margin-bottom: 10px; color: #c084fc; }
         .card p { color: #cbd5e1; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
         .card-btn { background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; display: block; }
-        .card-btn:hover { background: #38bdf8; color: #05050a; }
+        
         .sub-header { margin-bottom: 30px; padding: 0 20px;}
         .back-link { color: #38bdf8; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 15px; font-size: 1rem; }
-        .back-link:hover { color: #e879f9; }
+        
         .sub-folder-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 20px; margin-bottom: 25px;}
         .folder-card { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s;}
-        .folder-card:hover { border-color: #38bdf8; transform: translateY(-3px);}
         .folder-card h3 { color: #c084fc; margin-bottom: 10px;}
-        .folder-card p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;}
-        .item-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; padding: 0 20px;}
-        .item-row { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.2); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; transition: border-color 0.2s ease; }
-        .item-row:hover { border-color: #c084fc; }
+        
+        .item-row { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.2); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom:15px; margin-left:20px; margin-right:20px;}
         .item-details h4 { font-size: 1.15rem; margin-bottom: 5px; color: #ffffff; }
         .item-details span { color: #94a3b8; font-size: 0.9rem; }
         .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
@@ -99,12 +91,9 @@
         .badge.nostock { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid #dc2626; }
         .badge.soon { background: rgba(217, 119, 6, 0.2); color: #fbbf24; border: 1px solid #d97706; }
         .price-tag { font-size: 1.3rem; color: #38bdf8; font-weight: bold; }
+        
         .notice-box { background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.4); padding: 15px 20px; border-radius: 8px; margin: 25px 20px 0 20px; color: #cbd5e1; font-size: 0.95rem; }
-        .notice-box p { margin: 5px 0; }
-        .notice-box strong { color: #38bdf8; }
-        .footer { text-align: center; padding: 30px; color: #64748b; font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 60px; }
-        .fab-discord { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: linear-gradient(135deg, #5865F2, #7c85f5); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 5px 20px rgba(88, 101, 242, 0.6); cursor: pointer; transition: transform 0.2s; z-index: 1000; text-decoration: none; border: 2px solid rgba(255,255,255,0.2);}
-        .fab-discord:hover { transform: scale(1.1) translateY(-5px); }
+        .fab-discord { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: linear-gradient(135deg, #5865F2, #7c85f5); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 5px 20px rgba(88, 101, 242, 0.6); cursor: pointer; z-index: 1000; text-decoration: none; border: 2px solid rgba(255,255,255,0.2);}
     </style>
 </head>
 <body>
@@ -121,132 +110,93 @@
 
     <div class="sidebar" id="sidebar">
         <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
-        <h3>Quick Navigation</h3>
-        <ul>
-            <li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home / Welcome</a></li>
-            <li><a href="#" onclick="switchView('ads-view'); toggleSidebar();" style="color: #e879f9;">📢 Special Offers (Ads)</a></li>
+        <h3>Menu</h3>
+        <ul id="dynamic-sidebar">
+            <li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home</a></li>
             <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">🏪 Main Store</a></li>
-            <li><a href="#" onclick="switchView('category-view'); loadCategoryData('discord_offer'); toggleSidebar();">▶ Discord Offers</a></li>
-            <li><a href="#" onclick="switchView('category-view'); loadCategoryData('steam'); toggleSidebar();">🎮 Steam Account</a></li>
-            <li><a href="#" onclick="switchView('category-view'); loadCategoryData('gaming_acc'); toggleSidebar();">🔥 Gaming Account</a></li>
-            <li><a href="#" onclick="switchView('category-view'); loadCategoryData('vouchers'); toggleSidebar();">🛒 Vouchers</a></li>
-            <li><a href="#" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers'); toggleSidebar();">💎 Gaming Vouchers</a></li>
-            <li><a href="admin.html" style="color: #f87171;">🔒 Central Admin Panel</a></li>
+            <li><a href="admin.html" style="color: #f87171;">🔒 Admin Login</a></li>
         </ul>
     </div>
 
     <div class="container">
         <!-- WELCOME PAGE -->
         <div id="welcome-view" class="view active">
-            <div style="font-size: 1.1rem; letter-spacing: 2px; color: #7dd3fc; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">Welcome to Developer Gyan</div>
+            <div style="font-size: 1.1rem; letter-spacing: 2px; color: #7dd3fc; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">Developer Gyan</div>
             <h1 class="main-heading">Ultimate Digital Store</h1>
-            <p class="store-description">Fast delivery aur 100% trusted service ke sath order karein! Sabse cheapest price mein premium quality.</p>
-            <div class="feature-badges">
-                <span class="feature-badge badge-1">🤖 Custom Discord Bots</span>
-                <span class="feature-badge badge-2">💎 Cheap BGMI UC</span>
-                <span class="feature-badge badge-3">🎮 Gaming & Steam Accs</span>
-                <span class="feature-badge badge-4">🎟️ Gift Vouchers</span>
-            </div>
             <button class="btn" onclick="switchView('store-view')">Go to Store</button>
             <div id="welcome-ad-container"></div>
-            <div class="scrolling-wrapper">
-                <div class="scrolling-content">
-                    <span>🔥 Premium Steam Accounts</span><span>•</span>
-                    <span>🎮 Conqueror Gaming Accounts</span><span>•</span>
-                    <span>🤖 Custom Discord Bots & Servers</span><span>•</span>
-                    <span>💎 Cheapest BGMI UC Vouchers</span><span>•</span>
-                    <span>🛒 Food & Shopping Vouchers</span><span>•</span>
-                </div>
-            </div>
-            <div class="category-highlights">
-                <div class="tilt-card tc-steam" onclick="switchView('category-view'); loadCategoryData('steam');">
-                    <span class="t-icon">🔥</span><h4>Steam Accounts</h4><p>Premium top-tier Steam accounts loaded with games.</p>
-                </div>
-                <div class="tilt-card tc-gaming" onclick="switchView('category-view'); loadCategoryData('gaming_acc');">
-                    <span class="t-icon">🎮</span><h4>Gaming Accounts</h4><p>High-level Conqueror accounts for BGMI & Free Fire.</p>
-                </div>
-                <div class="tilt-card tc-discord" onclick="switchView('category-view'); loadCategoryData('discord_offer');">
-                    <span class="t-icon">🤖</span><h4>Discord Offers</h4><p>Custom Discord servers and advanced AI bots.</p>
-                </div>
-                <div class="tilt-card tc-bgmi" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers');">
-                    <span class="t-icon">💎</span><h4>BGMI UC Vouchers</h4><p>Instant BGMI UC top-ups at the lowest market prices.</p>
-                </div>
-                <div class="tilt-card tc-vouchers" onclick="switchView('category-view'); loadCategoryData('vouchers');">
-                    <span class="t-icon">🛒</span><h4>Shopping Vouchers</h4><p>Discount vouchers for Zomato, Dominos & more.</p>
-                </div>
-            </div>
+            
+            <!-- DYNAMIC TILT CARDS HERE -->
+            <div class="category-highlights" id="dynamic-home-cards"></div>
         </div>
 
         <div id="ads-view" class="view">
             <div class="sub-header">
-                <a href="#" class="back-link" onclick="switchView('welcome-view')">← Back to Home</a>
+                <a href="#" class="back-link" onclick="switchView('welcome-view')">← Back</a>
                 <h2 class="section-title" style="text-align: left; color: #e879f9;">📢 Special Offers & Ads</h2>
-                <p style="color: #94a3b8;">Hurry up! These offers are available for a limited time only.</p>
             </div>
             <div id="ads-page-container" style="display: flex; flex-direction: column; align-items: center; padding: 0 20px;"></div>
         </div>
 
         <div id="store-view" class="view">
             <h2 class="section-title">Store Categories</h2>
-            <p class="section-subtitle">Select a category below to explore offers and pricing</p>
-            <div class="grid-container">
-                <div class="card"><div><h3>Discord Offer</h3><p>Prebuild servers, custom bots & servers.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('discord_offer');">See Offer</button></div>
-                <div class="card"><div><h3>Steam Account</h3><p>Best accounts with pre-loaded top games.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('steam');">See Offer</button></div>
-                <div class="card"><div><h3>Gaming Account</h3><p>Find amazing pro accounts like BGMI, Free Fire.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_acc');">See Offer</button></div>
-                <div class="card"><div><h3>Vouchers</h3><p>Discount vouchers for Zomato, Dominos, EGC.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('vouchers');">See Offer</button></div>
-                <div class="card"><div><h3>Gaming Vouchers</h3><p>Top up in cheapest price! Inside: BGMI UC packages.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers');">See Offer</button></div>
-            </div>
+            <p class="section-subtitle">Select a category below to explore offers</p>
+            <!-- DYNAMIC MAIN CATEGORY STORE CARDS HERE -->
+            <div class="grid-container" id="dynamic-store-grid"></div>
         </div>
 
         <div id="category-view" class="view">
             <div class="sub-header">
                 <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Store</a>
                 <h2 class="section-title" id="cat-title" style="text-align: left;">Category Offers</h2>
-                <p style="color: #94a3b8;" id="cat-desc">Browse available items and check pricing below.</p>
+                <p style="color: #94a3b8;" id="cat-desc"></p>
             </div>
             <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
-            <div class="item-list" id="dynamic-item-list"></div>
+            <div id="dynamic-item-list"></div>
             <div class="notice-box">
                 <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
                 <p><strong>Payment Method:</strong> Only UPI payment available right now.</p>
-                <p id="bot-notice" style="display:none; color:#fbbf24; margin-top:10px;"><strong>Note:</strong> All offers need Monthly fee for bot running.</p>
             </div>
         </div>
     </div>
 
-    <div class="footer">© 2026 Developer Gyan. All Rights Reserved.</div>
-
     <script src="ads.js"></script>
 
     <script>
-        const defaultStoreData = {
-            discord_offer: { title: "Discord Offers", desc: "Select a Discord service sub-category below.", subFolders: [], items: [] },
-            steam: { title: "Steam Accounts", desc: "Find best accounts pre-loaded with top games.", subFolders: [], items: [] },
-            gaming_acc: { title: "Gaming Accounts", desc: "Pro accounts for BGMI, Free Fire, Valorant, etc.", subFolders: [], items: [] },
-            vouchers: { title: "Food & Shopping Vouchers", desc: "Get discount vouchers for Zomato, Dominos, EGC.", subFolders: [], items: [] },
-            gaming_vouchers: { title: "Gaming Vouchers", desc: "Select a gaming voucher sub-category below.", subFolders: [], items: [] }
-        };
-
         let appData = {};
         let currentCategory = null;
 
-        db.ref('storeData').on('value', (snapshot) => {
-            if (snapshot.exists()) {
-                appData = snapshot.val();
-                for(let key in defaultStoreData) {
-                    if(!appData[key]) appData[key] = defaultStoreData[key];
+        const icons = ['🔥', '💎', '🎮', '👾', '🛒', '🚀', '⭐', '🎁'];
+        const colors = ['rgba(239, 68, 68, 0.5)', 'rgba(14, 165, 233, 0.5)', 'rgba(245, 158, 11, 0.5)', 'rgba(99, 102, 241, 0.5)', 'rgba(16, 185, 129, 0.5)'];
+
+        // Default Data Setup
+        function ensureDefaultsIfEmpty() {
+            if (Object.keys(appData).length === 0) {
+                const defaults = {
+                    discord_offer: {title:"Discord Services", desc:"Prebuild servers & bots."},
+                    steam: {title:"Steam Accounts", desc:"Top accounts with games."},
+                    gaming_acc: {title:"Gaming Accounts", desc:"Pro accounts like BGMI."},
+                    vouchers: {title:"Gift Vouchers", desc:"Discount vouchers."},
+                    gaming_vouchers: {title:"Gaming Vouchers", desc:"BGMI UC packages."}
+                };
+                for(let key in defaults) {
+                    appData[key] = { title: defaults[key].title, desc: defaults[key].desc, items: [], subFolders: [] };
                 }
-            } else {
-                appData = defaultStoreData;
-                db.ref('storeData').set(defaultStoreData);
+                db.ref('storeData').set(appData);
             }
+        }
+
+        db.ref('storeData').on('value', (snapshot) => {
+            appData = snapshot.val() || {};
+            ensureDefaultsIfEmpty();
+            renderDynamicWebsite(); // Generate Store, Menu, and Home Cards
+            
             if (currentCategory && document.getElementById('category-view').classList.contains('active')) {
                 loadCategoryData(currentCategory);
             }
         });
 
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-        
         function switchView(viewId) { 
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); 
             document.getElementById(viewId).classList.add('active'); 
@@ -256,24 +206,77 @@
             }
         }
 
+        // --- THE MAGIC: GENERATE EVERYTHING DYNAMICALLY ---
+        function renderDynamicWebsite() {
+            const storeGrid = document.getElementById('dynamic-store-grid');
+            const homeCards = document.getElementById('dynamic-home-cards');
+            const sidebar = document.getElementById('dynamic-sidebar');
+            
+            storeGrid.innerHTML = '';
+            homeCards.innerHTML = '';
+            
+            // Keep base links in sidebar
+            sidebar.innerHTML = `
+                <li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home</a></li>
+                <li><a href="#" onclick="switchView('ads-view'); toggleSidebar();" style="color: #e879f9;">📢 Special Offers</a></li>
+                <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">🏪 Main Store</a></li>
+            `;
+
+            let i = 0;
+            let hasCat = false;
+
+            for(let key in appData) {
+                if(!appData[key].parentKey && appData[key].title) { // It's a Main Category
+                    hasCat = true;
+                    let icon = icons[i % icons.length];
+                    let color = colors[i % colors.length];
+
+                    // 1. Generate Store Page Cards
+                    storeGrid.innerHTML += `
+                        <div class="card">
+                            <div><h3>${appData[key].title}</h3><p>${appData[key].desc || ''}</p></div>
+                            <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('${key}');">See Offers</button>
+                        </div>
+                    `;
+
+                    // 2. Generate Home Page 3D Cards
+                    homeCards.innerHTML += `
+                        <div class="tilt-card" style="border-color: ${color};" onclick="switchView('category-view'); loadCategoryData('${key}');">
+                            <span class="t-icon">${icon}</span><h4>${appData[key].title}</h4><p>${appData[key].desc || ''}</p>
+                        </div>
+                    `;
+
+                    // 3. Generate Sidebar Links
+                    sidebar.innerHTML += `<li><a href="#" onclick="switchView('category-view'); loadCategoryData('${key}'); toggleSidebar();">▶ ${appData[key].title}</a></li>`;
+                    i++;
+                }
+            }
+
+            sidebar.innerHTML += `<li><a href="admin.html" style="color: #f87171;">🔒 Admin Login</a></li>`;
+
+            if(!hasCat) {
+                storeGrid.innerHTML = '<p style="color:#94a3b8; text-align:center; grid-column: 1/-1;">Store is currently empty. Add categories from Admin Panel.</p>';
+            }
+            initTiltEffect();
+        }
+
         function loadCategoryData(catKey) {
             currentCategory = catKey;
             const cat = appData[catKey];
             
             if(!cat) {
                 document.getElementById('cat-title').innerText = "Empty Category";
-                document.getElementById('cat-desc').innerText = "No data found for this section.";
+                document.getElementById('cat-desc').innerText = "No data found.";
                 document.getElementById('sub-folder-container').style.display = 'none';
-                document.getElementById('dynamic-item-list').innerHTML = '<p style="color:#f87171; text-align:center;">This category has been removed or is empty.</p>';
+                document.getElementById('dynamic-item-list').innerHTML = '<p style="color:#f87171; text-align:center;">This category has been removed.</p>';
                 document.getElementById('back-button').setAttribute('onclick', "switchView('store-view')");
                 document.getElementById('back-button').innerText = "← Back to Store";
                 switchView('category-view');
                 return;
             }
 
-            document.getElementById('cat-title').innerText = cat.title + " Offers";
+            document.getElementById('cat-title').innerText = cat.title;
             document.getElementById('cat-desc').innerText = cat.desc || "Browse items below.";
-            document.getElementById('bot-notice').style.display = cat.isBot ? 'block' : 'none';
 
             const backBtn = document.getElementById('back-button');
             if(cat.parentKey && appData[cat.parentKey]) { 
@@ -312,7 +315,7 @@
                         </div>`;
                 });
             } else if (!cat.subFolders || cat.subFolders.length === 0) {
-                listContainer.innerHTML = '<p style="color:#94a3b8; text-align:center;">No offers available right now in this category.</p>';
+                listContainer.innerHTML = '<p style="color:#94a3b8; text-align:center;">No offers available right now.</p>';
             }
             switchView('category-view');
         }
@@ -328,8 +331,6 @@
                 card.addEventListener('mouseleave', () => card.style.transform = `rotateX(0) rotateY(0) scale3d(1, 1, 1)`);
             });
         }
-
-        window.onload = function() { switchView('welcome-view'); initTiltEffect(); }
     </script>
 </body>
 </html>
