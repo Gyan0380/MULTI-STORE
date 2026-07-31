@@ -39,6 +39,7 @@
         .edit-btn { background: #f59e0b; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-right: 5px; font-weight: bold;}
         .form-row { display: flex; gap: 15px; flex-wrap: wrap;}
         .form-group { flex: 1; min-width: 250px; }
+        .optional-section { background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.2); margin-top: 5px; margin-bottom: 15px;}
     </style>
 </head>
 <body>
@@ -58,32 +59,32 @@
 
         <div id="dashboard" style="display: none;">
             
-            <!-- ADD NEW MAIN CATEGORY -->
+            <!-- CREATE MAIN CATEGORY -->
             <div class="box" style="border-color: #10b981; border-top: 4px solid #10b981;">
                 <h3 style="color: #10b981; margin-bottom: 15px;">📁 1. Create New Main Category</h3>
-                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Yeh store ke home page par naya bada box banayega.</p>
                 <div class="form-row">
                     <div class="form-group"><label>Category Name</label><input type="text" id="new-main-name" placeholder="e.g. Netflix Accounts"></div>
                     <div class="form-group"><label>Short Description</label><input type="text" id="new-main-desc" placeholder="Details about this category"></div>
                 </div>
+                
+                <div class="optional-section">
+                    <h4 style="color:#94a3b8; margin-bottom:10px;">Extra Notices (Optional)</h4>
+                    <div class="form-row">
+                        <div class="form-group"><label>📜 T&C</label><input type="text" id="main-terms" placeholder="Rules for this whole category"></div>
+                        <div class="form-group"><label>📌 Note</label><input type="text" id="main-note" placeholder="Important info"></div>
+                        <div class="form-group"><label>⚠️ Warning</label><input type="text" id="main-warn" placeholder="Strict warning"></div>
+                    </div>
+                </div>
+                
                 <button class="btn" onclick="addMainCategory()" style="background: linear-gradient(135deg, #10b981, #059669);">Create Main Category</button>
             </div>
 
             <!-- ADD NEW STORE ITEM / SUB-FOLDER -->
             <div class="box" style="border-top: 4px solid #38bdf8;">
                 <h3 style="color: #38bdf8; margin-bottom: 15px;">🏪 2. Add Item / Sub-Folder</h3>
-                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Category banne ke baad usme items yahan se daalein.</p>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Select Main Category</label>
-                        <select id="add-main-cat" onchange="updateSubCatDropdown()">
-                            <!-- DYNAMICALLY LOADED -->
-                        </select>
-                    </div>
-                    <div class="form-group" id="sub-cat-container">
-                        <label>Inside Folder? (Optional)</label>
-                        <select id="add-sub-cat"><option value="">-- Direct in Main Category --</option></select>
-                    </div>
+                    <div class="form-group"><label>Select Main Category</label><select id="add-main-cat" onchange="updateSubCatDropdown()"></select></div>
+                    <div class="form-group" id="sub-cat-container"><label>Inside Folder? (Optional)</label><select id="add-sub-cat"><option value="">-- Direct in Main Category --</option></select></div>
                 </div>
 
                 <div class="form-row">
@@ -96,19 +97,23 @@
                     </div>
                     <div class="form-group"><label>Name / Title</label><input type="text" id="add-name" placeholder="Item or Folder Name"></div>
                 </div>
+                
                 <div class="form-group"><label>Description Details</label><input type="text" id="add-desc" placeholder="Details..."></div>
+                
                 <div class="form-row" id="add-price-row">
                     <div class="form-group"><label>Price</label><input type="text" id="add-price" placeholder="e.g. ₹99"></div>
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select id="add-status">
-                            <option value="Active">Active</option>
-                            <option value="New Stock Available">New Stock Available</option>
-                            <option value="Out of Stock">Out of Stock</option>
-                            <option value="Coming Soon">Coming Soon</option>
-                        </select>
+                    <div class="form-group"><label>Status</label><select id="add-status"><option value="Active">Active</option><option value="New Stock Available">New Stock Available</option><option value="Out of Stock">Out of Stock</option><option value="Coming Soon">Coming Soon</option></select></div>
+                </div>
+
+                <div class="optional-section">
+                    <h4 style="color:#94a3b8; margin-bottom:10px;">Extra Notices for this Item/Folder (Optional)</h4>
+                    <div class="form-row">
+                        <div class="form-group"><label>📜 T&C</label><input type="text" id="add-terms" placeholder="Rules specific to this"></div>
+                        <div class="form-group"><label>📌 Note</label><input type="text" id="add-note" placeholder="Any extra note"></div>
+                        <div class="form-group"><label>⚠️ Warning</label><input type="text" id="add-warn" placeholder="Specific warning"></div>
                     </div>
                 </div>
+
                 <button class="btn" onclick="addEntity()">➕ Add to Live Store</button>
             </div>
 
@@ -121,43 +126,35 @@
                 </div>
                 <div class="form-row" id="edit-price-status-row">
                     <div class="form-group"><label>Price</label><input type="text" id="edit-price"></div>
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select id="edit-status">
-                            <option value="Active">Active</option><option value="New Stock Available">New Stock Available</option>
-                            <option value="Out of Stock">Out of Stock</option><option value="Coming Soon">Coming Soon</option>
-                        </select>
+                    <div class="form-group"><label>Status</label><select id="edit-status"><option value="Active">Active</option><option value="New Stock Available">New Stock Available</option><option value="Out of Stock">Out of Stock</option><option value="Coming Soon">Coming Soon</option></select></div>
+                </div>
+                
+                <div class="optional-section">
+                    <h4 style="color:#94a3b8; margin-bottom:10px;">Edit Extra Notices</h4>
+                    <div class="form-row">
+                        <div class="form-group"><label>📜 T&C</label><input type="text" id="edit-terms"></div>
+                        <div class="form-group"><label>📌 Note</label><input type="text" id="edit-note"></div>
+                        <div class="form-group"><label>⚠️ Warning</label><input type="text" id="edit-warn"></div>
                     </div>
                 </div>
+
                 <div style="display: flex; gap: 15px; margin-top: 10px;">
                     <button class="btn" onclick="saveEdit()" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">Save Changes</button>
                     <button class="btn" onclick="closeEdit()" style="background: #4b5563;">Cancel</button>
                 </div>
             </div>
 
-            <!-- LIVE INVENTORY TABLE -->
+            <!-- INVENTORY & ADS (Hidden for brevity, logic remains identical) -->
             <div class="box">
                 <h3 style="color: #34d399; margin-bottom: 15px;">📦 Store Inventory (Live)</h3>
-                <div style="overflow-x: auto;">
-                    <table>
-                        <thead><tr><th>Category / Location</th><th>Name (Type)</th><th>Status</th><th>Actions</th></tr></thead>
-                        <tbody id="inventory-table-body"></tbody>
-                    </table>
-                </div>
+                <div style="overflow-x: auto;"><table><thead><tr><th>Category / Location</th><th>Name (Type)</th><th>Status</th><th>Actions</th></tr></thead><tbody id="inventory-table-body"></tbody></table></div>
             </div>
 
-            <!-- ADS MANAGER -->
             <div class="box" style="border-color: #e879f9; border-top: 4px solid #e879f9;">
                 <h3 style="color: #e879f9; margin-bottom: 15px;">📢 Post Advertisement</h3>
-                <div class="form-row">
-                    <div class="form-group"><label>Location</label><select id="ad-placement"><option value="both">Both</option><option value="home">Home</option><option value="offers">Offers</option></select></div>
-                    <div class="form-group"><label>Ad Title</label><input type="text" id="ad-title"></div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group"><label>Image URL</label><input type="text" id="ad-image"></div>
-                    <div class="form-group"><label>Timer (Mins)</label><input type="number" id="ad-minutes"></div>
-                </div>
-                <label>Redirect URL</label><input type="text" id="ad-link">
+                <div class="form-row"><div class="form-group"><label>Location</label><select id="ad-placement"><option value="both">Both</option><option value="home">Home</option><option value="offers">Offers</option></select></div><div class="form-group"><label>Ad Title</label><input type="text" id="ad-title"></div></div>
+                <div class="form-row"><div class="form-group"><label>Image URL</label><input type="text" id="ad-image"></div><div class="form-group"><label>Timer (Mins)</label><input type="number" id="ad-minutes"></div></div>
+                <label>Redirect URL</label><input type="text" id="ad-link"><br><br>
                 <button class="btn" onclick="addNewAd()" style="background: linear-gradient(135deg, #e879f9, #a855f7);">Post Live Ad</button>
                 <div style="overflow-x: auto; margin-top: 15px;"><table><tbody id="ads-table-body"></tbody></table></div>
             </div>
@@ -178,7 +175,7 @@
                 document.getElementById('login-box').style.display = 'none';
                 document.getElementById('dashboard').style.display = 'block';
                 listenLiveData(); 
-            }).catch(() => alert("Login Failed. Check details."));
+            }).catch(() => alert("Login Failed."));
         }
 
         function logout() { auth.signOut().then(() => location.reload()); }
@@ -193,37 +190,37 @@
 
         function saveToDB() { db.ref('storeData').set(appData); }
 
-        // --- NEW: CREATE MAIN CATEGORY ---
         function addMainCategory() {
             const name = document.getElementById('new-main-name').value.trim();
             const desc = document.getElementById('new-main-desc').value.trim();
+            const terms = document.getElementById('main-terms').value.trim();
+            const note = document.getElementById('main-note').value.trim();
+            const warn = document.getElementById('main-warn').value.trim();
+
             if(!name || !desc) return alert("Category Name & Description are required!");
 
             const key = 'main_' + Date.now();
-            appData[key] = { title: name, desc: desc, items: [], subFolders: [] };
+            appData[key] = { title: name, desc: desc, terms: terms, note: note, warning: warn, items: [], subFolders: [] };
             saveToDB();
             
-            alert("New Main Category Created! You can now add items inside it.");
-            document.getElementById('new-main-name').value = '';
-            document.getElementById('new-main-desc').value = '';
+            alert("New Main Category Created!");
+            document.getElementById('new-main-name').value = ''; document.getElementById('new-main-desc').value = '';
+            document.getElementById('main-terms').value = ''; document.getElementById('main-note').value = ''; document.getElementById('main-warn').value = '';
         }
 
-        // --- DYNAMIC DROPDOWNS ---
         function updateDropdowns() {
             const mainSelect = document.getElementById('add-main-cat');
             const currentVal = mainSelect.value;
             mainSelect.innerHTML = '';
-            
             let hasMain = false;
             for(let key in appData) {
-                if(!appData[key].parentKey) { // It is a Main Category
+                if(!appData[key].parentKey) { 
                     mainSelect.innerHTML += `<option value="${key}">${appData[key].title}</option>`;
                     hasMain = true;
                 }
             }
             if(!hasMain) mainSelect.innerHTML = `<option value="">-- No Categories Found --</option>`;
             if(currentVal && appData[currentVal] && !appData[currentVal].parentKey) mainSelect.value = currentVal;
-            
             updateSubCatDropdown();
         }
 
@@ -231,7 +228,6 @@
             const mainCat = document.getElementById('add-main-cat').value;
             const subSelect = document.getElementById('add-sub-cat');
             subSelect.innerHTML = '<option value="">-- Direct in Main Category --</option>';
-            
             if(mainCat && appData[mainCat] && appData[mainCat].subFolders) {
                 appData[mainCat].subFolders.forEach(folder => {
                     subSelect.innerHTML += `<option value="${folder.key}">📁 ${folder.name}</option>`;
@@ -252,83 +248,57 @@
             const desc = document.getElementById('add-desc').value.trim();
             const price = document.getElementById('add-price').value.trim();
             const status = document.getElementById('add-status').value;
+            
+            const terms = document.getElementById('add-terms').value.trim();
+            const note = document.getElementById('add-note').value.trim();
+            const warn = document.getElementById('add-warn').value.trim();
 
             if(!mainCat) return alert("Please create a Main Category first!");
             if(!name) return alert("Name is required!");
 
             if (type === 'folder') {
                 if(subCat) return alert("Cannot create folder inside a folder.");
-                if(!desc) return alert("Folder description required!");
                 const newKey = 'cat_' + Date.now();
                 if(!appData[mainCat].subFolders) appData[mainCat].subFolders = [];
                 appData[mainCat].subFolders.push({ key: newKey, name: name, desc: desc });
-                appData[newKey] = { title: name, desc: desc, parentKey: mainCat, items: [], subFolders: [] };
+                appData[newKey] = { title: name, desc: desc, terms: terms, note: note, warning: warn, parentKey: mainCat, items: [], subFolders: [] };
                 alert(`Folder Created!`);
             } else {
                 if(!price) return alert("Item price required!");
                 const targetCat = subCat ? subCat : mainCat;
                 if(!appData[targetCat].items) appData[targetCat].items = [];
-                appData[targetCat].items.push({ id: Date.now(), name, desc, price, status });
+                appData[targetCat].items.push({ id: Date.now(), name, desc, price, status, terms, note, warning: warn });
                 alert(`Item Added!`);
             }
-            document.getElementById('add-name').value = ''; document.getElementById('add-desc').value = ''; document.getElementById('add-price').value = '';
+            
+            ['add-name','add-desc','add-price','add-terms','add-note','add-warn'].forEach(id => document.getElementById(id).value = '');
             saveToDB();
         }
 
         function renderInventory() {
             const tbody = document.getElementById('inventory-table-body');
             tbody.innerHTML = '';
-            
             for(let key in appData) {
                 const cat = appData[key];
                 if(!cat) continue;
-
-                // Render Main Categories in Table First
                 if(!cat.parentKey) {
-                    tbody.innerHTML += `
-                        <tr style="background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981;">
-                            <td style="color:#10b981; font-weight:bold;">[MAIN CATEGORY]</td>
-                            <td><strong style="color:#fff;">${cat.title}</strong></td>
-                            <td>-</td>
-                            <td style="white-space:nowrap;">
-                                <button class="edit-btn" onclick="openEdit('main_cat', '${key}', -1, '')">✏️ Edit</button>
-                                <button class="del-btn" onclick="deleteMainCat('${key}')">🗑️ Delete All</button>
-                            </td>
-                        </tr>
-                    `;
+                    tbody.innerHTML += `<tr style="background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981;">
+                        <td style="color:#10b981; font-weight:bold;">[MAIN]</td><td><strong style="color:#fff;">${cat.title}</strong></td>
+                        <td>-</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('main_cat', '${key}', -1, '')">✏️</button><button class="del-btn" onclick="deleteMainCat('${key}')">🗑️</button></td></tr>`;
                 }
-
-                // Subfolders
                 if(cat.subFolders) {
                     cat.subFolders.forEach(folder => {
-                        tbody.innerHTML += `
-                            <tr style="background: rgba(56, 189, 248, 0.05);">
-                                <td>${cat.title}</td>
-                                <td style="color:#38bdf8;"><strong>📁 ${folder.name}</strong></td>
-                                <td>-</td>
-                                <td style="white-space:nowrap;">
-                                    <button class="edit-btn" onclick="openEdit('folder', '${key}', -1, '${folder.key}')">✏️</button>
-                                    <button class="del-btn" onclick="deleteEntity('folder', '${key}', -1, '${folder.key}')">🗑️</button>
-                                </td>
-                            </tr>
-                        `;
+                        tbody.innerHTML += `<tr style="background: rgba(56, 189, 248, 0.05);">
+                            <td>${cat.title}</td><td style="color:#38bdf8;"><strong>📁 ${folder.name}</strong></td>
+                            <td>-</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('folder', '${key}', -1, '${folder.key}')">✏️</button><button class="del-btn" onclick="deleteEntity('folder', '${key}', -1, '${folder.key}')">🗑️</button></td></tr>`;
                     });
                 }
-                // Items
                 if(cat.items) {
                     cat.items.forEach((item, index) => {
-                        let statusColor = item.status === 'Active' ? '#34d399' : item.status === 'Out of Stock' ? '#f87171' : '#fbbf24';
-                        tbody.innerHTML += `
-                            <tr>
-                                <td>${cat.title || key}</td>
-                                <td><strong>${item.name}</strong><br><small style="color:#94a3b8">${item.price}</small></td>
-                                <td style="color:${statusColor}; font-weight:bold;">${item.status}</td>
-                                <td style="white-space:nowrap;">
-                                    <button class="edit-btn" onclick="openEdit('item', '${key}', ${index}, '')">✏️</button>
-                                    <button class="del-btn" onclick="deleteEntity('item', '${key}', ${index}, '')">🗑️</button>
-                                </td>
-                            </tr>
-                        `;
+                        let sc = item.status === 'Active' ? '#34d399' : item.status === 'Out of Stock' ? '#f87171' : '#fbbf24';
+                        tbody.innerHTML += `<tr><td>${cat.title || key}</td><td><strong>${item.name}</strong></td>
+                            <td style="color:${sc}; font-weight:bold;">${item.status}</td>
+                            <td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('item', '${key}', ${index}, '')">✏️</button><button class="del-btn" onclick="deleteEntity('item', '${key}', ${index}, '')">🗑️</button></td></tr>`;
                     });
                 }
             }
@@ -341,20 +311,21 @@
             window.scrollTo(0, editBox.offsetTop - 20);
 
             if(type === 'main_cat') {
-                document.getElementById('edit-name').value = appData[parentCat].title;
-                document.getElementById('edit-desc').value = appData[parentCat].desc || '';
+                const data = appData[parentCat];
+                document.getElementById('edit-name').value = data.title; document.getElementById('edit-desc').value = data.desc || '';
+                document.getElementById('edit-terms').value = data.terms || ''; document.getElementById('edit-note').value = data.note || ''; document.getElementById('edit-warn').value = data.warning || '';
                 document.getElementById('edit-price-status-row').style.display = 'none';
             } else if(type === 'folder') {
                 const folderRef = appData[parentCat].subFolders.find(f => f.key === folderKey);
-                document.getElementById('edit-name').value = folderRef.name;
-                document.getElementById('edit-desc').value = folderRef.desc;
+                const data = appData[folderKey];
+                document.getElementById('edit-name').value = folderRef.name; document.getElementById('edit-desc').value = folderRef.desc;
+                document.getElementById('edit-terms').value = data.terms || ''; document.getElementById('edit-note').value = data.note || ''; document.getElementById('edit-warn').value = data.warning || '';
                 document.getElementById('edit-price-status-row').style.display = 'none';
             } else {
                 const item = appData[parentCat].items[itemIndex];
-                document.getElementById('edit-name').value = item.name;
-                document.getElementById('edit-desc').value = item.desc;
-                document.getElementById('edit-price').value = item.price;
-                document.getElementById('edit-status').value = item.status;
+                document.getElementById('edit-name').value = item.name; document.getElementById('edit-desc').value = item.desc;
+                document.getElementById('edit-price').value = item.price; document.getElementById('edit-status').value = item.status;
+                document.getElementById('edit-terms').value = item.terms || ''; document.getElementById('edit-note').value = item.note || ''; document.getElementById('edit-warn').value = item.warning || '';
                 document.getElementById('edit-price-status-row').style.display = 'flex';
             }
         }
@@ -363,45 +334,39 @@
 
         function saveEdit() {
             if(!editData.active) return;
-            const name = document.getElementById('edit-name').value.trim();
-            const desc = document.getElementById('edit-desc').value.trim();
-            const price = document.getElementById('edit-price').value.trim();
-            const status = document.getElementById('edit-status').value;
+            const name = document.getElementById('edit-name').value.trim(); const desc = document.getElementById('edit-desc').value.trim();
+            const price = document.getElementById('edit-price').value.trim(); const status = document.getElementById('edit-status').value;
+            const terms = document.getElementById('edit-terms').value.trim(); const note = document.getElementById('edit-note').value.trim(); const warn = document.getElementById('edit-warn').value.trim();
             if(!name) return alert("Name cannot be empty!");
 
             if(editData.type === 'main_cat') {
-                appData[editData.catKey].title = name;
-                appData[editData.catKey].desc = desc;
+                appData[editData.catKey] = { ...appData[editData.catKey], title: name, desc: desc, terms: terms, note: note, warning: warn };
             } else if(editData.type === 'folder') {
                 const fIdx = appData[editData.catKey].subFolders.findIndex(f => f.key === editData.folderKey);
                 if(fIdx > -1) { appData[editData.catKey].subFolders[fIdx].name = name; appData[editData.catKey].subFolders[fIdx].desc = desc; }
-                if(appData[editData.folderKey]) { appData[editData.folderKey].title = name; appData[editData.folderKey].desc = desc; }
+                if(appData[editData.folderKey]) { appData[editData.folderKey] = { ...appData[editData.folderKey], title: name, desc: desc, terms: terms, note: note, warning: warn }; }
             } else {
-                appData[editData.catKey].items[editData.itemIndex] = { ...appData[editData.catKey].items[editData.itemIndex], name, desc, price, status };
+                appData[editData.catKey].items[editData.itemIndex] = { ...appData[editData.catKey].items[editData.itemIndex], name, desc, price, status, terms, note, warning: warn };
             }
             saveToDB(); closeEdit(); alert("Changes Saved!");
         }
 
         function deleteMainCat(key) {
-            if(confirm(`⚠️ WARNING: Deleting Main Category "${appData[key].title}" will permanently delete ALL folders and items inside it!\n\nAre you 100% sure?`)) {
+            if(confirm(`⚠️ WARNING: Deleting Main Category will permanently delete ALL data inside it! Sure?`)) {
                 if(appData[key].subFolders) appData[key].subFolders.forEach(sub => delete appData[sub.key]);
-                delete appData[key];
-                saveToDB();
+                delete appData[key]; saveToDB();
             }
         }
-
         function deleteEntity(type, parentCat, itemIndex, folderKey) {
             if(!confirm(`Delete this ${type}?`)) return;
             if(type === 'folder') {
-                appData[parentCat].subFolders = appData[parentCat].subFolders.filter(f => f.key !== folderKey);
-                delete appData[folderKey];
+                appData[parentCat].subFolders = appData[parentCat].subFolders.filter(f => f.key !== folderKey); delete appData[folderKey];
             } else { appData[parentCat].items.splice(itemIndex, 1); }
             saveToDB(); closeEdit();
         }
 
         function renderAdsTable() {
-            const tbody = document.getElementById('ads-table-body');
-            tbody.innerHTML = '';
+            const tbody = document.getElementById('ads-table-body'); tbody.innerHTML = '';
             getActiveAds().forEach(ad => {
                 const loc = ad.placement === 'both' ? 'Both' : ad.placement === 'home' ? 'Home' : 'Offers';
                 tbody.innerHTML += `<tr><td>${ad.title}</td><td>${loc}</td><td><button class="del-btn" onclick="deleteAd(${ad.id})">🗑️</button></td></tr>`;
