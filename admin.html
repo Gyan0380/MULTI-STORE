@@ -8,10 +8,11 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script>
+        // FIXED SERVER LINK (Singapore Server)
         const firebaseConfig = {
             apiKey: "AIzaSyDc8SBATauI9wMiwvIsrYsIuyXD_QOCKB8",
             authDomain: "developer-ab7cb.firebaseapp.com",
-            databaseURL: "https://developer-ab7cb-default-rtdb.firebaseio.com",
+            databaseURL: "https://developer-ab7cb-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "developer-ab7cb",
             storageBucket: "developer-ab7cb.firebasestorage.app",
             messagingSenderId: "178491860220",
@@ -32,7 +33,6 @@
         label { color: #cbd5e1; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px; display: block;}
         .btn { background: linear-gradient(135deg, #9333ea, #38bdf8); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.05rem; transition: 0.2s;}
         .btn:hover { transform: translateY(-2px); filter: brightness(1.1);}
-        
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; background: #0a0a14; border-radius: 8px; overflow: hidden;}
         th, td { border: 1px solid rgba(168, 85, 247, 0.2); padding: 12px; text-align: left; }
         th { background: rgba(168, 85, 247, 0.15); color: #e879f9; font-weight: bold;}
@@ -64,8 +64,7 @@
             <div class="box" style="border-color: #e879f9; border-top: 4px solid #e879f9;">
                 <h3 style="color: #e879f9; margin-bottom: 15px;">📢 Post New Advertisement</h3>
                 <div class="form-row">
-                    <div class="form-group">
-                        <label>Display Location</label>
+                    <div class="form-group"><label>Display Location</label>
                         <select id="ad-placement">
                             <option value="both">Both (Home & Offers Page)</option>
                             <option value="home">Only Home Page</option>
@@ -173,7 +172,6 @@
         let appData = {};
         let editData = { active: false, type: '', catKey: '', itemIndex: -1, folderKey: '' };
 
-        // Ensure Base Categories Always Exist To Prevent Errors
         const BASE_CATEGORIES = {
             discord_offer: "Discord Services", steam: "Steam Accounts", 
             gaming_acc: "Gaming Accounts", vouchers: "Gift Vouchers", gaming_vouchers: "Gaming Vouchers"
@@ -195,7 +193,7 @@
                     document.getElementById('dashboard').style.display = 'block';
                     listenLiveData(); 
                 })
-                .catch((e) => alert("Login Failed."));
+                .catch((e) => alert("Login Failed. Check details."));
         }
 
         function logout() { auth.signOut().then(() => location.reload()); }
@@ -203,13 +201,18 @@
         function listenLiveData() {
             db.ref('storeData').on('value', (snapshot) => {
                 appData = snapshot.val() || {};
-                ensureBaseCategories(); // Fixes missing data bug
+                ensureBaseCategories(); 
                 updateSubCatDropdown();
                 renderInventory();
             });
         }
 
-        function saveToDB() { db.ref('storeData').set(appData); }
+        // --- IMPROVED SAVE TO DB WITH ERROR ALERT ---
+        function saveToDB() { 
+            db.ref('storeData').set(appData)
+                .then(() => console.log("Data Live Sync Success!"))
+                .catch((error) => alert("⚠️ Server Save Error: Check Firebase Rules! " + error.message)); 
+        }
 
         function updateSubCatDropdown() {
             const mainCat = document.getElementById('add-main-cat').value;
@@ -242,7 +245,7 @@
             ensureBaseCategories();
 
             if (type === 'folder') {
-                if(subCat) return alert("You cannot create a folder inside another folder. Select 'Direct in Main' first.");
+                if(subCat) return alert("You cannot create a folder inside another folder.");
                 if(!desc) return alert("Folder description is required!");
                 
                 const newKey = 'cat_' + Date.now();
@@ -390,4 +393,3 @@
     </script>
 </body>
 </html>
-Q
