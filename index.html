@@ -24,15 +24,12 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; }
         body { background-color: #05050a; color: #ffffff; background-image: linear-gradient(rgba(147, 51, 234, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px); background-size: 40px 40px; overflow-x: hidden; }
-        
         header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: rgba(5, 5, 10, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 20px rgba(168, 85, 247, 0.15); z-index: 1000; }
         .logo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, #e879f9, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; text-transform: uppercase; }
-        
         .header-icons { display: flex; align-items: center; gap: 20px; }
         .top-ad-btn { background: rgba(232, 121, 249, 0.2); border: 1px solid #e879f9; color: #e879f9; padding: 5px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; text-decoration: none; animation: pulseGlow 2s infinite alternate; }
         .menu-btn { font-size: 1.8rem; cursor: pointer; color: #38bdf8; background: none; border: none; transition: transform 0.1s ease; }
         .menu-btn:active { transform: scale(0.9); }
-        
         .sidebar { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: #0d0d1a; border-left: 1px solid rgba(168, 85, 247, 0.4); box-shadow: -5px 0 20px rgba(0,0,0,0.8); transition: right 0.3s ease; z-index: 1100; padding: 60px 20px 20px 20px; }
         .sidebar.active { right: 0; }
         .sidebar h3 { color: #e879f9; margin-bottom: 20px; font-size: 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
@@ -41,81 +38,66 @@
         .sidebar ul li a { color: #d1d5db; text-decoration: none; font-size: 1.05rem; transition: color 0.2s ease; display: block; font-weight: 600;}
         .sidebar ul li a:hover { color: #38bdf8; padding-left: 8px; }
         .close-sidebar { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; cursor: pointer; color: #fff; background: none; border: none; }
-        
         .container { padding-top: 90px; max-width: 1100px; margin: 0 auto; min-height: 90vh; padding-bottom: 50px; }
         .view { display: none !important; }
         .view.active { display: block !important; animation: fastFade 0.2s ease-in-out; }
         @keyframes fastFade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        
         #welcome-view { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding-top: 30px;}
         .main-heading { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; line-height: 1.2; background: linear-gradient(135deg, #ffffff, #7dd3fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .store-description { font-size: 1.05rem; color: #cbd5e1; max-width: 650px; margin-bottom: 25px; line-height: 1.6; padding: 0 15px; }
-        
         .feature-badges { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 35px; padding: 0 10px;}
         .feature-badge { padding: 8px 16px; border-radius: 30px; font-size: 0.9rem; font-weight: bold; background: rgba(15, 15, 25, 0.8); border: 1px solid rgba(255,255,255,0.1); }
         .badge-1 { color: #e879f9; border-color: rgba(232, 121, 249, 0.4); }
         .badge-2 { color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); }
         .badge-3 { color: #34d399; border-color: rgba(52, 211, 153, 0.4); }
         .badge-4 { color: #f87171; border-color: rgba(248, 113, 113, 0.4); }
-
         .btn { background: linear-gradient(135deg, #9333ea, #0ea5e9); color: white; border: none; padding: 14px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; transition: transform 0.1s ease, filter 0.2s ease; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);}
         .btn:hover { filter: brightness(1.15); transform: translateY(-2px); }
         .btn:active { transform: scale(0.95); }
-
         #welcome-ad-container { margin-top: 40px; width: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 20px;}
-
         .scrolling-wrapper { margin-top: 50px; width: 100vw; max-width: 100%; overflow: hidden; white-space: nowrap; position: relative; background: rgba(56, 189, 248, 0.05); border-top: 1px solid rgba(56, 189, 248, 0.2); border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding: 12px 0; }
         .scrolling-content { display: inline-block; animation: scroll-left 25s linear infinite; }
         .scrolling-content span { display: inline-block; padding: 0 20px; color: #e879f9; font-weight: 600; font-size: 1.05rem; letter-spacing: 1px; }
         @keyframes scroll-left { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes pulseGlow { 0% { box-shadow: 0 0 5px currentColor; } 100% { box-shadow: 0 0 15px currentColor; } }
-
         .category-highlights { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 50px; padding: 0 20px; max-width: 1100px; width: 100%; perspective: 1000px;}
         .tilt-card { background: rgba(15, 15, 25, 0.9); border: 1px solid #38bdf8; border-radius: 12px; padding: 25px; width: 300px; transition: box-shadow 0.3s ease; text-align: center; cursor: pointer; transform-style: preserve-3d; }
         .tilt-card .t-icon { font-size: 2.5rem; margin-bottom: 15px; display: block; transform: translateZ(30px); }
         .tilt-card h4 { font-size: 1.2rem; color: #f8fafc; margin-bottom: 8px; font-weight: bold; transform: translateZ(20px); }
         .tilt-card p { font-size: 0.9rem; color: #94a3b8; line-height: 1.5; transform: translateZ(10px); }
-        
         .tc-steam { border-color: rgba(239, 68, 68, 0.5); }
         .tc-gaming { border-color: rgba(245, 158, 11, 0.5); }
         .tc-discord { border-color: rgba(99, 102, 241, 0.5); }
         .tc-bgmi { border-color: rgba(14, 165, 233, 0.5); }
         .tc-vouchers { border-color: rgba(16, 185, 129, 0.5); }
-
         .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 10px; font-weight: bold; color: #f8fafc; }
         .section-subtitle { text-align: center; color: #94a3b8; margin-bottom: 35px; font-size: 1rem;}
         .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 20px;}
-        
         .card { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 25px; transition: transform 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column; justify-content: space-between; }
         .card:hover { transform: translateY(-4px); border-color: #38bdf8; }
         .card h3 { font-size: 1.3rem; margin-bottom: 10px; color: #c084fc; }
         .card p { color: #cbd5e1; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
         .card-btn { background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; display: block; }
         .card-btn:hover { background: #38bdf8; color: #05050a; }
-        
         .sub-header { margin-bottom: 30px; padding: 0 20px;}
         .back-link { color: #38bdf8; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 15px; font-size: 1rem; }
         .back-link:hover { color: #e879f9; }
-        
         .sub-folder-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 20px; margin-bottom: 25px;}
         .folder-card { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s;}
         .folder-card:hover { border-color: #38bdf8; transform: translateY(-3px);}
         .folder-card h3 { color: #c084fc; margin-bottom: 10px;}
         .folder-card p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;}
-        
         .item-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; padding: 0 20px;}
         .item-row { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.2); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; transition: border-color 0.2s ease; }
         .item-row:hover { border-color: #c084fc; }
         .item-details h4 { font-size: 1.15rem; margin-bottom: 5px; color: #ffffff; }
         .item-details span { color: #94a3b8; font-size: 0.9rem; }
-        
         .badge { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; }
         .badge.active { background: rgba(5, 150, 105, 0.2); color: #34d399; border: 1px solid #059669; }
         .badge.stock { background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid #2563eb; }
         .badge.nostock { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid #dc2626; }
         .badge.soon { background: rgba(217, 119, 6, 0.2); color: #fbbf24; border: 1px solid #d97706; }
         .price-tag { font-size: 1.3rem; color: #38bdf8; font-weight: bold; }
-        
         .notice-box { background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.4); padding: 15px 20px; border-radius: 8px; margin: 25px 20px 0 20px; color: #cbd5e1; font-size: 0.95rem; }
         .notice-box p { margin: 5px 0; }
         .notice-box strong { color: #38bdf8; }
@@ -153,6 +135,7 @@
     </div>
 
     <div class="container">
+        <!-- WELCOME PAGE -->
         <div id="welcome-view" class="view active">
             <div style="font-size: 1.1rem; letter-spacing: 2px; color: #7dd3fc; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">Welcome to Developer Gyan</div>
             <h1 class="main-heading">Ultimate Digital Store</h1>
@@ -164,9 +147,7 @@
                 <span class="feature-badge badge-4">🎟️ Gift Vouchers</span>
             </div>
             <button class="btn" onclick="switchView('store-view')">Go to Store</button>
-
             <div id="welcome-ad-container"></div>
-
             <div class="scrolling-wrapper">
                 <div class="scrolling-content">
                     <span>🔥 Premium Steam Accounts</span><span>•</span>
@@ -176,7 +157,6 @@
                     <span>🛒 Food & Shopping Vouchers</span><span>•</span>
                 </div>
             </div>
-
             <div class="category-highlights">
                 <div class="tilt-card tc-steam" onclick="switchView('category-view'); loadCategoryData('steam');">
                     <span class="t-icon">🔥</span><h4>Steam Accounts</h4><p>Premium top-tier Steam accounts loaded with games.</p>
@@ -217,13 +197,14 @@
             </div>
         </div>
 
+        <!-- DYNAMIC ITEMS/FOLDER VIEW -->
         <div id="category-view" class="view">
             <div class="sub-header">
                 <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Store</a>
                 <h2 class="section-title" id="cat-title" style="text-align: left;">Category Offers</h2>
                 <p style="color: #94a3b8;" id="cat-desc">Browse available items and check pricing below.</p>
             </div>
-            <div class="sub-folder-container" id="sub-folder-container" style="display: none;"></div>
+            <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
             <div class="item-list" id="dynamic-item-list"></div>
             <div class="notice-box">
                 <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
@@ -239,25 +220,20 @@
 
     <script>
         const defaultStoreData = {
-            steam: { title: "Steam Accounts", desc: "Find best accounts pre-loaded with top games at cheap prices.", items: [{ id: 1, name: "Random Steam Level 20+ Account", desc: "Contains random premium games + full access.", price: "₹149", status: "Active" }] },
-            gaming_acc: { title: "Gaming Accounts", desc: "Pro accounts for BGMI, Free Fire, Valorant, etc.", items: [{ id: 3, name: "BGMI Conqueror Tier Account", desc: "Max RP, rare outfits, safe login.", price: "₹799", status: "Active" }] },
-            discord_offer: { title: "Discord Offers", desc: "Select a Discord service sub-category below.", subFolders: [{ key: "prebuild_server", name: "Prebuild DC Server", desc: "Ready-made Discord servers with themes & bots." },{ key: "custom_server", name: "Custom Server Builder", desc: "Build your own completely custom Discord server." },{ key: "custom_bot", name: "Custom Bot Builder", desc: "Hire developer for custom bots." }], items: [] },
-            prebuild_server: { title: "Prebuild DC Server", desc: "Ready-made servers. Fast delivery.", parentKey: "discord_offer", items: [{ id: 5, name: "Only Theme", desc: "Prebuild server with beautiful theme setup.", price: "₹50", status: "Active" }] },
-            custom_server: { title: "Custom Server Builder", desc: "Build a brand new server customized for you.", parentKey: "discord_offer", items: [{ id: 7, name: "Custom Theme Only", desc: "Custom server with your requested theme design.", price: "₹65", status: "Active" }] },
-            custom_bot: { title: "Custom Bot Builder", desc: "Hire expert developer to code custom commands.", parentKey: "discord_offer", isBot: true, items: [{ id: 9, name: "Bot 10 Commands", desc: "Custom bot coded with up to 10 commands.", price: "₹80", status: "Active" }] },
-            vouchers: { title: "Food & Shopping Vouchers", desc: "Get discount vouchers for Zomato, Dominos, EGC, and clothing apps.", items: [{ id: 15, name: "Zomato / Dominos Food Voucher", desc: "Flat discount voucher code for food delivery apps.", price: "₹49", status: "Active" }] },
-            gaming_vouchers: { title: "Gaming Vouchers", desc: "Select a gaming voucher sub-category below.", subFolders: [{ key: "bgmi_uc", name: "BGMI UC Vouchers", desc: "Best selling BGMI UC top-up packs at cheapest prices." }], items: [] },
-            bgmi_uc: { title: "BGMI UC Vouchers", desc: "Best selling BGMI UC packs at cheapest prices with instant secure delivery.", parentKey: "gaming_vouchers", items: [{ id: 17, name: "360 UC", desc: "Selling in (Pice): ₹380", price: "₹419", status: "Active" }] }
+            discord_offer: { title: "Discord Offers", desc: "Select a Discord service sub-category below.", subFolders: [], items: [] },
+            steam: { title: "Steam Accounts", desc: "Find best accounts pre-loaded with top games.", subFolders: [], items: [] },
+            gaming_acc: { title: "Gaming Accounts", desc: "Pro accounts for BGMI, Free Fire, Valorant, etc.", subFolders: [], items: [] },
+            vouchers: { title: "Food & Shopping Vouchers", desc: "Get discount vouchers for Zomato, Dominos, EGC.", subFolders: [], items: [] },
+            gaming_vouchers: { title: "Gaming Vouchers", desc: "Select a gaming voucher sub-category below.", subFolders: [], items: [] }
         };
 
         let appData = {};
         let currentCategory = null;
 
-        // LIVE Sync Data from Firebase
         db.ref('storeData').on('value', (snapshot) => {
             if (snapshot.exists()) {
                 appData = snapshot.val();
-                // Ensure default keys exist if someone deletes everything
+                // Safety check: ensure core folders aren't lost
                 for(let key in defaultStoreData) {
                     if(!appData[key]) appData[key] = defaultStoreData[key];
                 }
@@ -265,8 +241,6 @@
                 appData = defaultStoreData;
                 db.ref('storeData').set(defaultStoreData);
             }
-            
-            // Refresh current view if open
             if (currentCategory && document.getElementById('category-view').classList.contains('active')) {
                 loadCategoryData(currentCategory);
             }
@@ -283,19 +257,29 @@
             }
         }
 
-        // DYNAMIC CATEGORY LOADING
+        // LOAD CATEGORY WITH BLANK PROTECTION
         function loadCategoryData(catKey) {
             currentCategory = catKey;
             const cat = appData[catKey];
-            if(!cat) return;
+            
+            // If Category was deleted or missing, show error state securely
+            if(!cat) {
+                document.getElementById('cat-title').innerText = "Empty Category";
+                document.getElementById('cat-desc').innerText = "No data found for this section.";
+                document.getElementById('sub-folder-container').style.display = 'none';
+                document.getElementById('dynamic-item-list').innerHTML = '<p style="color:#f87171; text-align:center;">This category has been removed or is empty.</p>';
+                document.getElementById('back-button').setAttribute('onclick', "switchView('store-view')");
+                document.getElementById('back-button').innerText = "← Back to Store";
+                switchView('category-view');
+                return;
+            }
 
-            // DYNAMIC TITLE UPDATE
-            document.getElementById('cat-title').innerText = cat.title + " Offers"; // Title changed based on category
-            document.getElementById('cat-desc').innerText = cat.desc;
+            document.getElementById('cat-title').innerText = cat.title + " Offers";
+            document.getElementById('cat-desc').innerText = cat.desc || "Browse items below.";
             document.getElementById('bot-notice').style.display = cat.isBot ? 'block' : 'none';
 
             const backBtn = document.getElementById('back-button');
-            if(cat.parentKey) { 
+            if(cat.parentKey && appData[cat.parentKey]) { 
                 backBtn.setAttribute('onclick', `loadCategoryData('${cat.parentKey}')`); 
                 backBtn.innerText = "← Back to " + appData[cat.parentKey].title; 
             } else { 
@@ -303,7 +287,6 @@
                 backBtn.innerText = "← Back to Store"; 
             }
 
-            // Render Sub-folders if they exist
             const subContainer = document.getElementById('sub-folder-container');
             subContainer.innerHTML = '';
             if(cat.subFolders && cat.subFolders.length > 0) {
@@ -313,7 +296,6 @@
                 });
             } else { subContainer.style.display = 'none'; }
 
-            // Render Items if they exist
             const listContainer = document.getElementById('dynamic-item-list');
             listContainer.innerHTML = '';
             if(cat.items && cat.items.length > 0) {
@@ -333,7 +315,6 @@
                         </div>`;
                 });
             } else if (!cat.subFolders || cat.subFolders.length === 0) {
-                // If neither folders nor items exist
                 listContainer.innerHTML = '<p style="color:#94a3b8; text-align:center;">No offers available right now in this category.</p>';
             }
             switchView('category-view');
@@ -351,10 +332,7 @@
             });
         }
 
-        window.onload = function() { 
-            switchView('welcome-view'); 
-            initTiltEffect();
-        }
+        window.onload = function() { switchView('welcome-view'); initTiltEffect(); }
     </script>
 </body>
 </html>
