@@ -85,36 +85,21 @@
         .tc-bgmi { border-color: rgba(14, 165, 233, 0.5); }
         .tc-vouchers { border-color: rgba(16, 185, 129, 0.5); }
 
-        .seller-banner { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 20px; padding: 25px; text-align: center; max-width: 700px; margin: 0 auto 40px auto; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .seller-banner h3 { color: #f8fafc; font-size: 1.5rem; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px;}
-        .seller-banner .banner-links { color: #cbd5e1; font-size: 0.9rem; margin-bottom: 20px; font-weight: 600;}
-        .seller-banner .banner-links span { color: #38bdf8; }
-
         .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 10px; font-weight: bold; color: #f8fafc; }
         .section-subtitle { text-align: center; color: #94a3b8; margin-bottom: 35px; font-size: 1rem;}
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 20px;}
         
-        .services-container { display: flex; flex-direction: column; gap: 30px; align-items: center; padding: 0 20px; }
-        .service-card { width: 100%; max-width: 650px; background: rgba(15, 15, 25, 0.6); border: 1px solid rgba(168, 85, 247, 0.2); border-radius: 24px; padding: 35px 20px; text-align: center; backdrop-filter: blur(10px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; position: relative; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, #c084fc, #38bdf8); transform: scaleX(0); transition: transform 0.3s ease; transform-origin: left; }
-        .service-card:hover { transform: translateY(-8px); border-color: rgba(56, 189, 248, 0.5); box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(56, 189, 248, 0.1); background: rgba(20, 20, 30, 0.8); }
-        .service-card:hover::before { transform: scaleX(1); }
-        .sc-icon { font-size: 4rem; margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(255,255,255,0.2)); display: block;}
-        .service-card h3 { font-size: 1.6rem; margin-bottom: 12px; color: #f8fafc; font-weight: 800;}
-        .service-card p { color: #94a3b8; font-size: 1rem; line-height: 1.6; margin-bottom: 20px; max-width: 80%; margin-left: auto; margin-right: auto;}
-        .sc-price { margin-top: 10px; font-size: 1.1rem; color: #38bdf8; font-weight: bold; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); display: inline-block; padding: 8px 25px; border-radius: 30px; letter-spacing: 0.5px;}
-
+        .card { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 25px; transition: transform 0.2s ease, border-color 0.2s ease; display: flex; flex-direction: column; justify-content: space-between; }
+        .card:hover { transform: translateY(-4px); border-color: #38bdf8; }
+        .card h3 { font-size: 1.3rem; margin-bottom: 10px; color: #c084fc; }
+        .card p { color: #cbd5e1; font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px; }
+        .card-btn { background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; display: block; }
+        .card-btn:hover { background: #38bdf8; color: #05050a; }
+        
         .sub-header { margin-bottom: 30px; padding: 0 20px;}
         .back-link { color: #38bdf8; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 15px; font-size: 1rem; }
         .back-link:hover { color: #e879f9; }
         
-        .sub-folder-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 20px; margin-bottom: 25px;}
-        .folder-card { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s;}
-        .folder-card:hover { border-color: #38bdf8; transform: translateY(-3px);}
-        .folder-card h3 { color: #c084fc; margin-bottom: 10px;}
-        .folder-card p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;}
-        .card-btn { background: rgba(56, 189, 248, 0.1); border: 1px solid #38bdf8; color: #38bdf8; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; text-align: center; display: block; width: 100%;}
-        .card-btn:hover { background: #38bdf8; color: #05050a; }
-
         .item-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; padding: 0 20px;}
         .item-row { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.2); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; transition: border-color 0.2s ease; }
         .item-row:hover { border-color: #c084fc; }
@@ -126,12 +111,13 @@
         .badge.stock { background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid #2563eb; }
         .badge.nostock { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid #dc2626; }
         .badge.soon { background: rgba(217, 119, 6, 0.2); color: #fbbf24; border: 1px solid #d97706; }
+        
         .price-tag { font-size: 1.3rem; color: #38bdf8; font-weight: bold; }
         .notice-box { background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.4); padding: 15px 20px; border-radius: 8px; margin: 25px 20px 0 20px; color: #cbd5e1; font-size: 0.95rem; }
         .notice-box p { margin: 5px 0; }
         .notice-box strong { color: #38bdf8; }
-        .footer { text-align: center; padding: 30px; color: #64748b; font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 60px; }
         
+        .footer { text-align: center; padding: 30px; color: #64748b; font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 60px; }
         .fab-discord { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: linear-gradient(135deg, #5865F2, #7c85f5); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 5px 20px rgba(88, 101, 242, 0.6); cursor: pointer; transition: transform 0.2s; z-index: 1000; text-decoration: none; border: 2px solid rgba(255,255,255,0.2);}
         .fab-discord:hover { transform: scale(1.1) translateY(-5px); }
     </style>
@@ -188,6 +174,11 @@
                     <span>🤖 Custom Discord Bots & Servers</span><span>•</span>
                     <span>💎 Cheapest BGMI UC Vouchers</span><span>•</span>
                     <span>🛒 Food & Shopping Vouchers</span><span>•</span>
+                    <span>🔥 Premium Steam Accounts</span><span>•</span>
+                    <span>🎮 Conqueror Gaming Accounts</span><span>•</span>
+                    <span>🤖 Custom Discord Bots & Servers</span><span>•</span>
+                    <span>💎 Cheapest BGMI UC Vouchers</span><span>•</span>
+                    <span>🛒 Food & Shopping Vouchers</span><span>•</span>
                 </div>
             </div>
 
@@ -223,42 +214,25 @@
 
         <!-- MAIN STORE VIEW -->
         <div id="store-view" class="view">
-            <div class="seller-banner">
-                <h3>🛡️ Trusted & Verified Seller</h3>
-                <div class="banner-links"><span>Home</span> &nbsp;|&nbsp; <span>Services</span> &nbsp;|&nbsp; <span>Pricing</span></div>
-                <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding: 10px 30px; font-size: 1rem; border-radius: 8px;">Join Discord</a>
-            </div>
-
-            <h2 class="section-title">Our Services</h2>
+            <h2 class="section-title">Store Categories</h2>
             <p class="section-subtitle">Select a category below to explore offers and pricing</p>
-            
-            <div class="services-container">
-                <div class="service-card" onclick="switchView('category-view'); loadCategoryData('discord_offer');">
-                    <span class="sc-icon">👾</span><h3>Discord Services</h3><p>Premium Family, Market, Roleplay and Custom Built Servers & AI Bots.</p><div class="sc-price">Starting ₹50</div>
-                </div>
-                <div class="service-card" onclick="switchView('category-view'); loadCategoryData('bgmi_uc');">
-                    <span class="sc-icon">💎</span><h3>BGMI UC Vouchers</h3><p>Instant BGMI UC top-ups at the lowest market prices guaranteed.</p><div class="sc-price">Starting ₹419</div>
-                </div>
-                <div class="service-card" onclick="switchView('category-view'); loadCategoryData('steam');">
-                    <span class="sc-icon">🎮</span><h3>Steam Accounts</h3><p>Find best accounts pre-loaded with top tier games at cheap prices.</p><div class="sc-price">Starting ₹149</div>
-                </div>
-                <div class="service-card" onclick="switchView('category-view'); loadCategoryData('gaming_acc');">
-                    <span class="sc-icon">🔥</span><h3>Gaming Accounts</h3><p>Find amazing pro level accounts like BGMI Conqueror, Free Fire.</p><div class="sc-price">Starting ₹499</div>
-                </div>
-                <div class="service-card" onclick="switchView('category-view'); loadCategoryData('vouchers');">
-                    <span class="sc-icon">🎟️</span><h3>Gift Vouchers</h3><p>Get food & shopping vouchers like Dominos, Zomato, EGC.</p><div class="sc-price">Starting ₹49</div>
-                </div>
+            <div class="grid-container">
+                <div class="card"><div><h3>Discord Offer</h3><p>Prebuild servers, custom bots & servers.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('discord_offer');">See Offer</button></div>
+                <div class="card"><div><h3>Steam Account</h3><p>Best accounts with pre-loaded top games.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('steam');">See Offer</button></div>
+                <div class="card"><div><h3>Gaming Account</h3><p>Find amazing pro accounts like BGMI, Free Fire.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_acc');">See Offer</button></div>
+                <div class="card"><div><h3>Vouchers</h3><p>Discount vouchers for Zomato, Dominos, EGC.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('vouchers');">See Offer</button></div>
+                <div class="card"><div><h3>Gaming Vouchers</h3><p>Top up in cheapest price! Inside: BGMI UC packages.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers');">See Offer</button></div>
             </div>
         </div>
 
         <!-- ITEMS FOLDER VIEW -->
         <div id="category-view" class="view">
             <div class="sub-header">
-                <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Services</a>
+                <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Store</a>
                 <h2 class="section-title" id="cat-title" style="text-align: left;">Category Offers</h2>
                 <p style="color: #94a3b8;" id="cat-desc">Browse available items and check pricing below.</p>
             </div>
-            <div class="sub-folder-container" id="sub-folder-container" style="display: none;"></div>
+            <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
             <div class="item-list" id="dynamic-item-list"></div>
             <div class="notice-box">
                 <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
@@ -274,7 +248,6 @@
     <script src="ads.js"></script>
 
     <script>
-        // Default Data in case Firebase is empty
         const defaultStoreData = {
             steam: { title: "Steam Accounts", desc: "Find best accounts pre-loaded with top games at cheap prices.", items: [{ id: 1, name: "Random Steam Level 20+ Account", desc: "Contains random premium games + full access.", price: "₹149", status: "Active" }] },
             gaming_acc: { title: "Gaming Accounts", desc: "Pro accounts for BGMI, Free Fire, Valorant, etc.", items: [{ id: 3, name: "BGMI Conqueror Tier Account", desc: "Max RP, rare outfits, safe login.", price: "₹799", status: "Active" }] },
@@ -304,6 +277,7 @@
             }
         });
 
+        // Core Functions
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
         
         function switchView(viewId) { 
@@ -330,7 +304,7 @@
                 backBtn.innerText = "← Back to " + appData[cat.parentKey].title; 
             } else { 
                 backBtn.setAttribute('onclick', "switchView('store-view')"); 
-                backBtn.innerText = "← Back to Services"; 
+                backBtn.innerText = "← Back to Store"; 
             }
 
             const subContainer = document.getElementById('sub-folder-container');
@@ -338,7 +312,7 @@
             if(cat.subFolders && cat.subFolders.length > 0) {
                 subContainer.style.display = 'grid';
                 cat.subFolders.forEach(folder => {
-                    subContainer.innerHTML += `<div class="folder-card"><div><h3>📁 ${folder.name}</h3><p>${folder.desc}</p></div><button class="btn" style="width:100%; padding: 10px; font-size:1rem;" onclick="loadCategoryData('${folder.key}')">See Offers</button></div>`;
+                    subContainer.innerHTML += `<div class="card"><div><h3>📁 ${folder.name}</h3><p>${folder.desc}</p></div><button class="card-btn" onclick="loadCategoryData('${folder.key}')">See Offers</button></div>`;
                 });
             } else { subContainer.style.display = 'none'; }
 
@@ -356,7 +330,7 @@
                             </div>
                             <div>
                                 <div class="price-tag">${item.price}</div>
-                                <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding:8px 20px; font-size:0.9rem; margin-top:8px; border-radius:8px;">Buy via Discord</a>
+                                <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding:6px 15px; font-size:0.85rem; margin-top:8px;">Join DC Server</a>
                             </div>
                         </div>`;
                 });
@@ -366,6 +340,7 @@
             switchView('category-view');
         }
 
+        // Tilt logic
         function initTiltEffect() {
             document.querySelectorAll('.tilt-card').forEach(card => {
                 card.addEventListener('mousemove', e => {
