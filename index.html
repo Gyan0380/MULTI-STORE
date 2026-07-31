@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Developer Gyan - Digital Store</title>
     
-    <!-- Firebase SDK Setup -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script>
@@ -18,9 +17,7 @@
             messagingSenderId: "178491860220",
             appId: "1:178491860220:web:d874ac1cb68954c2d02379"
         };
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
-        }
+        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
     </script>
 
@@ -100,6 +97,12 @@
         .back-link { color: #38bdf8; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 15px; font-size: 1rem; }
         .back-link:hover { color: #e879f9; }
         
+        .sub-folder-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 20px; margin-bottom: 25px;}
+        .folder-card { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; justify-content: space-between; transition: 0.2s;}
+        .folder-card:hover { border-color: #38bdf8; transform: translateY(-3px);}
+        .folder-card h3 { color: #c084fc; margin-bottom: 10px;}
+        .folder-card p { color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;}
+        
         .item-list { display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; padding: 0 20px;}
         .item-row { background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(168, 85, 247, 0.2); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; transition: border-color 0.2s ease; }
         .item-row:hover { border-color: #c084fc; }
@@ -111,12 +114,11 @@
         .badge.stock { background: rgba(37, 99, 235, 0.2); color: #60a5fa; border: 1px solid #2563eb; }
         .badge.nostock { background: rgba(220, 38, 38, 0.2); color: #f87171; border: 1px solid #dc2626; }
         .badge.soon { background: rgba(217, 119, 6, 0.2); color: #fbbf24; border: 1px solid #d97706; }
-        
         .price-tag { font-size: 1.3rem; color: #38bdf8; font-weight: bold; }
+        
         .notice-box { background: rgba(56, 189, 248, 0.05); border: 1px dashed rgba(56, 189, 248, 0.4); padding: 15px 20px; border-radius: 8px; margin: 25px 20px 0 20px; color: #cbd5e1; font-size: 0.95rem; }
         .notice-box p { margin: 5px 0; }
         .notice-box strong { color: #38bdf8; }
-        
         .footer { text-align: center; padding: 30px; color: #64748b; font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 60px; }
         .fab-discord { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: linear-gradient(135deg, #5865F2, #7c85f5); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 5px 20px rgba(88, 101, 242, 0.6); cursor: pointer; transition: transform 0.2s; z-index: 1000; text-decoration: none; border: 2px solid rgba(255,255,255,0.2);}
         .fab-discord:hover { transform: scale(1.1) translateY(-5px); }
@@ -151,7 +153,6 @@
     </div>
 
     <div class="container">
-        <!-- WELCOME PAGE -->
         <div id="welcome-view" class="view active">
             <div style="font-size: 1.1rem; letter-spacing: 2px; color: #7dd3fc; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">Welcome to Developer Gyan</div>
             <h1 class="main-heading">Ultimate Digital Store</h1>
@@ -164,7 +165,6 @@
             </div>
             <button class="btn" onclick="switchView('store-view')">Go to Store</button>
 
-            <!-- AD CONTAINER -->
             <div id="welcome-ad-container"></div>
 
             <div class="scrolling-wrapper">
@@ -174,15 +174,9 @@
                     <span>🤖 Custom Discord Bots & Servers</span><span>•</span>
                     <span>💎 Cheapest BGMI UC Vouchers</span><span>•</span>
                     <span>🛒 Food & Shopping Vouchers</span><span>•</span>
-                    <span>🔥 Premium Steam Accounts</span><span>•</span>
-                    <span>🎮 Conqueror Gaming Accounts</span><span>•</span>
-                    <span>🤖 Custom Discord Bots & Servers</span><span>•</span>
-                    <span>💎 Cheapest BGMI UC Vouchers</span><span>•</span>
-                    <span>🛒 Food & Shopping Vouchers</span><span>•</span>
                 </div>
             </div>
 
-            <!-- TILT CARDS -->
             <div class="category-highlights">
                 <div class="tilt-card tc-steam" onclick="switchView('category-view'); loadCategoryData('steam');">
                     <span class="t-icon">🔥</span><h4>Steam Accounts</h4><p>Premium top-tier Steam accounts loaded with games.</p>
@@ -202,7 +196,6 @@
             </div>
         </div>
 
-        <!-- ADS VIEW PAGE -->
         <div id="ads-view" class="view">
             <div class="sub-header">
                 <a href="#" class="back-link" onclick="switchView('welcome-view')">← Back to Home</a>
@@ -212,7 +205,6 @@
             <div id="ads-page-container" style="display: flex; flex-direction: column; align-items: center; padding: 0 20px;"></div>
         </div>
 
-        <!-- MAIN STORE VIEW -->
         <div id="store-view" class="view">
             <h2 class="section-title">Store Categories</h2>
             <p class="section-subtitle">Select a category below to explore offers and pricing</p>
@@ -225,14 +217,13 @@
             </div>
         </div>
 
-        <!-- ITEMS FOLDER VIEW -->
         <div id="category-view" class="view">
             <div class="sub-header">
                 <a href="#" class="back-link" id="back-button" onclick="switchView('store-view')">← Back to Store</a>
                 <h2 class="section-title" id="cat-title" style="text-align: left;">Category Offers</h2>
                 <p style="color: #94a3b8;" id="cat-desc">Browse available items and check pricing below.</p>
             </div>
-            <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
+            <div class="sub-folder-container" id="sub-folder-container" style="display: none;"></div>
             <div class="item-list" id="dynamic-item-list"></div>
             <div class="notice-box">
                 <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
@@ -244,7 +235,6 @@
 
     <div class="footer">© 2026 Developer Gyan. All Rights Reserved.</div>
 
-    <!-- LINK ADS.JS AFTER FIREBASE IS LOADED -->
     <script src="ads.js"></script>
 
     <script>
@@ -263,21 +253,25 @@
         let appData = {};
         let currentCategory = null;
 
-        // Firebase LIVE Database Sync for Store
+        // LIVE Sync Data from Firebase
         db.ref('storeData').on('value', (snapshot) => {
             if (snapshot.exists()) {
                 appData = snapshot.val();
+                // Ensure default keys exist if someone deletes everything
+                for(let key in defaultStoreData) {
+                    if(!appData[key]) appData[key] = defaultStoreData[key];
+                }
             } else {
                 appData = defaultStoreData;
+                db.ref('storeData').set(defaultStoreData);
             }
             
-            // If user is inside a category right now, refresh it live!
+            // Refresh current view if open
             if (currentCategory && document.getElementById('category-view').classList.contains('active')) {
                 loadCategoryData(currentCategory);
             }
         });
 
-        // Core Functions
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
         
         function switchView(viewId) { 
@@ -289,12 +283,14 @@
             }
         }
 
+        // DYNAMIC CATEGORY LOADING
         function loadCategoryData(catKey) {
             currentCategory = catKey;
             const cat = appData[catKey];
             if(!cat) return;
 
-            document.getElementById('cat-title').innerText = cat.title;
+            // DYNAMIC TITLE UPDATE
+            document.getElementById('cat-title').innerText = cat.title + " Offers"; // Title changed based on category
             document.getElementById('cat-desc').innerText = cat.desc;
             document.getElementById('bot-notice').style.display = cat.isBot ? 'block' : 'none';
 
@@ -307,15 +303,17 @@
                 backBtn.innerText = "← Back to Store"; 
             }
 
+            // Render Sub-folders if they exist
             const subContainer = document.getElementById('sub-folder-container');
             subContainer.innerHTML = '';
             if(cat.subFolders && cat.subFolders.length > 0) {
                 subContainer.style.display = 'grid';
                 cat.subFolders.forEach(folder => {
-                    subContainer.innerHTML += `<div class="card"><div><h3>📁 ${folder.name}</h3><p>${folder.desc}</p></div><button class="card-btn" onclick="loadCategoryData('${folder.key}')">See Offers</button></div>`;
+                    subContainer.innerHTML += `<div class="folder-card"><div><h3>📁 ${folder.name}</h3><p>${folder.desc}</p></div><button class="btn" style="width:100%; padding: 10px; font-size:1rem;" onclick="loadCategoryData('${folder.key}')">See Offers</button></div>`;
                 });
             } else { subContainer.style.display = 'none'; }
 
+            // Render Items if they exist
             const listContainer = document.getElementById('dynamic-item-list');
             listContainer.innerHTML = '';
             if(cat.items && cat.items.length > 0) {
@@ -330,17 +328,17 @@
                             </div>
                             <div>
                                 <div class="price-tag">${item.price}</div>
-                                <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding:6px 15px; font-size:0.85rem; margin-top:8px;">Join DC Server</a>
+                                <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="btn" style="padding:8px 20px; font-size:0.9rem; margin-top:8px; border-radius:8px;">Buy via Discord</a>
                             </div>
                         </div>`;
                 });
             } else if (!cat.subFolders || cat.subFolders.length === 0) {
-                listContainer.innerHTML = '<p style="color:#94a3b8; text-align:center;">No offers available right now.</p>';
+                // If neither folders nor items exist
+                listContainer.innerHTML = '<p style="color:#94a3b8; text-align:center;">No offers available right now in this category.</p>';
             }
             switchView('category-view');
         }
 
-        // Tilt logic
         function initTiltEffect() {
             document.querySelectorAll('.tilt-card').forEach(card => {
                 card.addEventListener('mousemove', e => {
