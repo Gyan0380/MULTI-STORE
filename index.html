@@ -11,7 +11,6 @@
         header { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 15px 25px; background: rgba(5, 5, 10, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(168, 85, 247, 0.4); box-shadow: 0 0 20px rgba(168, 85, 247, 0.15); z-index: 1000; }
         .logo { font-size: 1.3rem; font-weight: 900; background: linear-gradient(135deg, #e879f9, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 1px; text-transform: uppercase; }
         
-        /* Top Corner Ad Button & Menu */
         .header-icons { display: flex; align-items: center; gap: 20px; }
         .top-ad-btn { background: rgba(232, 121, 249, 0.2); border: 1px solid #e879f9; color: #e879f9; padding: 5px 12px; border-radius: 20px; font-weight: bold; cursor: pointer; text-decoration: none; animation: pulseGlow 2s infinite alternate; }
         .menu-btn { font-size: 1.8rem; cursor: pointer; color: #38bdf8; background: none; border: none; transition: transform 0.1s ease; }
@@ -42,11 +41,10 @@
         .badge-3 { color: #34d399; border-color: rgba(52, 211, 153, 0.4); }
         .badge-4 { color: #f87171; border-color: rgba(248, 113, 113, 0.4); }
 
-        .btn { background: linear-gradient(135deg, #9333ea, #0ea5e9); color: white; border: none; padding: 14px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; transition: transform 0.1s ease, filter 0.2s ease; text-transform: uppercase; letter-spacing: 1px; }
+        .btn { background: linear-gradient(135deg, #9333ea, #0ea5e9); color: white; border: none; padding: 14px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; cursor: pointer; transition: transform 0.1s ease, filter 0.2s ease; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 5px 15px rgba(14, 165, 233, 0.3);}
         .btn:hover { filter: brightness(1.15); transform: translateY(-2px); }
         .btn:active { transform: scale(0.95); }
 
-        /* BIG WELCOME AD CONTAINER */
         #welcome-ad-container { margin-top: 40px; width: 100%; display: flex; flex-direction: column; align-items: center; padding: 0 20px;}
 
         .scrolling-wrapper { margin-top: 50px; width: 100vw; max-width: 100%; overflow: hidden; white-space: nowrap; position: relative; background: rgba(56, 189, 248, 0.05); border-top: 1px solid rgba(56, 189, 248, 0.2); border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding: 12px 0; }
@@ -100,14 +98,8 @@
         .notice-box strong { color: #38bdf8; }
         
         .footer { text-align: center; padding: 30px; color: #64748b; font-size: 0.9rem; border-top: 1px solid rgba(255, 255, 255, 0.1); margin-top: 60px; }
-
-        /* Admin Layout */
-        .admin-login, .admin-dashboard { max-width: 800px; margin: 20px auto; background: rgba(20, 20, 30, 0.9); border: 1px solid rgba(168, 85, 247, 0.3); padding: 25px; border-radius: 12px; }
-        .admin-login input, .admin-form-group input, .admin-form-group select { width: 100%; padding: 10px; margin: 10px 0; background: #05050a; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 6px; color: #fff; outline: none; }
-        .admin-form-group label { display: block; margin-bottom: 5px; color: #c084fc; font-size: 0.9rem; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.85rem; }
-        .admin-table th, .admin-table td { border: 1px solid rgba(168, 85, 247, 0.2); padding: 10px; text-align: left; }
-        .admin-table th { background: rgba(168, 85, 247, 0.1); color: #c084fc; }
+        .fab-discord { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: linear-gradient(135deg, #5865F2, #7c85f5); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; box-shadow: 0 5px 20px rgba(88, 101, 242, 0.6); cursor: pointer; transition: transform 0.2s; z-index: 1000; text-decoration: none; border: 2px solid rgba(255,255,255,0.2);}
+        .fab-discord:hover { transform: scale(1.1) translateY(-5px); }
     </style>
 </head>
 <body>
@@ -119,6 +111,8 @@
             <button class="menu-btn" onclick="toggleSidebar()">☰</button>
         </div>
     </header>
+
+    <a href="https://discord.gg/qHfvn2ntqx" target="_blank" class="fab-discord" title="Join Our Discord">🎧</a>
 
     <div class="sidebar" id="sidebar">
         <button class="close-sidebar" onclick="toggleSidebar()">✕</button>
@@ -132,24 +126,21 @@
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('gaming_acc'); toggleSidebar();">🔥 Gaming Account</a></li>
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('vouchers'); toggleSidebar();">🛒 Vouchers</a></li>
             <li><a href="#" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers'); toggleSidebar();">💎 Gaming Vouchers</a></li>
-            <li><a href="#" onclick="switchView('admin-view'); toggleSidebar();">🔒 Central Admin Panel</a></li>
+            <li><a href="admin.html" style="color: #f87171;">🔒 Central Admin Panel</a></li>
         </ul>
     </div>
 
     <div class="container">
-
         <div id="welcome-view" class="view active">
             <div style="font-size: 1.1rem; letter-spacing: 2px; color: #7dd3fc; margin-bottom: 10px; text-transform: uppercase; font-weight: bold;">Welcome to Developer Gyan</div>
             <h1 class="main-heading">Ultimate Digital Store</h1>
             <p class="store-description">Fast delivery aur 100% trusted service ke sath order karein! Sabse cheapest price mein premium quality.</p>
-
             <div class="feature-badges">
                 <span class="feature-badge badge-1">🤖 Custom Discord Bots</span>
                 <span class="feature-badge badge-2">💎 Cheap BGMI UC</span>
                 <span class="feature-badge badge-3">🎮 Gaming & Steam Accs</span>
                 <span class="feature-badge badge-4">🎟️ Gift Vouchers</span>
             </div>
-
             <button class="btn" onclick="switchView('store-view')">Go to Store</button>
 
             <div id="welcome-ad-container"></div>
@@ -194,36 +185,18 @@
                 <h2 class="section-title" style="text-align: left; color: #e879f9;">📢 Special Offers & Ads</h2>
                 <p style="color: #94a3b8;">Hurry up! These offers are available for a limited time only.</p>
             </div>
-            
-            <div id="ads-page-container" style="display: flex; flex-direction: column; align-items: center; padding: 0 20px;">
-                </div>
+            <div id="ads-page-container" style="display: flex; flex-direction: column; align-items: center; padding: 0 20px;"></div>
         </div>
 
         <div id="store-view" class="view">
             <h2 class="section-title">Store Categories</h2>
             <p class="section-subtitle">Select a category below to explore offers and pricing</p>
-            
             <div class="grid-container">
-                <div class="card">
-                    <div><h3>Discord Offer</h3><p>Prebuild servers, custom bots & servers.</p></div>
-                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('discord_offer');">See Offer</button>
-                </div>
-                <div class="card">
-                    <div><h3>Steam Account</h3><p>Best accounts with pre-loaded top games.</p></div>
-                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('steam');">See Offer</button>
-                </div>
-                <div class="card">
-                    <div><h3>Gaming Account</h3><p>Find amazing pro accounts like BGMI, Free Fire.</p></div>
-                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_acc');">See Offer</button>
-                </div>
-                <div class="card">
-                    <div><h3>Vouchers</h3><p>Discount vouchers for Zomato, Dominos, EGC.</p></div>
-                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('vouchers');">See Offer</button>
-                </div>
-                <div class="card">
-                    <div><h3>Gaming Vouchers</h3><p>Top up in cheapest price! Inside: BGMI UC packages.</p></div>
-                    <button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers');">See Offer</button>
-                </div>
+                <div class="card"><div><h3>Discord Offer</h3><p>Prebuild servers, custom bots & servers.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('discord_offer');">See Offer</button></div>
+                <div class="card"><div><h3>Steam Account</h3><p>Best accounts with pre-loaded top games.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('steam');">See Offer</button></div>
+                <div class="card"><div><h3>Gaming Account</h3><p>Find amazing pro accounts like BGMI, Free Fire.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_acc');">See Offer</button></div>
+                <div class="card"><div><h3>Vouchers</h3><p>Discount vouchers for Zomato, Dominos, EGC.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('vouchers');">See Offer</button></div>
+                <div class="card"><div><h3>Gaming Vouchers</h3><p>Top up in cheapest price! Inside: BGMI UC packages.</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('gaming_vouchers');">See Offer</button></div>
             </div>
         </div>
 
@@ -233,124 +206,43 @@
                 <h2 class="section-title" id="cat-title" style="text-align: left;">Category Offers</h2>
                 <p style="color: #94a3b8;" id="cat-desc">Browse available items and check pricing below.</p>
             </div>
-
             <div class="grid-container" id="sub-folder-container" style="margin-bottom: 25px; display: none;"></div>
             <div class="item-list" id="dynamic-item-list"></div>
-
             <div class="notice-box">
                 <p><strong>Terms & Conditions:</strong> Need 100% advance first.</p>
                 <p><strong>Payment Method:</strong> Only UPI payment available right now.</p>
-                <p id="bot-notice" style="display:none; color:#fbbf24; margin-top:10px;"><strong>Note:</strong> All offers need Monthly fee for bot running (Pricing does not include monthly fee). You can only take max 40 commands offer currently.</p>
+                <p id="bot-notice" style="display:none; color:#fbbf24; margin-top:10px;"><strong>Note:</strong> All offers need Monthly fee for bot running.</p>
             </div>
         </div>
-
-        <div id="admin-view" class="view">
-            <div class="sub-header">
-                <a href="#" class="back-link" onclick="switchView('welcome-view')">← Back to Home</a>
-                <h2 class="section-title" style="text-align: left;">🔒 Central Admin Panel</h2>
-            </div>
-
-            <div id="admin-login-box" class="admin-login">
-                <h3>Admin Authentication</h3>
-                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Enter admin password to access controls</p>
-                <input type="password" id="admin-pass" placeholder="Enter password...">
-                <button class="btn" style="width: 100%;" onclick="checkAdminLogin()">Login</button>
-            </div>
-
-            <div id="admin-dashboard-box" class="admin-dashboard" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h3 style="color: #c084fc;">Manage Store Items & Ads</h3>
-                    <button class="card-btn" onclick="logoutAdmin()" style="padding: 5px 10px; font-size: 0.8rem;">Logout</button>
-                </div>
-
-                <div style="background: rgba(232, 121, 249, 0.05); border: 1px solid rgba(232, 121, 249, 0.3); padding: 15px; border-radius: 8px; margin-bottom: 25px;">
-                    <h4 style="color: #e879f9; margin-bottom: 10px;">📢 Post New Advertisement</h4>
-                    <div class="admin-form-group"><label>Ad Title / Heading</label><input type="text" id="ad-title" placeholder="E.g. Mega Discount Sale!"></div>
-                    <div class="admin-form-group"><label>Photo URL (Image Link)</label><input type="text" id="ad-image" placeholder="Paste image link here (optional)..."></div>
-                    <div class="admin-form-group"><label>Auto-Close Timer (in Minutes)</label><input type="number" id="ad-minutes" placeholder="E.g. 60 (for 1 hour)"></div>
-                    <div class="admin-form-group"><label>Contact Link (Redirect URL)</label><input type="text" id="ad-link" placeholder="E.g. https://discord.gg/yourlink"></div>
-                    <button class="btn" style="background: linear-gradient(135deg, #e879f9, #a855f7); padding: 10px 20px; font-size: 0.9rem; width:100%" onclick="addNewAd()">Post Advertisement</button>
-                    
-                    <h4 style="color: #e879f9; margin-top: 20px; margin-bottom: 10px;">Active Ads</h4>
-                    <table class="admin-table">
-                        <thead><tr><th>Ad Title</th><th>Status</th><th>Link</th><th>Action</th></tr></thead>
-                        <tbody id="admin-ads-table-body"></tbody>
-                    </table>
-                </div>
-
-                <div style="background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.2); padding: 15px; border-radius: 8px; margin-bottom: 25px;">
-                    <h4 style="color: #38bdf8; margin-bottom: 10px;">Add New Store Offer</h4>
-                    <div class="admin-form-group">
-                        <label>Select Category</label>
-                        <select id="new-item-cat">
-                            <option value="steam">Steam Account</option>
-                            <option value="gaming_acc">Gaming Account</option>
-                            <option value="prebuild_server">Prebuild DC Server</option>
-                            <option value="custom_server">Custom Server Builder</option>
-                            <option value="custom_bot">Custom Bot Builder</option>
-                            <option value="vouchers">Vouchers</option>
-                            <option value="bgmi_uc">BGMI UC Vouchers</option>
-                        </select>
-                    </div>
-                    <div class="admin-form-group"><label>Item Name</label><input type="text" id="new-item-name" placeholder="Enter item name..."></div>
-                    <div class="admin-form-group"><label>Description</label><input type="text" id="new-item-desc" placeholder="Enter details..."></div>
-                    <div class="admin-form-group"><label>Price</label><input type="text" id="new-item-price" placeholder="Enter price..."></div>
-                    <div class="admin-form-group">
-                        <label>Status</label>
-                        <select id="new-item-status">
-                            <option value="Active" selected>Active</option>
-                            <option value="New Stock Available">New Stock Available</option>
-                            <option value="Out of Stock">Out of Stock</option>
-                            <option value="Coming Soon">Coming Soon</option>
-                        </select>
-                    </div>
-                    <button class="btn" style="padding: 10px 20px; font-size: 0.9rem;" onclick="addNewItem()">Add Item</button>
-                </div>
-
-                <h4 style="color: #c084fc; margin-bottom: 10px;">Existing Store Items</h4>
-                <div style="overflow-x: auto;">
-                    <table class="admin-table">
-                        <thead>
-                            <tr><th>Category</th><th>Item Name</th><th>Price</th><th>Status</th><th>Action</th></tr>
-                        </thead>
-                        <tbody id="admin-items-table-body"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <div class="footer">© 2026 Developer Gyan. All Rights Reserved.</div>
 
-    <script src="ads.js"></script>
-
     <script>
         const defaultStoreData = {
-            steam: { title: "Steam Accounts", desc: "Find best accounts pre-loaded with top games at cheap prices.", items: [{ id: 1, name: "Random Steam Level 20+ Account", desc: "Contains random premium games + full access.", price: "₹149", status: "Active" }, { id: 2, name: "GTA V Premium Steam Account", desc: "Email change available with instant delivery.", price: "₹299", status: "Active" }] },
-            gaming_acc: { title: "Gaming Accounts", desc: "Pro accounts for BGMI, Free Fire, Valorant, etc.", items: [{ id: 3, name: "BGMI Conqueror Tier Account", desc: "Max RP, rare outfits, safe login.", price: "₹799", status: "Active" }, { id: 4, name: "Free Fire Max Old Elite Pass ID", desc: "Level 70+, rare bundles.", price: "₹499", status: "Active" }] },
+            steam: { title: "Steam Accounts", desc: "Find best accounts pre-loaded with top games at cheap prices.", items: [{ id: 1, name: "Random Steam Level 20+ Account", desc: "Contains random premium games + full access.", price: "₹149", status: "Active" }] },
+            gaming_acc: { title: "Gaming Accounts", desc: "Pro accounts for BGMI, Free Fire, Valorant, etc.", items: [{ id: 3, name: "BGMI Conqueror Tier Account", desc: "Max RP, rare outfits, safe login.", price: "₹799", status: "Active" }] },
             discord_offer: { title: "Discord Offers", desc: "Select a Discord service sub-category below.", subFolders: [{ key: "prebuild_server", name: "Prebuild DC Server", desc: "Ready-made Discord servers with themes & bots." },{ key: "custom_server", name: "Custom Server Builder", desc: "Build your own completely custom Discord server." },{ key: "custom_bot", name: "Custom Bot Builder", desc: "Hire developer for custom bots." }], items: [] },
-            prebuild_server: { title: "Prebuild DC Server", desc: "Ready-made servers. Fast delivery.", parentKey: "discord_offer", items: [{ id: 5, name: "Only Theme", desc: "Prebuild server with beautiful theme setup.", price: "₹50", status: "Active" }, { id: 6, name: "Theme + Bots Setup", desc: "Theme + complete bots configured and setup.", price: "₹140", status: "Active" }] },
-            custom_server: { title: "Custom Server Builder", desc: "Build a brand new server customized for you.", parentKey: "discord_offer", items: [{ id: 7, name: "Custom Theme Only", desc: "Custom server with your requested theme design.", price: "₹65", status: "Active" }, { id: 8, name: "Custom Theme + Bots Setup", desc: "Custom theme + your choice of bots + complete setup.", price: "₹170", status: "Active" }] },
-            custom_bot: { title: "Custom Bot Builder", desc: "Hire expert developer to code custom commands.", parentKey: "discord_offer", isBot: true, items: [{ id: 9, name: "Bot 10 Commands", desc: "Custom bot coded with up to 10 commands.", price: "₹80", status: "Active" }, { id: 10, name: "Bot 20 Commands", desc: "Custom bot coded with up to 20 commands.", price: "₹150", status: "Active" }, { id: 11, name: "Bot 30 Commands", desc: "Custom bot coded with up to 30 commands.", price: "₹230", status: "Active" }, { id: 12, name: "Bot 40 Commands", desc: "Custom bot coded with up to 40 commands.", price: "₹290", status: "Active" }, { id: 13, name: "Bot 40+ Commands", desc: "Need more? Take ₹100 extra per 10 commands.", price: "Custom", status: "Active" }, { id: 14, name: "50+ Commands Offer", desc: "If you take 50+ commands, you will get free own dashboard.", price: "TBD", status: "Coming Soon" }] },
-            vouchers: { title: "Food & Shopping Vouchers", desc: "Get discount vouchers for Zomato, Dominos, EGC, and clothing apps.", items: [{ id: 15, name: "Zomato / Dominos Food Voucher", desc: "Flat discount voucher code for food delivery apps.", price: "₹49", status: "Active" }, { id: 16, name: "Clothing Brand Gift Card (EGC)", desc: "Redeemable voucher for fashion apps.", price: "₹199", status: "Active" }] },
+            prebuild_server: { title: "Prebuild DC Server", desc: "Ready-made servers. Fast delivery.", parentKey: "discord_offer", items: [{ id: 5, name: "Only Theme", desc: "Prebuild server with beautiful theme setup.", price: "₹50", status: "Active" }] },
+            custom_server: { title: "Custom Server Builder", desc: "Build a brand new server customized for you.", parentKey: "discord_offer", items: [{ id: 7, name: "Custom Theme Only", desc: "Custom server with your requested theme design.", price: "₹65", status: "Active" }] },
+            custom_bot: { title: "Custom Bot Builder", desc: "Hire expert developer to code custom commands.", parentKey: "discord_offer", isBot: true, items: [{ id: 9, name: "Bot 10 Commands", desc: "Custom bot coded with up to 10 commands.", price: "₹80", status: "Active" }] },
+            vouchers: { title: "Food & Shopping Vouchers", desc: "Get discount vouchers for Zomato, Dominos, EGC, and clothing apps.", items: [{ id: 15, name: "Zomato / Dominos Food Voucher", desc: "Flat discount voucher code for food delivery apps.", price: "₹49", status: "Active" }] },
             gaming_vouchers: { title: "Gaming Vouchers", desc: "Select a gaming voucher sub-category below.", subFolders: [{ key: "bgmi_uc", name: "BGMI UC Vouchers", desc: "Best selling BGMI UC top-up packs at cheapest prices." }], items: [] },
-            bgmi_uc: { title: "BGMI UC Vouchers", desc: "Best selling BGMI UC packs at cheapest prices with instant secure delivery.", parentKey: "gaming_vouchers", items: [{ id: 17, name: "360 UC", desc: "Selling in (Pice): ₹380", price: "₹419", status: "Active" }, { id: 18, name: "720 UC", desc: "Selling in (Pice): ₹750", price: "₹819", status: "Active" }, { id: 19, name: "1950 UC", desc: "Selling in (Pice): ₹1,900", price: "₹2,099", status: "Active" }, { id: 20, name: "4050 UC", desc: "Selling in (Pice): ₹3,800", price: "₹4,199", status: "Active" }, { id: 21, name: "8400 UC", desc: "Selling in (Pice): ₹7,500", price: "₹8,299", status: "Active" }] }
+            bgmi_uc: { title: "BGMI UC Vouchers", desc: "Best selling BGMI UC packs at cheapest prices with instant secure delivery.", parentKey: "gaming_vouchers", items: [{ id: 17, name: "360 UC", desc: "Selling in (Pice): ₹380", price: "₹419", status: "Active" }] }
         };
 
+        // Initialize Store Data
         let appData = JSON.parse(localStorage.getItem('devGyanDataV6'));
         if(!appData) { appData = defaultStoreData; localStorage.setItem('devGyanDataV6', JSON.stringify(appData)); }
 
-        function saveAppData() { localStorage.setItem('devGyanDataV6', JSON.stringify(appData)); }
-
+        // Core Functions
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
         
         function switchView(viewId) { 
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); 
             document.getElementById(viewId).classList.add('active'); 
             window.scrollTo(0, 0); 
-            // Call render public ads in case user navigates to ads view
-            if(typeof renderPublicAds === 'function') renderPublicAds();
+            renderPublicAds();
         }
 
         function loadCategoryData(catKey) {
@@ -403,105 +295,61 @@
             switchView('category-view');
         }
 
+        // Ads Render Logic (Embedded for customer view)
+        const ADS_STORAGE_KEY = 'devGyanAdsData_v2';
+        function getActiveAds() {
+            let ads = JSON.parse(localStorage.getItem(ADS_STORAGE_KEY)) || [];
+            const activeAds = ads.filter(ad => Date.now() < ad.expiryTime);
+            if (ads.length !== activeAds.length) localStorage.setItem(ADS_STORAGE_KEY, JSON.stringify(activeAds));
+            return activeAds;
+        }
+
+        function createAdHTML(ad) {
+            const fallbackImg = 'https://via.placeholder.com/600x200/1e1e2d/38bdf8?text=Special+Offer';
+            const imageSrc = ad.imgUrl ? ad.imgUrl : fallbackImg;
+            return `
+                <div style="background: rgba(20, 20, 30, 0.9); border: 2px solid #e879f9; border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 0 20px rgba(232, 121, 249, 0.2); margin-bottom: 20px; width: 100%; max-width: 600px; display: flex; flex-direction: column; align-items: center;">
+                    <h3 style="color: #f8fafc; margin-bottom: 15px; font-size: 1.5rem;">${ad.title}</h3>
+                    <img src="${imageSrc}" onerror="this.onerror=null; this.src='${fallbackImg}';" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                    <a href="${ad.link}" target="_blank" style="background: linear-gradient(135deg, #e879f9, #a855f7); color: white; padding: 12px 40px; font-size: 1.1rem; font-weight: bold; border-radius: 30px; text-decoration: none; box-shadow: 0 0 15px rgba(232, 121, 249, 0.5);">Contact to Buy</a>
+                </div>
+            `;
+        }
+
+        function renderPublicAds() {
+            const ads = getActiveAds();
+            const welcomeContainer = document.getElementById('welcome-ad-container');
+            const pageContainer = document.getElementById('ads-page-container');
+            
+            let homeHtml = '', offersHtml = '';
+            const homeAds = ads.filter(ad => ad.placement === 'home' || ad.placement === 'both');
+            const offersAds = ads.filter(ad => ad.placement === 'offers' || ad.placement === 'both');
+
+            if (homeAds.length > 0) homeHtml = createAdHTML(homeAds[homeAds.length - 1]);
+            if (offersAds.length > 0) offersAds.forEach(ad => offersHtml += createAdHTML(ad));
+            else offersHtml = '<p style="color:#94a3b8;">No special offers available right now.</p>';
+
+            if(welcomeContainer) welcomeContainer.innerHTML = homeHtml;
+            if(pageContainer) pageContainer.innerHTML = offersHtml;
+        }
+
+        // Tilt logic
         function initTiltEffect() {
-            const cards = document.querySelectorAll('.tilt-card');
-            cards.forEach(card => {
+            document.querySelectorAll('.tilt-card').forEach(card => {
                 card.addEventListener('mousemove', e => {
                     const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left; 
-                    const y = e.clientY - rect.top;  
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    const rotateX = ((y - centerY) / centerY) * -10; 
-                    const rotateY = ((x - centerX) / centerX) * 10;
+                    const rotateX = (((e.clientY - rect.top) - (rect.height / 2)) / (rect.height / 2)) * -10; 
+                    const rotateY = (((e.clientX - rect.left) - (rect.width / 2)) / (rect.width / 2)) * 10;
                     card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
                 });
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = `rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
-                });
+                card.addEventListener('mouseleave', () => card.style.transform = `rotateX(0) rotateY(0) scale3d(1, 1, 1)`);
             });
-        }
-
-        function checkAdminLogin() {
-            if(document.getElementById('admin-pass').value === '123gyan@') {
-                document.getElementById('admin-login-box').style.display = 'none';
-                document.getElementById('admin-dashboard-box').style.display = 'block';
-                renderAdminTable();
-                if(typeof renderAdminAdsTable === 'function') renderAdminAdsTable();
-            } else { alert('Wrong Password!'); }
-        }
-
-        function logoutAdmin() {
-            document.getElementById('admin-pass').value = '';
-            document.getElementById('admin-dashboard-box').style.display = 'none';
-            document.getElementById('admin-login-box').style.display = 'block';
-        }
-
-        function renderAdminTable() {
-            const tbody = document.getElementById('admin-items-table-body');
-            tbody.innerHTML = '';
-            for (const catKey in appData) {
-                if(appData[catKey].items && appData[catKey].items.length > 0) {
-                    appData[catKey].items.forEach((item, index) => {
-                        tbody.innerHTML += `
-                            <tr>
-                                <td>${appData[catKey].title}</td>
-                                <td><strong>${item.name}</strong></td>
-                                <td>${item.price}</td>
-                                <td>
-                                    <select onchange="updateItemStatus('${catKey}', ${index}, this.value)" style="background:#05050a; color:#fff; border:1px solid #38bdf8; padding:4px; border-radius:4px; outline:none;">
-                                        <option ${item.status === 'Active' ? 'selected' : ''}>Active</option>
-                                        <option ${item.status === 'New Stock Available' ? 'selected' : ''}>New Stock Available</option>
-                                        <option ${item.status === 'Out of Stock' ? 'selected' : ''}>Out of Stock</option>
-                                        <option ${item.status === 'Coming Soon' ? 'selected' : ''}>Coming Soon</option>
-                                    </select>
-                                </td>
-                                <td><button onclick="deleteItem('${catKey}', ${index})" style="background:#dc2626; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Delete</button></td>
-                            </tr>
-                        `;
-                    });
-                }
-            }
-        }
-
-        function updateItemStatus(catKey, itemIndex, newStatus) {
-            appData[catKey].items[itemIndex].status = newStatus;
-            saveAppData();
-        }
-
-        function deleteItem(catKey, itemIndex) {
-            if(confirm('Are you sure you want to delete this item?')) {
-                appData[catKey].items.splice(itemIndex, 1);
-                saveAppData();
-                renderAdminTable();
-            }
-        }
-
-        function addNewItem() {
-            const catKey = document.getElementById('new-item-cat').value;
-            const name = document.getElementById('new-item-name').value.trim();
-            const desc = document.getElementById('new-item-desc').value.trim();
-            const price = document.getElementById('new-item-price').value.trim();
-            const status = document.getElementById('new-item-status').value;
-
-            if(!name || !price) { alert('Please fill item name and price!'); return; }
-
-            if(!appData[catKey].items) appData[catKey].items = [];
-
-            appData[catKey].items.push({ id: Date.now(), name: name, desc: desc, price: price, status: status });
-            saveAppData();
-            renderAdminTable();
-
-            document.getElementById('new-item-name').value = '';
-            document.getElementById('new-item-desc').value = '';
-            document.getElementById('new-item-price').value = '';
-            alert('New item added successfully!');
         }
 
         window.onload = function() { 
             switchView('welcome-view'); 
             initTiltEffect();
-            if(typeof renderPublicAds === 'function') renderPublicAds(); // Load ads on startup
+            setInterval(renderPublicAds, 60000);
         }
     </script>
 </body>
