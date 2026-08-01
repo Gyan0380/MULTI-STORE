@@ -6,7 +6,6 @@ let activeItemData = null;
 const icons = ['🔥', '💎', '🎮', '👾', '🛒', '🚀', '⭐', '🎁'];
 const colors = ['rgba(239, 68, 68, 0.5)', 'rgba(14, 165, 233, 0.5)', 'rgba(245, 158, 11, 0.5)', 'rgba(99, 102, 241, 0.5)', 'rgba(16, 185, 129, 0.5)'];
 
-// Firebase Sync
 db.ref('storeData').on('value', (snapshot) => {
     appData = snapshot.val() || {};
     renderDynamicWebsite(); 
@@ -21,9 +20,7 @@ function switchView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); 
     document.getElementById(viewId).classList.add('active'); 
     window.scrollTo(0, 0); 
-    if(viewId === 'ads-view' || viewId === 'welcome-view') {
-        if(typeof renderPublicAds === 'function') renderPublicAds();
-    }
+    if(viewId === 'purchases-view') loadMyPurchases();
 }
 
 function renderDynamicWebsite() {
@@ -34,9 +31,14 @@ function renderDynamicWebsite() {
     
     storeGrid.innerHTML = ''; homeCards.innerHTML = ''; let tickerHtml = '';
     
-    sidebar.innerHTML = `<li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home</a></li>
+    let sidebarLinks = `<li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home</a></li>
         <li><a href="#" onclick="switchView('ads-view'); toggleSidebar();" style="color: #e879f9;">📢 Special Offers</a></li>
         <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">🏪 Main Store</a></li>`;
+
+    // ADD "MY PURCHASES" TO MENU IF LOGGED IN
+    if(auth.currentUser) {
+        sidebarLinks += `<li><a href="#" onclick="switchView('purchases-view'); toggleSidebar();" style="color: #34d399;">🛒 My Purchases</a></li>`;
+    }
 
     let i = 0; let hasCat = false;
 
@@ -47,28 +49,23 @@ function renderDynamicWebsite() {
             tickerHtml += `<span>${icon} Premium ${appData[key].title}</span><span style="color: rgba(255,255,255,0.2);">•</span>`;
             storeGrid.innerHTML += `<div class="card"><div><h3>${appData[key].title}</h3><p>${appData[key].desc || ''}</p></div><button class="card-btn" onclick="switchView('category-view'); loadCategoryData('${key}');">See Offers</button></div>`;
             homeCards.innerHTML += `<div class="tilt-card" style="border-color: ${color};" onclick="switchView('category-view'); loadCategoryData('${key}');"><span class="t-icon">${icon}</span><h4>${appData[key].title}</h4><p>${appData[key].desc || ''}</p></div>`;
-            sidebar.innerHTML += `<li><a href="#" onclick="switchView('category-view'); loadCategoryData('${key}'); toggleSidebar();">▶ ${appData[key].title}</a></li>`;
+            sidebarLinks += `<li><a href="#" onclick="switchView('category-view'); loadCategoryData('${key}'); toggleSidebar();">▶ ${appData[key].title}</a></li>`;
             i++;
         }
     }
 
     if(scrollingText) { scrollingText.innerHTML = tickerHtml + tickerHtml + tickerHtml + tickerHtml + tickerHtml; }
-    sidebar.innerHTML += `<li><a href="admin.html" style="color: #f87171;">🔒 Admin Login</a></li>`;
+    sidebarLinks += `<li><a href="admin.html" style="color: #f87171;">🔒 Admin Login</a></li>`;
+    sidebar.innerHTML = sidebarLinks;
 
     if(!hasCat) storeGrid.innerHTML = '<p style="color:#94a3b8; text-align:center; grid-column: 1/-1;">Store is empty.</p>';
-    initTiltEffect();
 }
 
 function loadCategoryData(catKey) {
     currentCategory = catKey;
     const cat = appData[catKey];
     
-    if(!cat) {
-        document.getElementById('cat-title').innerText = "Empty Category";
-        document.getElementById('dynamic-category-alert').innerHTML = '';
-        document.getElementById('dynamic-item-list').innerHTML = '<p style="color:#f87171; text-align:center;">This category has been removed.</p>';
-        switchView('category-view'); return;
-    }
+    if(!cat) return switchView('category-view');
 
     document.getElementById('cat-title').innerText = cat.title;
     document.getElementById('cat-desc').innerText = cat.desc || "Browse items below.";
@@ -137,7 +134,7 @@ function loadCategoryData(catKey) {
     switchView('category-view');
 }
 
-// Modals Setup
+// Modals
 function openBuyModal(catKey, itemIdx) {
     activeItemData = { catKey, itemIdx, item: appData[catKey].items[itemIdx] };
     document.getElementById('modal-item-title').innerText = activeItemData.item.name;
@@ -150,74 +147,114 @@ function openBuyModal(catKey, itemIdx) {
 function closeModal() { document.getElementById('buy-modal').style.display = 'none'; }
 
 function openOnlineCheckout() {
+    if(!auth.currentUser) {
+        alert("Sir, Please Login to your account first so we can send the code to your 'My Purchases' section!");
+        closeModal();
+        switchView('auth-view');
+        return;
+    }
     closeModal();
     document.getElementById('buyer-utr').value = '';
     document.getElementById('online-modal').style.display = 'flex';
 }
 
+// ⚠️ NEW: PENDING ORDER SYSTEM
 function verifyAndDeliverCode() {
     const utr = document.getElementById('buyer-utr').value.trim();
-    if(!utr || utr.length < 6) return alert("Please enter a valid 12-digit UTR / Transaction ID!");
+    if(!utr || utr.length < 6) return alert("Please enter a valid UTR / Transaction ID!");
     
     let itemRef = appData[activeItemData.catKey].items[activeItemData.itemIdx];
     if(!itemRef.codes || itemRef.codes.length === 0) {
-        alert("Sorry! This item just went out of stock. Contact admin.");
+        alert("Sorry! This item just went out of stock.");
         return;
     }
 
-    let assignedCode = itemRef.codes.shift(); 
-    db.ref('storeData/' + activeItemData.catKey + '/items/' + activeItemData.itemIdx).set(itemRef).then(() => {
+    const orderId = 'ORD_' + Date.now();
+    const user = auth.currentUser;
+
+    db.ref('orders/' + orderId).set({
+        orderId: orderId,
+        uid: user.uid,
+        email: user.email,
+        itemName: itemRef.name,
+        price: itemRef.price,
+        utr: utr,
+        status: "Pending Verification",
+        code: "", // Khali rahega admin approval tak
+        catKey: activeItemData.catKey,
+        itemIdx: activeItemData.itemIdx,
+        timestamp: new Date().toLocaleString()
+    }).then(() => {
         document.getElementById('online-modal').style.display = 'none';
-        document.getElementById('delivered-code-box').innerText = assignedCode;
-        document.getElementById('delivery-modal').style.display = 'flex';
-    }).catch((err) => alert("Error processing order: " + err.message));
+        document.getElementById('delivery-modal').style.display = 'flex'; // Aapka Custom Message
+    }).catch(e => alert("Error: " + e.message));
 }
 
-// ===============================================
-// AUTHENTICATION LOGIC (FIXED FOR MOBILE CHROME)
-// ===============================================
+// 🛒 NEW: LOAD "MY PURCHASES"
+function loadMyPurchases() {
+    const list = document.getElementById('my-orders-list');
+    list.innerHTML = '<p style="text-align:center; color:#38bdf8;">Loading your purchases...</p>';
+    
+    if(!auth.currentUser) return;
+
+    db.ref('orders').orderByChild('uid').equalTo(auth.currentUser.uid).once('value', (snapshot) => {
+        list.innerHTML = '';
+        if(snapshot.exists()) {
+            const orders = snapshot.val();
+            // Sort by latest
+            const sortedKeys = Object.keys(orders).sort((a,b) => orders[b].timestamp.localeCompare(orders[a].timestamp));
+            
+            sortedKeys.forEach(key => {
+                const ord = orders[key];
+                let statusColor = ord.status === 'Approved' ? '#34d399' : (ord.status === 'Rejected' ? '#ef4444' : '#eab308');
+                
+                let codeHtml = '';
+                if(ord.status === 'Approved') {
+                    codeHtml = `<div style="margin-top:15px; padding:10px; background:#05050a; border:1px dashed #34d399; border-radius:6px; color:#34d399; font-weight:bold; letter-spacing:1px; text-align:center;">VOUCHER CODE:<br><span style="font-size:1.3rem;">${ord.code}</span></div>`;
+                } else if(ord.status === 'Rejected') {
+                    codeHtml = `<div style="margin-top:10px; color:#ef4444; font-size:0.9rem;">Admin Rejected: Payment not received or fake UTR.</div>`;
+                } else {
+                    codeHtml = `<div style="margin-top:10px; color:#eab308; font-size:0.9rem;">Admin is verifying your UTR. Please wait (within 12h).</div>`;
+                }
+
+                list.innerHTML += `
+                    <div class="item-card-wrapper" style="border-left: 4px solid ${statusColor};">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                            <strong style="color:#fff;">${ord.itemName}</strong>
+                            <span style="color:#38bdf8; font-weight:bold;">${ord.price}</span>
+                        </div>
+                        <div style="font-size:0.8rem; color:#94a3b8; margin-bottom:10px;">Order ID: ${ord.orderId}<br>UTR: ${ord.utr}</div>
+                        <div class="badge" style="background:transparent; border:1px solid ${statusColor}; color:${statusColor};">${ord.status}</div>
+                        ${codeHtml}
+                    </div>
+                `;
+            });
+        } else {
+            list.innerHTML = '<p style="text-align:center; color:#94a3b8;">You have not bought anything yet.</p>';
+        }
+    });
+}
+
+// Auth
 function toggleAuthMode() {
     isSignUpMode = !isSignUpMode;
     document.getElementById('auth-title').innerText = isSignUpMode ? "Create an Account" : "Login to Account";
     document.getElementById('auth-submit-btn').innerText = isSignUpMode ? "Sign Up" : "Login";
     document.getElementById('auth-toggle-text').innerText = isSignUpMode ? "Already have an account? Login here" : "Don't have an account? Sign Up";
 }
-
 function handleEmailAuth() {
     const email = document.getElementById('auth-email').value.trim();
     const pass = document.getElementById('auth-pass').value.trim();
     if(!email || !pass) return alert("Please enter Email and Password!");
 
-    if(isSignUpMode) {
-        auth.createUserWithEmailAndPassword(email, pass).then(() => alert("Account Created Successfully!")).catch(e => alert(e.message));
-    } else {
-        auth.signInWithEmailAndPassword(email, pass).then(() => alert("Logged in successfully!")).catch(e => alert("Login Failed: Wrong Email or Password"));
-    }
+    if(isSignUpMode) { auth.createUserWithEmailAndPassword(email, pass).then(() => alert("Account Created Successfully!")).catch(e => alert(e.message)); }
+    else { auth.signInWithEmailAndPassword(email, pass).then(() => alert("Logged in successfully!")).catch(e => alert("Login Failed: Wrong Email or Password")); }
 }
-
-// 1. CHROME MOBILE FIX: User clicks "Continue with Google"
-function signInWithGoogle() {
-    // Popup block hone par hum Redirect method use karte hain taaki direct login ho
-    auth.signInWithRedirect(googleProvider);
-}
-
-// 2. CHROME MOBILE FIX: Jab redirect wapas website par aayega, tab yeh run hoga
-auth.getRedirectResult().then((result) => {
-    if (result && result.user) {
-        // Redirect successfully login ho gaya
-        switchView('welcome-view');
-    }
-}).catch((error) => {
-    if(error.code === 'auth/unauthorized-domain') {
-        alert("⚠️ GOOGLE LOGIN BLOCKED!\nPlease add your Vercel Domain to Firebase Authorized Domains.");
-    } else {
-        console.error("Google Login Error: ", error);
-    }
+function signInWithGoogle() { auth.signInWithRedirect(googleProvider); }
+auth.getRedirectResult().then((result) => { if (result && result.user) { switchView('welcome-view'); } }).catch((error) => {
+    if(error.code === 'auth/unauthorized-domain') { alert("⚠️ GOOGLE LOGIN BLOCKED!\nPlease add your Vercel Domain to Firebase Authorized Domains."); }
 });
-
-function logout() {
-    auth.signOut().then(() => alert("Logged out successfully."));
-}
+function logout() { auth.signOut().then(() => alert("Logged out successfully.")); }
 
 auth.onAuthStateChanged((user) => {
     const headerBtn = document.getElementById('header-auth-btn');
@@ -239,25 +276,15 @@ auth.onAuthStateChanged((user) => {
             email: user.email,
             lastLogin: new Date().toLocaleString()
         });
+        renderDynamicWebsite(); // Refresh menu to show "My Purchases"
     } else {
         headerBtn.innerHTML = `👤 Login`;
         headerBtn.style.color = "#38bdf8";
         headerBtn.style.borderColor = "#38bdf8";
         loggedOutUI.style.display = 'block';
         loggedInUI.style.display = 'none';
+        renderDynamicWebsite(); // Refresh menu to hide "My Purchases"
     }
 });
-
-function initTiltEffect() {
-    document.querySelectorAll('.tilt-card').forEach(card => {
-        card.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const rotateX = (((e.clientY - rect.top) - (rect.height / 2)) / (rect.height / 2)) * -10; 
-            const rotateY = (((e.clientX - rect.left) - (rect.width / 2)) / (rect.width / 2)) * 10;
-            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        });
-        card.addEventListener('mouseleave', () => card.style.transform = `rotateX(0) rotateY(0) scale3d(1, 1, 1)`);
-    });
-}
 
 window.onload = function() { switchView('welcome-view'); }
