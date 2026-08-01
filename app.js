@@ -19,13 +19,24 @@ db.ref('storeData').on('value', (snapshot) => {
 });
 
 function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-function switchView(viewId) { document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); document.getElementById(viewId).classList.add('active'); window.scrollTo(0, 0); if(viewId === 'purchases-view') loadMyPurchases(); }
+function switchView(viewId) { 
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active')); 
+    document.getElementById(viewId).classList.add('active'); 
+    window.scrollTo(0, 0); 
+    if(viewId === 'purchases-view') loadMyPurchases();
+    if(viewId === 'ads-view' || viewId === 'welcome-view') {
+        if(typeof renderPublicAds === 'function') renderPublicAds();
+    }
+}
 
 function renderDynamicWebsite() {
     const storeGrid = document.getElementById('dynamic-store-grid'); const homeCards = document.getElementById('dynamic-home-cards'); const sidebar = document.getElementById('dynamic-sidebar'); const scrollingText = document.getElementById('dynamic-scrolling-text');
     storeGrid.innerHTML = ''; homeCards.innerHTML = ''; let tickerHtml = '';
     
-    let sidebarLinks = `<li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home</a></li><li><a href="#" onclick="switchView('store-view'); toggleSidebar();">🏪 Main Store</a></li>`;
+    let sidebarLinks = `<li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home</a></li>
+        <li><a href="#" onclick="switchView('ads-view'); toggleSidebar();" style="color: #e879f9;">📢 Special Offers</a></li>
+        <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">🏪 Main Store</a></li>`;
+    
     if(auth.currentUser) sidebarLinks += `<li><a href="#" onclick="switchView('purchases-view'); toggleSidebar();" style="color: #34d399;">🛒 My Purchases</a></li>`;
 
     let i = 0; let hasCat = false;
