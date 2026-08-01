@@ -28,14 +28,12 @@
         h2 { color: #f87171; text-align: center; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;}
         .box { background: rgba(20, 20, 30, 0.9); border: 1px solid rgba(168, 85, 247, 0.3); padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         input, select, textarea { width: 100%; padding: 12px; margin: 8px 0 15px 0; background: #0a0a14; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 8px; color: #fff; outline: none; font-size: 0.95rem;}
-        input:focus, select:focus, textarea:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);}
-        label { color: #cbd5e1; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px; display: block;}
         .btn { background: linear-gradient(135deg, #9333ea, #38bdf8); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.05rem; transition: 0.2s;}
-        .btn:hover { transform: translateY(-2px); filter: brightness(1.1);}
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; background: #0a0a14; border-radius: 8px; overflow: hidden;}
         th, td { border: 1px solid rgba(168, 85, 247, 0.2); padding: 12px; text-align: left; }
         th { background: rgba(168, 85, 247, 0.15); color: #e879f9; font-weight: bold;}
-        .del-btn { background: #dc2626; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;}
+        .del-btn { background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;}
+        .app-btn { background: #10b981; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-right: 5px;}
         .edit-btn { background: #f59e0b; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-right: 5px; font-weight: bold;}
         .form-row { display: flex; gap: 15px; flex-wrap: wrap;}
         .form-group { flex: 1; min-width: 250px; }
@@ -46,9 +44,7 @@
 
     <div class="container">
         <h2>🔒 Central Secured Admin Dashboard</h2>
-        <div style="text-align: center; margin-bottom: 30px;">
-            <a href="index.html" style="color: #38bdf8; text-decoration: none; font-weight: bold; padding: 5px 15px; border: 1px solid #38bdf8; border-radius: 20px;">← Go to Main Store</a>
-        </div>
+        <div style="text-align: center; margin-bottom: 30px;"><a href="index.html" style="color: #38bdf8; text-decoration: none; font-weight: bold; padding: 5px 15px; border: 1px solid #38bdf8; border-radius: 20px;">← Go to Main Store</a></div>
 
         <div id="login-box" class="box" style="max-width: 500px; margin: 0 auto;">
             <h3 style="color: #38bdf8; margin-bottom: 15px;">Admin Authentication</h3>
@@ -59,135 +55,53 @@
 
         <div id="dashboard" style="display: none;">
             
-            <!-- 👥 NEW: REGISTERED CUSTOMERS BOX -->
+            <div class="box" style="border-color: #eab308; border-top: 4px solid #eab308;">
+                <h3 style="color: #eab308; margin-bottom: 15px;">⏳ Pending Payment Approvals</h3>
+                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Check UTR in your bank. If payment received, click Approve to automatically send code to user's 'My Purchases' section.</p>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead><tr><th>User Info</th><th>Item & Price</th><th>UTR Details</th><th>Action</th></tr></thead>
+                        <tbody id="orders-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="box" style="border-color: #f43f5e; border-top: 4px solid #f43f5e;">
                 <h3 style="color: #f43f5e; margin-bottom: 15px;">👥 Registered Customers</h3>
                 <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Total Users Logged in: <strong id="total-users-count" style="color: #fff; font-size: 1.2rem;">0</strong></p>
-                <div style="overflow-x: auto;">
-                    <table>
-                        <thead><tr><th>Name</th><th>Email ID</th><th>Last Login</th></tr></thead>
-                        <tbody id="users-table-body"></tbody>
-                    </table>
-                </div>
+                <div style="overflow-x: auto;"><table><thead><tr><th>Name</th><th>Email ID</th><th>Last Login</th></tr></thead><tbody id="users-table-body"></tbody></table></div>
             </div>
 
-            <!-- CREATE MAIN CATEGORY -->
             <div class="box" style="border-color: #10b981; border-top: 4px solid #10b981;">
                 <h3 style="color: #10b981; margin-bottom: 15px;">📁 1. Create New Main Category</h3>
-                <div class="form-row">
-                    <div class="form-group"><label>Category Name</label><input type="text" id="new-main-name" placeholder="e.g. Netflix Accounts"></div>
-                    <div class="form-group"><label>Short Description</label><input type="text" id="new-main-desc" placeholder="Details about this category"></div>
-                </div>
-                
-                <div class="optional-section">
-                    <h4 style="color:#94a3b8; margin-bottom:10px;">Extra Notices (Optional)</h4>
-                    <div class="form-row">
-                        <div class="form-group"><label>📜 T&C</label><input type="text" id="main-terms" placeholder="Rules for this whole category"></div>
-                        <div class="form-group"><label>📌 Note</label><input type="text" id="main-note" placeholder="Important info"></div>
-                        <div class="form-group"><label>⚠️ Warning</label><input type="text" id="main-warn" placeholder="Strict warning"></div>
-                    </div>
-                </div>
-                
-                <button class="btn" onclick="addMainCategory()" style="background: linear-gradient(135deg, #10b981, #059669);">Create Main Category</button>
+                <div class="form-row"><div class="form-group"><label>Category Name</label><input type="text" id="new-main-name"></div><div class="form-group"><label>Description</label><input type="text" id="new-main-desc"></div></div>
+                <div class="optional-section"><h4 style="color:#94a3b8;">Extra Notices</h4><div class="form-row"><div class="form-group"><label>📜 T&C</label><input type="text" id="main-terms"></div><div class="form-group"><label>📌 Note</label><input type="text" id="main-note"></div><div class="form-group"><label>⚠️ Warning</label><input type="text" id="main-warn"></div></div></div>
+                <button class="btn" onclick="addMainCategory()" style="background: linear-gradient(135deg, #10b981, #059669);">Create Category</button>
             </div>
 
-            <!-- ADD NEW STORE ITEM / SUB-FOLDER -->
             <div class="box" style="border-top: 4px solid #38bdf8;">
                 <h3 style="color: #38bdf8; margin-bottom: 15px;">🏪 2. Add Item / Sub-Folder</h3>
-                <div class="form-row">
-                    <div class="form-group"><label>Select Main Category</label><select id="add-main-cat" onchange="updateSubCatDropdown()"></select></div>
-                    <div class="form-group" id="sub-cat-container"><label>Inside Folder? (Optional)</label><select id="add-sub-cat"><option value="">-- Direct in Main Category --</option></select></div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Type (Item or Folder?)</label>
-                        <select id="add-type" onchange="togglePriceFields('add')">
-                            <option value="item">Product Item (Direct Buy)</option>
-                            <option value="folder">Sub-Folder (Category 'See Offer')</option>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>Name / Title</label><input type="text" id="add-name" placeholder="Item or Folder Name"></div>
-                </div>
-                
-                <div class="form-group"><label>Description Details</label><input type="text" id="add-desc" placeholder="Details..."></div>
-                
-                <div class="form-row" id="add-price-row">
-                    <div class="form-group"><label>Price</label><input type="text" id="add-price" placeholder="e.g. ₹99"></div>
-                    <div class="form-group"><label>Status</label><select id="add-status"><option value="Active">Active</option><option value="New Stock Available">New Stock Available</option><option value="Out of Stock">Out of Stock</option><option value="Coming Soon">Coming Soon</option></select></div>
-                </div>
-
-                <!-- ⚡ NEW: AUTO-DELIVERY STOCK (VOUCHERS) -->
-                <div class="form-group" id="code-pool-group" style="margin-bottom: 15px;">
-                    <label style="color:#38bdf8;">⚡ Auto-Delivery Voucher Codes (Ek code per line daalein)</label>
-                    <textarea id="add-codes" rows="3" placeholder="CODE-123&#10;CODE-456"></textarea>
-                    <small style="color:#94a3b8;">Jitne codes dalenge, system utna stock automatic set kar lega.</small>
-                </div>
-
-                <div class="optional-section">
-                    <h4 style="color:#94a3b8; margin-bottom:10px;">Extra Notices for this Item/Folder (Optional)</h4>
-                    <div class="form-row">
-                        <div class="form-group"><label>📜 T&C</label><input type="text" id="add-terms" placeholder="Rules specific to this"></div>
-                        <div class="form-group"><label>📌 Note</label><input type="text" id="add-note" placeholder="Any extra note"></div>
-                        <div class="form-group"><label>⚠️ Warning</label><input type="text" id="add-warn" placeholder="Specific warning"></div>
-                    </div>
-                </div>
-
+                <div class="form-row"><div class="form-group"><label>Category</label><select id="add-main-cat" onchange="updateSubCatDropdown()"></select></div><div class="form-group"><label>Folder</label><select id="add-sub-cat"><option value="">-- Direct --</option></select></div></div>
+                <div class="form-row"><div class="form-group"><label>Type</label><select id="add-type" onchange="togglePriceFields('add')"><option value="item">Item</option><option value="folder">Folder</option></select></div><div class="form-group"><label>Name</label><input type="text" id="add-name"></div></div>
+                <div class="form-group"><label>Description</label><input type="text" id="add-desc"></div>
+                <div class="form-row" id="add-price-row"><div class="form-group"><label>Price</label><input type="text" id="add-price"></div><div class="form-group"><label>Status</label><select id="add-status"><option value="Active">Active</option><option value="Out of Stock">Out of Stock</option></select></div></div>
+                <div class="form-group" id="code-pool-group"><label style="color:#38bdf8;">⚡ Voucher Codes (Stock)</label><textarea id="add-codes" rows="3" placeholder="CODE-1&#10;CODE-2"></textarea></div>
+                <div class="optional-section"><h4 style="color:#94a3b8;">Notices</h4><div class="form-row"><div class="form-group"><label>📜 T&C</label><input type="text" id="add-terms"></div><div class="form-group"><label>📌 Note</label><input type="text" id="add-note"></div><div class="form-group"><label>⚠️ Warning</label><input type="text" id="add-warn"></div></div></div>
                 <button class="btn" onclick="addEntity()">➕ Add to Live Store</button>
             </div>
 
-            <!-- EDIT SECTION -->
             <div class="box" id="edit-box" style="display: none; border-color: #f59e0b; border-top: 4px solid #f59e0b;">
                 <h3 style="color: #f59e0b; margin-bottom: 15px;">✏️ Edit Details</h3>
-                <div class="form-row">
-                    <div class="form-group"><label>Name / Title</label><input type="text" id="edit-name"></div>
-                    <div class="form-group"><label>Description</label><input type="text" id="edit-desc"></div>
-                </div>
-                <div class="form-row" id="edit-price-status-row">
-                    <div class="form-group"><label>Price</label><input type="text" id="edit-price"></div>
-                    <div class="form-group"><label>Status</label><select id="edit-status"><option value="Active">Active</option><option value="New Stock Available">New Stock Available</option><option value="Out of Stock">Out of Stock</option><option value="Coming Soon">Coming Soon</option></select></div>
-                </div>
-                
-                <!-- ⚡ NEW: UPDATE AUTO-DELIVERY STOCK -->
-                <div class="form-group" id="edit-code-pool-group" style="margin-bottom: 15px;">
-                    <label style="color:#f59e0b;">⚡ Update Auto-Delivery Voucher Codes</label>
-                    <textarea id="edit-codes" rows="3" placeholder="Naye codes yahan daalein..."></textarea>
-                </div>
-
-                <div class="optional-section">
-                    <h4 style="color:#94a3b8; margin-bottom:10px;">Edit Extra Notices</h4>
-                    <div class="form-row">
-                        <div class="form-group"><label>📜 T&C</label><input type="text" id="edit-terms"></div>
-                        <div class="form-group"><label>📌 Note</label><input type="text" id="edit-note"></div>
-                        <div class="form-group"><label>⚠️ Warning</label><input type="text" id="edit-warn"></div>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 15px; margin-top: 10px;">
-                    <button class="btn" onclick="saveEdit()" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">Save Changes</button>
-                    <button class="btn" onclick="closeEdit()" style="background: #4b5563;">Cancel</button>
-                </div>
+                <div class="form-row"><div class="form-group"><label>Name / Title</label><input type="text" id="edit-name"></div><div class="form-group"><label>Description</label><input type="text" id="edit-desc"></div></div>
+                <div class="form-row" id="edit-price-status-row"><div class="form-group"><label>Price</label><input type="text" id="edit-price"></div><div class="form-group"><label>Status</label><select id="edit-status"><option value="Active">Active</option><option value="Out of Stock">Out of Stock</option></select></div></div>
+                <div class="form-group" id="edit-code-pool-group"><label style="color:#f59e0b;">⚡ Update Voucher Codes</label><textarea id="edit-codes" rows="3"></textarea></div>
+                <div class="optional-section"><h4 style="color:#94a3b8;">Edit Extra Notices</h4><div class="form-row"><div class="form-group"><label>📜 T&C</label><input type="text" id="edit-terms"></div><div class="form-group"><label>📌 Note</label><input type="text" id="edit-note"></div><div class="form-group"><label>⚠️ Warning</label><input type="text" id="edit-warn"></div></div></div>
+                <div style="display: flex; gap: 15px; margin-top: 10px;"><button class="btn" onclick="saveEdit()" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">Save Changes</button><button class="btn" onclick="closeEdit()" style="background: #4b5563;">Cancel</button></div>
             </div>
 
-            <!-- INVENTORY MANAGER WITH STOCK -->
             <div class="box">
                 <h3 style="color: #34d399; margin-bottom: 15px;">📦 Store Inventory & Stock Count</h3>
-                <div style="overflow-x: auto;">
-                    <table>
-                        <thead><tr><th>Category / Location</th><th>Name (Type)</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
-                        <tbody id="inventory-table-body"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- ADS MANAGER -->
-            <div class="box" style="border-color: #e879f9; border-top: 4px solid #e879f9;">
-                <h3 style="color: #e879f9; margin-bottom: 15px;">📢 Post Advertisement</h3>
-                <div class="form-row"><div class="form-group"><label>Location</label><select id="ad-placement"><option value="both">Both</option><option value="home">Home</option><option value="offers">Offers</option></select></div><div class="form-group"><label>Ad Title</label><input type="text" id="ad-title"></div></div>
-                <div class="form-row"><div class="form-group"><label>Image URL</label><input type="text" id="ad-image"></div><div class="form-group"><label>Timer (Mins)</label><input type="number" id="ad-minutes"></div></div>
-                <label>Redirect URL</label><input type="text" id="ad-link"><br><br>
-                <button class="btn" onclick="addNewAd()" style="background: linear-gradient(135deg, #e879f9, #a855f7);">Post Live Ad</button>
-                <div style="overflow-x: auto; margin-top: 15px;"><table><tbody id="ads-table-body"></tbody></table></div>
+                <div style="overflow-x: auto;"><table><thead><tr><th>Category</th><th>Name</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead><tbody id="inventory-table-body"></tbody></table></div>
             </div>
 
             <button class="del-btn" style="width: 100%; padding: 12px; font-size: 1.1rem;" onclick="logout()">Logout Dashboard</button>
@@ -212,13 +126,8 @@
         function logout() { auth.signOut().then(() => location.reload()); }
 
         function listenLiveData() {
-            // Listen to Store Data
-            db.ref('storeData').on('value', (snapshot) => {
-                appData = snapshot.val() || {};
-                updateDropdowns();
-                renderInventory();
-            });
-
+            db.ref('storeData').on('value', (snapshot) => { appData = snapshot.val() || {}; updateDropdowns(); renderInventory(); });
+            
             // Listen to Registered Users Data
             db.ref('registeredUsers').on('value', (snapshot) => {
                 const usersTable = document.getElementById('users-table-body');
@@ -227,174 +136,148 @@
                     const usersData = snapshot.val();
                     const userKeys = Object.keys(usersData);
                     document.getElementById('total-users-count').innerText = userKeys.length; 
-                    
-                    userKeys.forEach(uid => {
-                        const u = usersData[uid];
-                        usersTable.innerHTML += `<tr>
-                            <td><strong>${u.name}</strong></td>
-                            <td style="color:#38bdf8;">${u.email}</td>
-                            <td style="font-size:0.85rem; color:#94a3b8;">${u.lastLogin || '-'}</td>
-                        </tr>`;
+                    userKeys.forEach(uid => { const u = usersData[uid]; usersTable.innerHTML += `<tr><td><strong>${u.name}</strong></td><td style="color:#38bdf8;">${u.email}</td><td style="font-size:0.85rem; color:#94a3b8;">${u.lastLogin || '-'}</td></tr>`; });
+                } else { document.getElementById('total-users-count').innerText = "0"; usersTable.innerHTML = `<tr><td colspan="3" style="text-align:center;">No users registered yet.</td></tr>`; }
+            });
+
+            // ⚡ LISTEN TO PENDING ORDERS
+            db.ref('orders').orderByChild('status').equalTo('Pending Verification').on('value', (snapshot) => {
+                const ordersTable = document.getElementById('orders-table-body');
+                ordersTable.innerHTML = '';
+                if(snapshot.exists()) {
+                    const orders = snapshot.val();
+                    Object.keys(orders).forEach(orderId => {
+                        const o = orders[orderId];
+                        ordersTable.innerHTML += `
+                            <tr>
+                                <td>${o.email}<br><small style="color:#94a3b8">${o.timestamp}</small></td>
+                                <td><strong>${o.itemName}</strong><br><span style="color:#34d399;">${o.price}</span></td>
+                                <td style="color:#eab308; font-family:monospace; font-size:1.1rem; letter-spacing:1px;">${o.utr}</td>
+                                <td style="white-space:nowrap;">
+                                    <button class="app-btn" onclick="approveOrder('${orderId}', '${o.catKey}', ${o.itemIdx})">✅ Approve</button>
+                                    <button class="del-btn" onclick="rejectOrder('${orderId}')">❌ Reject</button>
+                                </td>
+                            </tr>
+                        `;
                     });
                 } else {
-                    document.getElementById('total-users-count').innerText = "0";
-                    usersTable.innerHTML = `<tr><td colspan="3" style="text-align:center;">No users registered yet.</td></tr>`;
+                    ordersTable.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">No pending orders right now.</td></tr>`;
                 }
             });
+        }
+
+        // ⚡ APPROVE ORDER & AUTO-DISPENSE CODE
+        function approveOrder(orderId, catKey, itemIdx) {
+            if(!confirm("Did you receive the payment? This will give the customer 1 code.")) return;
+
+            let itemRef = appData[catKey].items[itemIdx];
+            
+            if(!itemRef.codes || itemRef.codes.length === 0) {
+                alert("OUT OF STOCK! You don't have codes for this item. Add codes in inventory first.");
+                return;
+            }
+
+            // Remove 1 code from stock
+            let codeToSend = itemRef.codes.shift();
+            
+            // Update Store Data (minus stock)
+            db.ref('storeData/' + catKey + '/items/' + itemIdx).set(itemRef)
+            .then(() => {
+                // Update Order Status to Approved and attach code
+                db.ref('orders/' + orderId).update({
+                    status: 'Approved',
+                    code: codeToSend
+                });
+                alert("Order Approved! Code sent to customer's My Purchases.");
+            }).catch(e => alert("Error: " + e.message));
+        }
+
+        // ❌ REJECT ORDER
+        function rejectOrder(orderId) {
+            if(!confirm("Are you sure you want to reject this UTR?")) return;
+            db.ref('orders/' + orderId).update({ status: 'Rejected' });
         }
 
         function saveToDB() { db.ref('storeData').set(appData); }
 
         function addMainCategory() {
-            const name = document.getElementById('new-main-name').value.trim();
-            const desc = document.getElementById('new-main-desc').value.trim();
-            const terms = document.getElementById('main-terms').value.trim();
-            const note = document.getElementById('main-note').value.trim();
-            const warn = document.getElementById('main-warn').value.trim();
-
-            if(!name || !desc) return alert("Category Name & Description are required!");
-
-            const key = 'main_' + Date.now();
-            appData[key] = { title: name, desc: desc, terms: terms, note: note, warning: warn, items: [], subFolders: [] };
-            saveToDB();
-            
-            alert("New Main Category Created!");
-            document.getElementById('new-main-name').value = ''; document.getElementById('new-main-desc').value = '';
-            document.getElementById('main-terms').value = ''; document.getElementById('main-note').value = ''; document.getElementById('main-warn').value = '';
+            const name = document.getElementById('new-main-name').value.trim(); const desc = document.getElementById('new-main-desc').value.trim();
+            const terms = document.getElementById('main-terms').value.trim(); const note = document.getElementById('main-note').value.trim(); const warn = document.getElementById('main-warn').value.trim();
+            if(!name || !desc) return alert("Category Name & Description required!");
+            const key = 'main_' + Date.now(); appData[key] = { title: name, desc: desc, terms: terms, note: note, warning: warn, items: [], subFolders: [] }; saveToDB();
+            ['new-main-name','new-main-desc','main-terms','main-note','main-warn'].forEach(id => document.getElementById(id).value = '');
         }
 
         function updateDropdowns() {
-            const mainSelect = document.getElementById('add-main-cat');
-            const currentVal = mainSelect.value;
-            mainSelect.innerHTML = '';
-            let hasMain = false;
-            for(let key in appData) {
-                if(!appData[key].parentKey) { 
-                    mainSelect.innerHTML += `<option value="${key}">${appData[key].title}</option>`;
-                    hasMain = true;
-                }
-            }
-            if(!hasMain) mainSelect.innerHTML = `<option value="">-- No Categories Found --</option>`;
+            const mainSelect = document.getElementById('add-main-cat'); const currentVal = mainSelect.value; mainSelect.innerHTML = '';
+            for(let key in appData) { if(!appData[key].parentKey) mainSelect.innerHTML += `<option value="${key}">${appData[key].title}</option>`; }
+            if(!mainSelect.innerHTML) mainSelect.innerHTML = `<option value="">-- No Categories Found --</option>`;
             if(currentVal && appData[currentVal] && !appData[currentVal].parentKey) mainSelect.value = currentVal;
             updateSubCatDropdown();
         }
 
         function updateSubCatDropdown() {
-            const mainCat = document.getElementById('add-main-cat').value;
-            const subSelect = document.getElementById('add-sub-cat');
-            subSelect.innerHTML = '<option value="">-- Direct in Main Category --</option>';
-            if(mainCat && appData[mainCat] && appData[mainCat].subFolders) {
-                appData[mainCat].subFolders.forEach(folder => {
-                    subSelect.innerHTML += `<option value="${folder.key}">📁 ${folder.name}</option>`;
-                });
-            }
+            const mainCat = document.getElementById('add-main-cat').value; const subSelect = document.getElementById('add-sub-cat'); subSelect.innerHTML = '<option value="">-- Direct --</option>';
+            if(mainCat && appData[mainCat] && appData[mainCat].subFolders) { appData[mainCat].subFolders.forEach(folder => { subSelect.innerHTML += `<option value="${folder.key}">📁 ${folder.name}</option>`; }); }
         }
 
         function togglePriceFields(mode) {
-            const type = document.getElementById(mode + '-type').value;
-            document.getElementById(mode + '-price-row').style.display = type === 'folder' ? 'none' : 'flex';
-            if(mode === 'add' && document.getElementById('code-pool-group')) {
-                document.getElementById('code-pool-group').style.display = type === 'folder' ? 'none' : 'block';
-            }
+            const type = document.getElementById(mode + '-type').value; document.getElementById(mode + '-price-row').style.display = type === 'folder' ? 'none' : 'flex';
+            if(mode === 'add' && document.getElementById('code-pool-group')) document.getElementById('code-pool-group').style.display = type === 'folder' ? 'none' : 'block';
         }
 
         function addEntity() {
-            const mainCat = document.getElementById('add-main-cat').value;
-            const subCat = document.getElementById('add-sub-cat').value;
-            const type = document.getElementById('add-type').value;
-            const name = document.getElementById('add-name').value.trim();
-            const desc = document.getElementById('add-desc').value.trim();
-            const price = document.getElementById('add-price').value.trim();
-            const status = document.getElementById('add-status').value;
-            
-            const terms = document.getElementById('add-terms').value.trim();
-            const note = document.getElementById('add-note').value.trim();
-            const warn = document.getElementById('add-warn').value.trim();
+            const mainCat = document.getElementById('add-main-cat').value; const subCat = document.getElementById('add-sub-cat').value;
+            const type = document.getElementById('add-type').value; const name = document.getElementById('add-name').value.trim();
+            const desc = document.getElementById('add-desc').value.trim(); const price = document.getElementById('add-price').value.trim(); const status = document.getElementById('add-status').value;
+            const terms = document.getElementById('add-terms').value.trim(); const note = document.getElementById('add-note').value.trim(); const warn = document.getElementById('add-warn').value.trim();
+            const rawCodes = document.getElementById('add-codes') ? document.getElementById('add-codes').value.trim() : ''; const codesArray = rawCodes ? rawCodes.split('\n').map(c => c.trim()).filter(c => c) : [];
 
-            const rawCodes = document.getElementById('add-codes') ? document.getElementById('add-codes').value.trim() : '';
-            const codesArray = rawCodes ? rawCodes.split('\n').map(c => c.trim()).filter(c => c) : [];
-
-            if(!mainCat) return alert("Please create a Main Category first!");
-            if(!name) return alert("Name is required!");
-
+            if(!mainCat || !name) return alert("Category and Name required!");
             if (type === 'folder') {
                 if(subCat) return alert("Cannot create folder inside a folder.");
-                const newKey = 'cat_' + Date.now();
-                if(!appData[mainCat].subFolders) appData[mainCat].subFolders = [];
-                appData[mainCat].subFolders.push({ key: newKey, name: name, desc: desc });
-                appData[newKey] = { title: name, desc: desc, terms: terms, note: note, warning: warn, parentKey: mainCat, items: [], subFolders: [] };
-                alert(`Folder Created!`);
+                const newKey = 'cat_' + Date.now(); if(!appData[mainCat].subFolders) appData[mainCat].subFolders = [];
+                appData[mainCat].subFolders.push({ key: newKey, name: name, desc: desc }); appData[newKey] = { title: name, desc: desc, terms: terms, note: note, warning: warn, parentKey: mainCat, items: [], subFolders: [] };
             } else {
-                if(!price) return alert("Item price required!");
-                const targetCat = subCat ? subCat : mainCat;
-                if(!appData[targetCat].items) appData[targetCat].items = [];
-                
+                if(!price) return alert("Price required!");
+                const targetCat = subCat ? subCat : mainCat; if(!appData[targetCat].items) appData[targetCat].items = [];
                 appData[targetCat].items.push({ id: Date.now(), name, desc, price, status: status, codes: codesArray, terms, note, warning: warn });
-                alert(`Item Added!`);
             }
-            
             ['add-name','add-desc','add-price','add-codes','add-terms','add-note','add-warn'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
-            saveToDB();
+            saveToDB(); alert("Added successfully!");
         }
 
         function renderInventory() {
-            const tbody = document.getElementById('inventory-table-body');
-            tbody.innerHTML = '';
+            const tbody = document.getElementById('inventory-table-body'); tbody.innerHTML = '';
             for(let key in appData) {
-                const cat = appData[key];
-                if(!cat) continue;
-                if(!cat.parentKey) {
-                    tbody.innerHTML += `<tr style="background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981;">
-                        <td style="color:#10b981; font-weight:bold;">[MAIN]</td><td><strong style="color:#fff;">${cat.title}</strong></td>
-                        <td>-</td><td>-</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('main_cat', '${key}', -1, '')">✏️</button><button class="del-btn" onclick="deleteMainCat('${key}')">🗑️</button></td></tr>`;
-                }
-                if(cat.subFolders) {
-                    cat.subFolders.forEach(folder => {
-                        tbody.innerHTML += `<tr style="background: rgba(56, 189, 248, 0.05);">
-                            <td>${cat.title}</td><td style="color:#38bdf8;"><strong>📁 ${folder.name}</strong></td>
-                            <td>-</td><td>-</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('folder', '${key}', -1, '${folder.key}')">✏️</button><button class="del-btn" onclick="deleteEntity('folder', '${key}', -1, '${folder.key}')">🗑️</button></td></tr>`;
-                    });
-                }
-                if(cat.items) {
-                    cat.items.forEach((item, index) => {
-                        let stockCount = item.codes ? item.codes.length : 0;
-                        let sc = item.status === 'Active' ? '#34d399' : item.status === 'Out of Stock' ? '#f87171' : '#fbbf24';
-                        tbody.innerHTML += `<tr><td>${cat.title || key}</td><td><strong>${item.name}</strong></td>
-                            <td style="color:#38bdf8; font-weight:bold;">${stockCount}</td>
-                            <td style="color:${sc}; font-weight:bold;">${item.status}</td>
-                            <td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('item', '${key}', ${index}, '')">✏️</button><button class="del-btn" onclick="deleteEntity('item', '${key}', ${index}, '')">🗑️</button></td></tr>`;
-                    });
-                }
+                const cat = appData[key]; if(!cat) continue;
+                if(!cat.parentKey) tbody.innerHTML += `<tr style="background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981;"><td style="color:#10b981; font-weight:bold;">[MAIN]</td><td><strong style="color:#fff;">${cat.title}</strong></td><td>-</td><td>-</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('main_cat', '${key}', -1, '')">✏️</button><button class="del-btn" onclick="deleteMainCat('${key}')">🗑️</button></td></tr>`;
+                if(cat.subFolders) cat.subFolders.forEach(folder => { tbody.innerHTML += `<tr style="background: rgba(56, 189, 248, 0.05);"><td>${cat.title}</td><td style="color:#38bdf8;"><strong>📁 ${folder.name}</strong></td><td>-</td><td>-</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('folder', '${key}', -1, '${folder.key}')">✏️</button><button class="del-btn" onclick="deleteEntity('folder', '${key}', -1, '${folder.key}')">🗑️</button></td></tr>`; });
+                if(cat.items) cat.items.forEach((item, index) => {
+                    let stockCount = item.codes ? item.codes.length : 0; let sc = item.status === 'Active' ? '#34d399' : item.status === 'Out of Stock' ? '#f87171' : '#fbbf24';
+                    tbody.innerHTML += `<tr><td>${cat.title || key}</td><td><strong>${item.name}</strong></td><td style="color:#38bdf8; font-weight:bold;">${stockCount}</td><td style="color:${sc}; font-weight:bold;">${item.status}</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('item', '${key}', ${index}, '')">✏️</button><button class="del-btn" onclick="deleteEntity('item', '${key}', ${index}, '')">🗑️</button></td></tr>`;
+                });
             }
         }
 
         function openEdit(type, parentCat, itemIndex, folderKey) {
             editData = { active: true, type, catKey: parentCat, itemIndex, folderKey };
-            const editBox = document.getElementById('edit-box');
-            editBox.style.display = 'block';
-            window.scrollTo(0, editBox.offsetTop - 20);
-
+            const editBox = document.getElementById('edit-box'); editBox.style.display = 'block'; window.scrollTo(0, editBox.offsetTop - 20);
             if(type === 'main_cat') {
-                const data = appData[parentCat];
-                document.getElementById('edit-name').value = data.title; document.getElementById('edit-desc').value = data.desc || '';
+                const data = appData[parentCat]; document.getElementById('edit-name').value = data.title; document.getElementById('edit-desc').value = data.desc || '';
                 document.getElementById('edit-terms').value = data.terms || ''; document.getElementById('edit-note').value = data.note || ''; document.getElementById('edit-warn').value = data.warning || '';
-                document.getElementById('edit-price-status-row').style.display = 'none';
-                document.getElementById('edit-code-pool-group').style.display = 'none';
+                document.getElementById('edit-price-status-row').style.display = 'none'; document.getElementById('edit-code-pool-group').style.display = 'none';
             } else if(type === 'folder') {
-                const folderRef = appData[parentCat].subFolders.find(f => f.key === folderKey);
-                const data = appData[folderKey];
+                const folderRef = appData[parentCat].subFolders.find(f => f.key === folderKey); const data = appData[folderKey];
                 document.getElementById('edit-name').value = folderRef.name; document.getElementById('edit-desc').value = folderRef.desc;
                 document.getElementById('edit-terms').value = data.terms || ''; document.getElementById('edit-note').value = data.note || ''; document.getElementById('edit-warn').value = data.warning || '';
-                document.getElementById('edit-price-status-row').style.display = 'none';
-                document.getElementById('edit-code-pool-group').style.display = 'none';
+                document.getElementById('edit-price-status-row').style.display = 'none'; document.getElementById('edit-code-pool-group').style.display = 'none';
             } else {
-                const item = appData[parentCat].items[itemIndex];
-                document.getElementById('edit-name').value = item.name; document.getElementById('edit-desc').value = item.desc;
+                const item = appData[parentCat].items[itemIndex]; document.getElementById('edit-name').value = item.name; document.getElementById('edit-desc').value = item.desc;
                 document.getElementById('edit-price').value = item.price; document.getElementById('edit-status').value = item.status;
                 document.getElementById('edit-terms').value = item.terms || ''; document.getElementById('edit-note').value = item.note || ''; document.getElementById('edit-warn').value = item.warning || '';
                 document.getElementById('edit-codes').value = item.codes ? item.codes.join('\n') : '';
-                document.getElementById('edit-price-status-row').style.display = 'flex';
-                document.getElementById('edit-code-pool-group').style.display = 'block';
+                document.getElementById('edit-price-status-row').style.display = 'flex'; document.getElementById('edit-code-pool-group').style.display = 'block';
             }
         }
 
@@ -403,48 +286,21 @@
         function saveEdit() {
             if(!editData.active) return;
             const name = document.getElementById('edit-name').value.trim(); const desc = document.getElementById('edit-desc').value.trim();
-            const price = document.getElementById('edit-price') ? document.getElementById('edit-price').value.trim() : ''; 
-            const status = document.getElementById('edit-status') ? document.getElementById('edit-status').value : '';
+            const price = document.getElementById('edit-price') ? document.getElementById('edit-price').value.trim() : ''; const status = document.getElementById('edit-status') ? document.getElementById('edit-status').value : '';
             const terms = document.getElementById('edit-terms').value.trim(); const note = document.getElementById('edit-note').value.trim(); const warn = document.getElementById('edit-warn').value.trim();
-            
-            const rawCodes = document.getElementById('edit-codes') ? document.getElementById('edit-codes').value.trim() : '';
-            const codesArray = rawCodes ? rawCodes.split('\n').map(c => c.trim()).filter(c => c) : [];
+            const rawCodes = document.getElementById('edit-codes') ? document.getElementById('edit-codes').value.trim() : ''; const codesArray = rawCodes ? rawCodes.split('\n').map(c => c.trim()).filter(c => c) : [];
 
-            if(!name) return alert("Name cannot be empty!");
-
-            if(editData.type === 'main_cat') {
-                appData[editData.catKey] = { ...appData[editData.catKey], title: name, desc: desc, terms: terms, note: note, warning: warn };
-            } else if(editData.type === 'folder') {
+            if(editData.type === 'main_cat') { appData[editData.catKey] = { ...appData[editData.catKey], title: name, desc: desc, terms: terms, note: note, warning: warn }; } 
+            else if(editData.type === 'folder') {
                 const fIdx = appData[editData.catKey].subFolders.findIndex(f => f.key === editData.folderKey);
                 if(fIdx > -1) { appData[editData.catKey].subFolders[fIdx].name = name; appData[editData.catKey].subFolders[fIdx].desc = desc; }
                 if(appData[editData.folderKey]) { appData[editData.folderKey] = { ...appData[editData.folderKey], title: name, desc: desc, terms: terms, note: note, warning: warn }; }
-            } else {
-                appData[editData.catKey].items[editData.itemIndex] = { ...appData[editData.catKey].items[editData.itemIndex], name, desc, price, status: status, codes: codesArray, terms, note, warning: warn };
-            }
+            } else { appData[editData.catKey].items[editData.itemIndex] = { ...appData[editData.catKey].items[editData.itemIndex], name, desc, price, status: status, codes: codesArray, terms, note, warning: warn }; }
             saveToDB(); closeEdit(); alert("Changes Saved!");
         }
 
-        function deleteMainCat(key) {
-            if(confirm(`⚠️ WARNING: Deleting Main Category will permanently delete ALL data inside it! Sure?`)) {
-                if(appData[key].subFolders) appData[key].subFolders.forEach(sub => delete appData[sub.key]);
-                delete appData[key]; saveToDB();
-            }
-        }
-        function deleteEntity(type, parentCat, itemIndex, folderKey) {
-            if(!confirm(`Delete this ${type}?`)) return;
-            if(type === 'folder') {
-                appData[parentCat].subFolders = appData[parentCat].subFolders.filter(f => f.key !== folderKey); delete appData[folderKey];
-            } else { appData[parentCat].items.splice(itemIndex, 1); }
-            saveToDB(); closeEdit();
-        }
-
-        function renderAdsTable() {
-            const tbody = document.getElementById('ads-table-body'); tbody.innerHTML = '';
-            getActiveAds().forEach(ad => {
-                const loc = ad.placement === 'both' ? 'Both' : ad.placement === 'home' ? 'Home' : 'Offers';
-                tbody.innerHTML += `<tr><td>${ad.title}</td><td>${loc}</td><td><button class="del-btn" onclick="deleteAd(${ad.id})">🗑️</button></td></tr>`;
-            });
-        }
+        function deleteMainCat(key) { if(confirm(`⚠️ WARNING: Deleting Main Category will permanently delete ALL data inside it! Sure?`)) { if(appData[key].subFolders) appData[key].subFolders.forEach(sub => delete appData[sub.key]); delete appData[key]; saveToDB(); } }
+        function deleteEntity(type, parentCat, itemIndex, folderKey) { if(!confirm(`Delete this ${type}?`)) return; if(type === 'folder') { appData[parentCat].subFolders = appData[parentCat].subFolders.filter(f => f.key !== folderKey); delete appData[folderKey]; } else { appData[parentCat].items.splice(itemIndex, 1); } saveToDB(); closeEdit(); }
     </script>
 </body>
 </html>
