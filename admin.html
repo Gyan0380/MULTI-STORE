@@ -28,7 +28,10 @@
         h2 { color: #f87171; text-align: center; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;}
         .box { background: rgba(20, 20, 30, 0.9); border: 1px solid rgba(168, 85, 247, 0.3); padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         input[type="text"], input[type="email"], input[type="password"], input[type="number"], select, textarea { width: 100%; padding: 12px; margin: 8px 0 15px 0; background: #0a0a14; border: 1px solid rgba(168, 85, 247, 0.4); border-radius: 8px; color: #fff; outline: none; font-size: 0.95rem;}
+        input:focus, select:focus, textarea:focus { border-color: #38bdf8; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2);}
+        label { color: #cbd5e1; font-size: 0.9rem; font-weight: bold; margin-bottom: 5px; display: block;}
         .btn { background: linear-gradient(135deg, #9333ea, #38bdf8); color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; font-size: 1.05rem; transition: 0.2s;}
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1);}
         table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; background: #0a0a14; border-radius: 8px; overflow: hidden;}
         th, td { border: 1px solid rgba(168, 85, 247, 0.2); padding: 12px; text-align: left; }
         th { background: rgba(168, 85, 247, 0.15); color: #e879f9; font-weight: bold;}
@@ -72,6 +75,23 @@
                     <div class="form-group"><label>Facebook Link</label><input type="text" id="set-fb" placeholder="https://facebook.com/..."></div>
                 </div>
                 <button class="btn" onclick="saveGlobalSettings()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">Save Global Settings</button>
+            </div>
+
+            <div class="box" style="border-color: #e879f9; border-top: 4px solid #e879f9;">
+                <h3 style="color: #e879f9; margin-bottom: 15px;">📢 Post New Advertisement</h3>
+                <div class="form-row">
+                    <div class="form-group"><label>Display Location</label><select id="ad-placement"><option value="both">Both (Home & Offers Page)</option><option value="home">Only Home Page</option><option value="offers">Only Offers Page</option></select></div>
+                    <div class="form-group"><label>Ad Title</label><input type="text" id="ad-title" placeholder="e.g. Mega Sale"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>Image URL</label><input type="text" id="ad-image" placeholder="Discord image link"></div>
+                    <div class="form-group"><label>Timer (Minutes)</label><input type="number" id="ad-minutes" placeholder="60"></div>
+                </div>
+                <label>Redirect URL</label><input type="text" id="ad-link" placeholder="Discord User ID Link"><br><br>
+                <button class="btn" onclick="addNewAd()" style="background: linear-gradient(135deg, #e879f9, #a855f7);">Post Live Ad</button>
+                <div style="overflow-x: auto; margin-top: 15px;">
+                    <table><thead><tr><th>Title</th><th>Location</th><th>Action</th></tr></thead><tbody id="ads-table-body"></tbody></table>
+                </div>
             </div>
 
             <div class="box" style="border-color: #eab308; border-top: 4px solid #eab308;">
@@ -137,9 +157,12 @@
             </div>
 
             <div class="box"><h3 style="color: #34d399; margin-bottom: 15px;">📦 Store Inventory & Stock</h3><div style="overflow-x: auto;"><table><thead><tr><th>Category</th><th>Name</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead><tbody id="inventory-table-body"></tbody></table></div></div>
+            
             <button class="del-btn" style="width: 100%; padding: 12px; font-size: 1.1rem;" onclick="logout()">Logout Dashboard</button>
         </div>
     </div>
+
+    <script src="ads.js"></script>
 
     <script>
         let appData = {};
@@ -162,6 +185,7 @@
             });
 
             db.ref('storeData').on('value', (snap) => { appData = snap.val() || {}; updateDropdowns(); renderInventory(); });
+            
             db.ref('registeredUsers').on('value', (snap) => {
                 const tbody = document.getElementById('users-table-body'); tbody.innerHTML = '';
                 if(snap.exists()) {
@@ -169,6 +193,7 @@
                     Object.keys(users).forEach(uid => tbody.innerHTML += `<tr><td><strong>${users[uid].name}</strong></td><td style="color:#38bdf8;">${users[uid].email}</td><td>${users[uid].lastLogin||'-'}</td></tr>`);
                 } else document.getElementById('total-users-count').innerText = "0";
             });
+
             db.ref('orders').orderByChild('status').equalTo('Pending Verification').on('value', (snap) => {
                 const tbody = document.getElementById('orders-table-body'); tbody.innerHTML = '';
                 if(snap.exists()) {
@@ -176,6 +201,22 @@
                     Object.keys(orders).forEach(id => tbody.innerHTML += `<tr><td>${orders[id].email}</td><td><strong>${orders[id].itemName}</strong><br><span style="color:#34d399;">${orders[id].price}</span></td><td style="color:#eab308; font-family:monospace; font-size:1.1rem;">${orders[id].utr}</td><td><button class="app-btn" onclick="approveOrder('${id}', '${orders[id].catKey}', ${orders[id].itemIdx})">✅ Approve</button><button class="del-btn" onclick="rejectOrder('${id}')">❌ Reject</button></td></tr>`);
                 } else tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">No pending orders.</td></tr>`;
             });
+            
+            // Refresh Ads Table if function exists
+            if(typeof renderAdsTable === 'function') renderAdsTable();
+        }
+
+        // --- Ad Rendering Function (In case ads.js relies on it) ---
+        function renderAdsTable() {
+            const tbody = document.getElementById('ads-table-body'); 
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            if(typeof getActiveAds === 'function') {
+                getActiveAds().forEach(ad => {
+                    const loc = ad.placement === 'both' ? 'Both' : ad.placement === 'home' ? 'Home' : 'Offers';
+                    tbody.innerHTML += `<tr><td>${ad.title}</td><td>${loc}</td><td><button class="del-btn" onclick="deleteAd(${ad.id})">🗑️</button></td></tr>`;
+                });
+            }
         }
 
         function saveGlobalSettings() {
