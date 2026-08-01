@@ -122,7 +122,18 @@
                 <div class="form-row"><div class="form-group"><label>Select Main Category</label><select id="add-main-cat" onchange="updateSubCatDropdown()"></select></div><div class="form-group"><label>Inside Folder?</label><select id="add-sub-cat"><option value="">-- Direct --</option></select></div></div>
                 <div class="form-row"><div class="form-group"><label>Type</label><select id="add-type" onchange="togglePriceFields('add')"><option value="item">Product Item</option><option value="folder">Sub-Folder</option></select></div><div class="form-group"><label>Name / Title</label><input type="text" id="add-name"></div></div>
                 <div class="form-group"><label>Description</label><input type="text" id="add-desc"></div>
-                <div class="form-row" id="add-price-row"><div class="form-group"><label>Price</label><input type="text" id="add-price"></div><div class="form-group"><label>Status</label><select id="add-status"><option value="Active">Active</option><option value="Out of Stock">Out of Stock</option></select></div></div>
+                
+                <div class="form-row" id="add-price-row">
+                    <div class="form-group"><label>Price</label><input type="text" id="add-price"></div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="add-status">
+                            <option value="Active">Active</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                            <option value="Coming Soon">Coming Soon</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div class="form-group" id="code-pool-group"><label style="color:#38bdf8;">⚡ Voucher Codes</label><textarea id="add-codes" rows="3"></textarea></div>
 
@@ -144,7 +155,19 @@
             <div class="box" id="edit-box" style="display: none; border-color: #f59e0b; border-top: 4px solid #f59e0b;">
                 <h3 style="color: #f59e0b; margin-bottom: 15px;">✏️ Edit Details</h3>
                 <div class="form-row"><div class="form-group"><label>Name / Title</label><input type="text" id="edit-name"></div><div class="form-group"><label>Description</label><input type="text" id="edit-desc"></div></div>
-                <div class="form-row" id="edit-price-status-row"><div class="form-group"><label>Price</label><input type="text" id="edit-price"></div><div class="form-group"><label>Status</label><select id="edit-status"><option value="Active">Active</option><option value="Out of Stock">Out of Stock</option></select></div></div>
+                
+                <div class="form-row" id="edit-price-status-row">
+                    <div class="form-group"><label>Price</label><input type="text" id="edit-price"></div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="edit-status">
+                            <option value="Active">Active</option>
+                            <option value="Out of Stock">Out of Stock</option>
+                            <option value="Coming Soon">Coming Soon</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group" id="edit-code-pool-group"><label style="color:#f59e0b;">⚡ Update Codes</label><textarea id="edit-codes" rows="3"></textarea></div>
                 
                 <div class="optional-section" id="edit-buttons-group">
@@ -330,7 +353,7 @@
         function saveEdit() {
             if(!editData.active) return; const n = document.getElementById('edit-name').value.trim(); const d = document.getElementById('edit-desc').value.trim(); if(!n) return;
             if(editData.type === 'main') { appData[editData.catKey].title=n; appData[editData.catKey].desc=d; }
-            else if(editData.type === 'folder') { appData[editData.catKey].subFolders.find(f=>f.key===editData.folderKey).name=n; appData[editData.folderKey].title=n; appData[editData.folderKey].desc=d; }
+            else if(editData.type === 'folder') { appData[editData.catKey].subFolders.find(f=>f.key==editData.folderKey).name=n; appData[editData.folderKey].title=n; appData[editData.folderKey].desc=d; }
             else {
                 const raw = document.getElementById('edit-codes').value.trim(); const cArr = raw?raw.split('\n').map(c=>c.trim()).filter(c=>c):[];
                 appData[editData.catKey].items[editData.itemIndex] = { ...appData[editData.catKey].items[editData.itemIndex], name:n, desc:d, price:document.getElementById('edit-price').value.trim(), status:document.getElementById('edit-status').value, codes:cArr, buyOptions:getCheckboxOptions('edit') };
