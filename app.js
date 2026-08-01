@@ -173,7 +173,9 @@ function verifyAndDeliverCode() {
     }).catch((err) => alert("Error processing order: " + err.message));
 }
 
-// Authentication Setup
+// ===============================================
+// AUTHENTICATION LOGIC (FIXED FOR MOBILE CHROME)
+// ===============================================
 function toggleAuthMode() {
     isSignUpMode = !isSignUpMode;
     document.getElementById('auth-title').innerText = isSignUpMode ? "Create an Account" : "Login to Account";
@@ -193,15 +195,25 @@ function handleEmailAuth() {
     }
 }
 
+// 1. CHROME MOBILE FIX: User clicks "Continue with Google"
 function signInWithGoogle() {
-    auth.signInWithPopup(googleProvider).catch(e => {
-        if(e.code === 'auth/unauthorized-domain') {
-            alert("⚠️ GOOGLE LOGIN BLOCKED!\nPlease add your website to Authorized Domains in Firebase.");
-        } else {
-            alert("Google Login Error: " + e.message);
-        }
-    });
+    // Popup block hone par hum Redirect method use karte hain taaki direct login ho
+    auth.signInWithRedirect(googleProvider);
 }
+
+// 2. CHROME MOBILE FIX: Jab redirect wapas website par aayega, tab yeh run hoga
+auth.getRedirectResult().then((result) => {
+    if (result && result.user) {
+        // Redirect successfully login ho gaya
+        switchView('welcome-view');
+    }
+}).catch((error) => {
+    if(error.code === 'auth/unauthorized-domain') {
+        alert("⚠️ GOOGLE LOGIN BLOCKED!\nPlease add your Vercel Domain to Firebase Authorized Domains.");
+    } else {
+        console.error("Google Login Error: ", error);
+    }
+});
 
 function logout() {
     auth.signOut().then(() => alert("Logged out successfully."));
@@ -249,4 +261,3 @@ function initTiltEffect() {
 }
 
 window.onload = function() { switchView('welcome-view'); }
-
