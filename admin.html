@@ -60,7 +60,6 @@
 
         <div id="dashboard" style="display: none;">
             
-            <!-- ⚙️ NEW: GLOBAL STORE SETTINGS (QR, UPI, Links) -->
             <div class="box" style="border-color: #8b5cf6; border-top: 4px solid #8b5cf6;">
                 <h3 style="color: #8b5cf6; margin-bottom: 15px;">⚙️ Global Store Settings (Links & Payment)</h3>
                 <div class="form-row">
@@ -110,7 +109,6 @@
                 <div class="form-row" id="add-price-row"><div class="form-group"><label>Price</label><input type="text" id="add-price"></div><div class="form-group"><label>Status</label><select id="add-status"><option value="Active">Active</option><option value="Out of Stock">Out of Stock</option></select></div></div>
                 <div class="form-group" id="code-pool-group"><label style="color:#38bdf8;">⚡ Voucher Codes (Stock)</label><textarea id="add-codes" rows="3" placeholder="CODE-1&#10;CODE-2"></textarea></div>
                 
-                <!-- 🎛️ NEW: BUY METHOD CHECKBOXES -->
                 <div class="optional-section" id="add-buttons-group">
                     <h4 style="color:#e879f9;">Select Buy Methods for this Item:</h4>
                     <div class="checkbox-group">
@@ -175,7 +173,6 @@
         function logout() { auth.signOut().then(() => location.reload()); }
 
         function listenLiveData() {
-            // Load Global Settings
             db.ref('storeSettings').on('value', (snap) => {
                 storeSettings = snap.val() || {};
                 document.getElementById('set-qr').value = storeSettings.qr || '';
@@ -188,7 +185,6 @@
 
             db.ref('storeData').on('value', (snapshot) => { appData = snapshot.val() || {}; updateDropdowns(); renderInventory(); });
             
-            // Listen to Registered Users Data
             db.ref('registeredUsers').on('value', (snapshot) => {
                 const usersTable = document.getElementById('users-table-body');
                 usersTable.innerHTML = '';
@@ -200,7 +196,6 @@
                 } else { document.getElementById('total-users-count').innerText = "0"; usersTable.innerHTML = `<tr><td colspan="3" style="text-align:center;">No users registered yet.</td></tr>`; }
             });
 
-            // ⚡ LISTEN TO PENDING ORDERS
             db.ref('orders').orderByChild('status').equalTo('Pending Verification').on('value', (snapshot) => {
                 const ordersTable = document.getElementById('orders-table-body');
                 ordersTable.innerHTML = '';
@@ -237,7 +232,6 @@
             }).then(() => alert("Global Settings Saved!"));
         }
 
-        // ⚡ APPROVE ORDER & AUTO-DISPENSE CODE
         function approveOrder(orderId, catKey, itemIdx) {
             if(!confirm("Did you receive the payment? This will give the customer 1 code.")) return;
             let itemRef = appData[catKey].items[itemIdx];
