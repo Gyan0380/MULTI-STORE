@@ -30,6 +30,7 @@
         <div class="logo">Developer Gyan</div>
         <div class="header-icons">
             <a href="#" class="auth-btn" id="header-auth-btn" onclick="switchView('auth-view')">👤 Login</a>
+            <a href="#" class="top-ad-btn" onclick="switchView('ads-view')">📢 Offers</a>
             <button class="menu-btn" onclick="toggleSidebar()">☰</button>
         </div>
     </header>
@@ -42,7 +43,7 @@
         <ul id="dynamic-sidebar"></ul>
     </div>
 
-    <!-- DYNAMIC BUY SELECTION MODAL -->
+    <!-- BUY SELECTION MODAL -->
     <div id="buy-modal">
         <div class="modal-content">
             <h3 id="modal-item-title" style="color:#e879f9; margin-bottom:10px;">Select Buy Option</h3>
@@ -58,7 +59,7 @@
         </div>
     </div>
 
-    <!-- DYNAMIC UPI CHECKOUT MODAL -->
+    <!-- ONLINE UPI CHECKOUT MODAL -->
     <div id="online-modal">
         <div class="modal-content" style="border-color:#10b981;">
             <h3 style="color:#10b981; margin-bottom:10px;">⚡ Instant UPI Checkout</h3>
@@ -74,11 +75,15 @@
         </div>
     </div>
 
-    <!-- DELIVERY ALERT MODAL -->
+    <!-- VERIFICATION MESSAGE MODAL -->
     <div id="delivery-modal">
         <div class="modal-content" style="border-color:#eab308;">
             <h3 style="color:#eab308; margin-bottom:10px;">⏳ Verification in Process</h3>
-            <p style="color:#cbd5e1; font-size:1.05rem; margin-bottom:20px; line-height:1.6;">Your code will come in your <strong>Buy Section</strong>.<br><br>Go to the <strong>3 Lines Menu (☰)</strong> and click on <strong>My Purchases</strong>.<br><br><span style="color:#38bdf8; font-weight:bold;">Your code will arrive within 12h.</span></p>
+            <p style="color:#cbd5e1; font-size:1.05rem; margin-bottom:20px; line-height:1.6;">
+                Your code will come in your <strong>Buy Section</strong>.<br><br>
+                Go to the <strong>3 Lines Menu (☰)</strong> and click on <strong>My Purchases</strong> to see your code.<br><br>
+                <span style="color:#38bdf8; font-weight:bold;">Your code will arrive in 12h.</span>
+            </p>
             <button onclick="location.reload()" class="modal-btn" style="background:#eab308; color:#05050a;">Okay, Got it!</button>
         </div>
     </div>
@@ -127,6 +132,12 @@
             <div class="category-highlights" id="dynamic-home-cards"></div>
         </div>
 
+        <!-- ADS VIEW -->
+        <div id="ads-view" class="view">
+            <div class="sub-header"><a href="#" class="back-link" onclick="switchView('welcome-view')">← Back</a><h2 class="section-title" style="text-align: left; color: #e879f9;">📢 Offers</h2></div>
+            <div id="ads-page-container" style="display: flex; flex-direction: column; align-items: center; padding: 0 20px;"></div>
+        </div>
+
         <!-- STORE & CATEGORY VIEWS -->
         <div id="store-view" class="view">
             <h2 class="section-title">Store Categories</h2>
@@ -145,6 +156,7 @@
         </div>
     </div>
 
+    <script src="ads.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
