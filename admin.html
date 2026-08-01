@@ -60,10 +60,11 @@
 
         <div id="dashboard" style="display: none;">
             
+            <!-- ⚙️ GLOBAL SETTINGS -->
             <div class="box" style="border-color: #8b5cf6; border-top: 4px solid #8b5cf6;">
                 <h3 style="color: #8b5cf6; margin-bottom: 15px;">⚙️ Global Store Settings (Links & Payment)</h3>
                 <div class="form-row">
-                    <div class="form-group"><label>UPI QR Code Image URL</label><input type="text" id="set-qr" placeholder="Direct Image Link (Imgur/Discord)"></div>
+                    <div class="form-group"><label>UPI QR Code Image URL</label><input type="text" id="set-qr" placeholder="Direct Image Link"></div>
                     <div class="form-group"><label>UPI ID (Text)</label><input type="text" id="set-upi" placeholder="developergyan@fam"></div>
                 </div>
                 <div class="form-row">
@@ -77,6 +78,7 @@
                 <button class="btn" onclick="saveGlobalSettings()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">Save Global Settings</button>
             </div>
 
+            <!-- 📢 POST NEW ADVERTISEMENT -->
             <div class="box" style="border-color: #e879f9; border-top: 4px solid #e879f9;">
                 <h3 style="color: #e879f9; margin-bottom: 15px;">📢 Post New Advertisement</h3>
                 <div class="form-row">
@@ -84,33 +86,37 @@
                     <div class="form-group"><label>Ad Title</label><input type="text" id="ad-title" placeholder="e.g. Mega Sale"></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label>Image URL</label><input type="text" id="ad-image" placeholder="Discord image link"></div>
+                    <div class="form-group"><label>Image URL</label><input type="text" id="ad-image" placeholder="Image Link"></div>
                     <div class="form-group"><label>Timer (Minutes)</label><input type="number" id="ad-minutes" placeholder="60"></div>
                 </div>
-                <label>Redirect URL</label><input type="text" id="ad-link" placeholder="Discord User ID Link"><br><br>
+                <label>Redirect URL</label><input type="text" id="ad-link" placeholder="Target Link"><br><br>
                 <button class="btn" onclick="addNewAd()" style="background: linear-gradient(135deg, #e879f9, #a855f7);">Post Live Ad</button>
                 <div style="overflow-x: auto; margin-top: 15px;">
                     <table><thead><tr><th>Title</th><th>Location</th><th>Action</th></tr></thead><tbody id="ads-table-body"></tbody></table>
                 </div>
             </div>
 
+            <!-- ⏳ PENDING ORDERS -->
             <div class="box" style="border-color: #eab308; border-top: 4px solid #eab308;">
                 <h3 style="color: #eab308; margin-bottom: 15px;">⏳ Pending Payment Approvals</h3>
                 <div style="overflow-x: auto;"><table><thead><tr><th>User Info</th><th>Item & Price</th><th>UTR Details</th><th>Action</th></tr></thead><tbody id="orders-table-body"></tbody></table></div>
             </div>
 
+            <!-- 👥 USERS -->
             <div class="box" style="border-color: #f43f5e; border-top: 4px solid #f43f5e;">
                 <h3 style="color: #f43f5e; margin-bottom: 15px;">👥 Registered Customers</h3>
                 <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Total Users Logged in: <strong id="total-users-count" style="color: #fff; font-size: 1.2rem;">0</strong></p>
                 <div style="overflow-x: auto;"><table><thead><tr><th>Name</th><th>Email ID</th><th>Last Login</th></tr></thead><tbody id="users-table-body"></tbody></table></div>
             </div>
 
+            <!-- 📁 MAIN CATEGORY -->
             <div class="box" style="border-color: #10b981; border-top: 4px solid #10b981;">
                 <h3 style="color: #10b981; margin-bottom: 15px;">📁 1. Create New Main Category</h3>
                 <div class="form-row"><div class="form-group"><label>Category Name</label><input type="text" id="new-main-name"></div><div class="form-group"><label>Short Description</label><input type="text" id="new-main-desc"></div></div>
                 <button class="btn" onclick="addMainCategory()" style="background: linear-gradient(135deg, #10b981, #059669);">Create Main Category</button>
             </div>
 
+            <!-- 🏪 ADD ITEM -->
             <div class="box" style="border-top: 4px solid #38bdf8;">
                 <h3 style="color: #38bdf8; margin-bottom: 15px;">🏪 2. Add Item / Sub-Folder</h3>
                 <div class="form-row"><div class="form-group"><label>Select Main Category</label><select id="add-main-cat" onchange="updateSubCatDropdown()"></select></div><div class="form-group" id="sub-cat-container"><label>Inside Folder?</label><select id="add-sub-cat"><option value="">-- Direct --</option></select></div></div>
@@ -120,6 +126,7 @@
 
                 <div class="form-group" id="code-pool-group"><label style="color:#38bdf8;">⚡ Voucher Codes</label><textarea id="add-codes" rows="3"></textarea></div>
 
+                <!-- SELECT BUY BUTTONS -->
                 <div class="optional-section" id="add-buttons-group">
                     <h4 style="color:#e879f9;">Select Buy Methods for this Item:</h4>
                     <div class="checkbox-group">
@@ -135,6 +142,7 @@
                 <button class="btn" onclick="addEntity()">➕ Add to Live Store</button>
             </div>
 
+            <!-- ✏️ EDIT SECTION -->
             <div class="box" id="edit-box" style="display: none; border-color: #f59e0b; border-top: 4px solid #f59e0b;">
                 <h3 style="color: #f59e0b; margin-bottom: 15px;">✏️ Edit Details</h3>
                 <div class="form-row"><div class="form-group"><label>Name / Title</label><input type="text" id="edit-name"></div><div class="form-group"><label>Description</label><input type="text" id="edit-desc"></div></div>
@@ -156,6 +164,7 @@
                 <div style="display: flex; gap: 15px; margin-top: 10px;"><button class="btn" onclick="saveEdit()" style="background: linear-gradient(135deg, #f59e0b, #ea580c);">Save Changes</button><button class="btn" onclick="closeEdit()" style="background: #4b5563;">Cancel</button></div>
             </div>
 
+            <!-- 📦 INVENTORY -->
             <div class="box"><h3 style="color: #34d399; margin-bottom: 15px;">📦 Store Inventory & Stock</h3><div style="overflow-x: auto;"><table><thead><tr><th>Category</th><th>Name</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead><tbody id="inventory-table-body"></tbody></table></div></div>
             
             <button class="del-btn" style="width: 100%; padding: 12px; font-size: 1.1rem;" onclick="logout()">Logout Dashboard</button>
@@ -163,7 +172,6 @@
     </div>
 
     <script src="ads.js"></script>
-
     <script>
         let appData = {};
         let storeSettings = {};
@@ -201,12 +209,10 @@
                     Object.keys(orders).forEach(id => tbody.innerHTML += `<tr><td>${orders[id].email}</td><td><strong>${orders[id].itemName}</strong><br><span style="color:#34d399;">${orders[id].price}</span></td><td style="color:#eab308; font-family:monospace; font-size:1.1rem;">${orders[id].utr}</td><td><button class="app-btn" onclick="approveOrder('${id}', '${orders[id].catKey}', ${orders[id].itemIdx})">✅ Approve</button><button class="del-btn" onclick="rejectOrder('${id}')">❌ Reject</button></td></tr>`);
                 } else tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">No pending orders.</td></tr>`;
             });
-            
-            // Refresh Ads Table if function exists
-            if(typeof renderAdsTable === 'function') renderAdsTable();
+
+            renderAdsTable();
         }
 
-        // --- Ad Rendering Function (In case ads.js relies on it) ---
         function renderAdsTable() {
             const tbody = document.getElementById('ads-table-body'); 
             if(!tbody) return;
@@ -271,7 +277,7 @@
             };
         }
         function setCheckboxOptions(prefix, opts) {
-            if(!opts) opts = {online:true, discord:true, wa:true, tg:true, fb:false}; // Default fallback
+            if(!opts) opts = {online:true, discord:true, wa:true, tg:true, fb:false};
             document.getElementById(prefix+'-chk-online').checked = opts.online;
             document.getElementById(prefix+'-chk-disc').checked = opts.discord;
             document.getElementById(prefix+'-chk-wa').checked = opts.wa;
