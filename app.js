@@ -131,18 +131,64 @@ function openOnlineCheckout() {
     else { imgQR.style.display = 'none'; txtQR.style.display = 'block'; }
     document.getElementById('dynamic-upi-text').innerText = storeSettings.upi ? `UPI ID: ${storeSettings.upi}` : 'UPI ID Not Set';
 
-    document.getElementById('buyer-utr').value = '';
+    document.getElementById('payment-screenshot').value = '';
+    document.getElementById('game-uid').value = '';
     document.getElementById('online-modal').style.display = 'flex';
 }
 
-function verifyAndDeliverCode() {
-    const utr = document.getElementById('buyer-utr').value.trim(); if(!utr || utr.length < 6) return alert("Enter valid UTR!");
+// 🔥 UPDATED FUNCTION: Upload SS to Firebase Storage
+async function verifyAndDeliverCode() {
+    const fileInput = document.getElementById('payment-screenshot');
+    const userGameUid = document.getElementById('game-uid').value.trim();
+    
+    if (fileInput.files.length === 0) return alert("Please upload a payment screenshot first!");
+    
     let itemRef = appData[activeItemData.catKey].items[activeItemData.itemIdx];
     if(!itemRef.codes || itemRef.codes.length === 0) return alert("Sorry! Out of stock.");
-    const orderId = 'ORD_' + Date.now(); const user = auth.currentUser;
-    db.ref('orders/' + orderId).set({ orderId: orderId, uid: user.uid, email: user.email, itemName: itemRef.name, price: itemRef.price, utr: utr, status: "Pending Verification", code: "", catKey: activeItemData.catKey, itemIdx: activeItemData.itemIdx, timestamp: new Date().toLocaleString() }).then(() => {
-        document.getElementById('online-modal').style.display = 'none'; document.getElementById('delivery-modal').style.display = 'flex';
-    }).catch(e => alert("Error: " + e.message));
+    
+    const file = fileInput.files[0];
+    const storagePath = 'receipts/' + Date.now() + '_' + file.name; 
+    const storageRef = firebase.storage().ref(storagePath);
+
+    document.getElementById('upload-status').style.display = 'block'; 
+    const btnSubmit = document.getElementById('submit-order-btn');
+    btnSubmit.disabled = true;
+    btnSubmit.innerText = "Uploading...";
+    
+    try {
+        const snapshot = await storageRef.put(file);
+        const downloadUrl = await snapshot.ref.getDownloadURL();
+        
+        const orderId = 'ORD_' + Date.now(); 
+        const user = auth.currentUser;
+        
+        await db.ref('orders/' + orderId).set({ 
+            orderId: orderId, 
+            uid: user.uid, 
+            email: user.email, 
+            itemName: itemRef.name, 
+            price: itemRef.price, 
+            gameUid: userGameUid ? userGameUid : 'N/A', // 🔥 Save Game UID
+            screenshotUrl: downloadUrl,                 // 🔥 Save SS Link
+            storagePath: storagePath,                   // 🔥 Save Path for Deletion
+            status: "Pending Verification", 
+            code: "", 
+            catKey: activeItemData.catKey, 
+            itemIdx: activeItemData.itemIdx, 
+            timestamp: new Date().toLocaleString() 
+        });
+        
+        document.getElementById('upload-status').style.display = 'none';
+        btnSubmit.disabled = false;
+        btnSubmit.innerText = "Submit Order";
+        document.getElementById('online-modal').style.display = 'none'; 
+        document.getElementById('delivery-modal').style.display = 'flex';
+    } catch (error) {
+        alert("Upload failed: " + error.message);
+        document.getElementById('upload-status').style.display = 'none';
+        btnSubmit.disabled = false;
+        btnSubmit.innerText = "Submit Order";
+    }
 }
 
 function loadMyPurchases() {
@@ -154,8 +200,13 @@ function loadMyPurchases() {
             const orders = snapshot.val(); const sortedKeys = Object.keys(orders).sort((a,b) => orders[b].timestamp.localeCompare(orders[a].timestamp));
             sortedKeys.forEach(key => {
                 const ord = orders[key]; let statusColor = ord.status === 'Approved' ? '#34d399' : (ord.status === 'Rejected' ? '#ef4444' : '#eab308');
-                let codeHtml = ord.status === 'Approved' ? `<div style="margin-top:15px; padding:10px; background:#05050a; border:1px dashed #34d399; border-radius:6px; color:#34d399; font-weight:bold; letter-spacing:1px; text-align:center;">VOUCHER CODE:<br><span style="font-size:1.3rem;">${ord.code}</span></div>` : (ord.status === 'Rejected' ? `<div style="margin-top:10px; color:#ef4444; font-size:0.9rem;">Admin Rejected UTR.</div>` : `<div style="margin-top:10px; color:#eab308; font-size:0.9rem;">Verifying UTR...</div>`);
-                list.innerHTML += `<div class="item-card-wrapper" style="border-left: 4px solid ${statusColor};"><div style="display:flex; justify-content:space-between; margin-bottom:5px;"><strong style="color:#fff;">${ord.itemName}</strong><span style="color:#38bdf8; font-weight:bold;">${ord.price}</span></div><div style="font-size:0.8rem; color:#94a3b8; margin-bottom:10px;">Order ID: ${ord.orderId}<br>UTR: ${ord.utr}</div><div class="badge" style="background:transparent; border:1px solid ${statusColor}; color:${statusColor};">${ord.status}</div>${codeHtml}</div>`;
+                let codeHtml = ord.status === 'Approved' ? `<div style="margin-top:15px; padding:10px; background:#05050a; border:1px dashed #34d399; border-radius:6px; color:#34d399; font-weight:bold; letter-spacing:1px; text-align:center;">VOUCHER CODE:<br><span style="font-size:1.3rem;">${ord.code}</span></div>` : (ord.status === 'Rejected' ? `<div style="margin-top:10px; color:#ef4444; font-size:0.9rem;">Admin Rejected UTR.</div>` : `<div style="margin-top:10px; color:#eab308; font-size:0.9rem;">Verifying Order...</div>`);
+                
+                // 🔥 Show UID and SS link in user history
+                let uidHtml = (ord.gameUid && ord.gameUid !== 'N/A') ? `<br><span style="color:#e879f9;">🎮 UID: ${ord.gameUid}</span>` : '';
+                let ssHtml = ord.screenshotUrl ? `<br><a href="${ord.screenshotUrl}" target="_blank" style="color:#38bdf8; text-decoration:underline; font-size:0.8rem;">View SS</a>` : '';
+
+                list.innerHTML += `<div class="item-card-wrapper" style="border-left: 4px solid ${statusColor};"><div style="display:flex; justify-content:space-between; margin-bottom:5px;"><strong style="color:#fff;">${ord.itemName}</strong><span style="color:#38bdf8; font-weight:bold;">${ord.price}</span></div><div style="font-size:0.8rem; color:#94a3b8; margin-bottom:10px;">Order ID: ${ord.orderId}${uidHtml}${ssHtml}</div><div class="badge" style="background:transparent; border:1px solid ${statusColor}; color:${statusColor};">${ord.status}</div>${codeHtml}</div>`;
             });
         } else { list.innerHTML = '<p style="text-align:center; color:#94a3b8;">You have not bought anything yet.</p>'; }
     });
