@@ -101,11 +101,14 @@ function loadCategoryData(catKey) {
 function openBuyModal(catKey, itemIdx) {
     activeItemData = { catKey, itemIdx, item: appData[catKey].items[itemIdx] };
     const item = activeItemData.item;
-    const opts = item.buyOptions || {online:true, discord:true, wa:true, tg:true, fb:false};
+    const opts = item.buyOptions || {online:true, free:false, discord:true, wa:true, tg:true, fb:false};
 
     document.getElementById('modal-item-title').innerText = item.name;
     document.getElementById('modal-item-price').innerText = "Price: " + item.price;
 
+    // 🔥 Show/Hide Free Button
+    document.getElementById('opt-free').style.display = opts.free ? 'block' : 'none';
+    
     document.getElementById('opt-online').style.display = opts.online ? 'block' : 'none';
     const btnDisc = document.getElementById('opt-discord'); btnDisc.style.display = opts.discord ? 'block' : 'none';
     const btnWa = document.getElementById('opt-whatsapp'); btnWa.style.display = opts.wa ? 'block' : 'none';
@@ -120,6 +123,82 @@ function openBuyModal(catKey, itemIdx) {
     document.getElementById('buy-modal').style.display = 'flex';
 }
 function closeModal() { document.getElementById('buy-modal').style.display = 'none'; }
+
+// 🔥 NEW FUNCTION: Auto-Process Free Claims with Cooldown & Auto Stock-Out
+async function processFreeClaim() {
+    if(!auth.currentUser) { alert("Please Login to your account first to claim free items!"); closeModal(); switchView('auth-view'); return; }
+    
+    const user = auth.currentUser;
+    const catKey = activeItemData.catKey;
+    const itemIdx = activeItemData.itemIdx;
+    let itemRef = appData[catKey].items[itemIdx];
+
+    // 1. Stock Check
+    if(!itemRef.codes || itemRef.codes.length === 0) {
+        alert("Sorry! This free item is Out of Stock right now. Please wait for refill.");
+        return;
+    }
+
+    // 2. Cooldown Check (24 Hours)
+    try {
+        const userRef = await db.ref('registeredUsers/' + user.uid).once('value');
+        const userData = userRef.val() || {};
+        const lastClaim = userData.lastFreeClaim || 0;
+        const now = Date.now();
+        const cooldown = 24 * 60 * 60 * 1000; // 24 Hours in ms
+        
+        if (now - lastClaim < cooldown) {
+            const remainingTime = cooldown - (now - lastClaim);
+            const remainingHours = Math.floor(remainingTime / (1000 * 60 * 60));
+            const remainingMins = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+            alert(`⏳ Cooldown Active!\nYou can claim your next free item after ${remainingHours} hours and ${remainingMins} minutes.`);
+            return;
+        }
+
+        // Close modal and start process
+        closeModal();
+        document.getElementById('opt-free').innerText = "Processing...";
+
+        // 3. Process the Claim
+        let codeToSend = itemRef.codes.shift(); // 1 Code minus kar diya
+        let newStatus = itemRef.codes.length === 0 ? "Out of Stock" : itemRef.status; // Auto Out of Stock
+        
+        // Update Item Stock in DB
+        await db.ref(`storeData/${catKey}/items/${itemIdx}`).update({
+            codes: itemRef.codes,
+            status: newStatus
+        });
+
+        // Create Order as "Approved" (Auto-Delivery)
+        const orderId = 'FREE_' + Date.now();
+        await db.ref('orders/' + orderId).set({
+            orderId: orderId,
+            uid: user.uid,
+            email: user.email,
+            itemName: itemRef.name,
+            price: "FREE",
+            gameUid: "N/A",
+            screenshotUrl: "",
+            status: "Approved", // Direct Approval
+            code: codeToSend,
+            catKey: catKey,
+            itemIdx: itemIdx,
+            timestamp: new Date().toLocaleString()
+        });
+
+        // Update User's Time limit (Cooldown start)
+        await db.ref('registeredUsers/' + user.uid).update({
+            lastFreeClaim: now
+        });
+
+        document.getElementById('opt-free').innerText = "🎁 Claim for FREE (Auto-Delivery)";
+        document.getElementById('free-delivery-modal').style.display = 'flex';
+
+    } catch(e) {
+        alert("Error claiming item: " + e.message);
+        document.getElementById('opt-free').innerText = "🎁 Claim for FREE (Auto-Delivery)";
+    }
+}
 
 function openOnlineCheckout() {
     if(!auth.currentUser) { alert("Please Login to your account first!"); closeModal(); switchView('auth-view'); return; }
@@ -136,7 +215,6 @@ function openOnlineCheckout() {
     document.getElementById('online-modal').style.display = 'flex';
 }
 
-// 🔥 UPDATED FUNCTION: Upload SS to Firebase Storage
 async function verifyAndDeliverCode() {
     const fileInput = document.getElementById('payment-screenshot');
     const userGameUid = document.getElementById('game-uid').value.trim();
@@ -168,9 +246,9 @@ async function verifyAndDeliverCode() {
             email: user.email, 
             itemName: itemRef.name, 
             price: itemRef.price, 
-            gameUid: userGameUid ? userGameUid : 'N/A', // 🔥 Save Game UID
-            screenshotUrl: downloadUrl,                 // 🔥 Save SS Link
-            storagePath: storagePath,                   // 🔥 Save Path for Deletion
+            gameUid: userGameUid ? userGameUid : 'N/A',
+            screenshotUrl: downloadUrl,
+            storagePath: storagePath,
             status: "Pending Verification", 
             code: "", 
             catKey: activeItemData.catKey, 
@@ -202,7 +280,6 @@ function loadMyPurchases() {
                 const ord = orders[key]; let statusColor = ord.status === 'Approved' ? '#34d399' : (ord.status === 'Rejected' ? '#ef4444' : '#eab308');
                 let codeHtml = ord.status === 'Approved' ? `<div style="margin-top:15px; padding:10px; background:#05050a; border:1px dashed #34d399; border-radius:6px; color:#34d399; font-weight:bold; letter-spacing:1px; text-align:center;">VOUCHER CODE:<br><span style="font-size:1.3rem;">${ord.code}</span></div>` : (ord.status === 'Rejected' ? `<div style="margin-top:10px; color:#ef4444; font-size:0.9rem;">Admin Rejected UTR.</div>` : `<div style="margin-top:10px; color:#eab308; font-size:0.9rem;">Verifying Order...</div>`);
                 
-                // 🔥 Show UID and SS link in user history
                 let uidHtml = (ord.gameUid && ord.gameUid !== 'N/A') ? `<br><span style="color:#e879f9;">🎮 UID: ${ord.gameUid}</span>` : '';
                 let ssHtml = ord.screenshotUrl ? `<br><a href="${ord.screenshotUrl}" target="_blank" style="color:#38bdf8; text-decoration:underline; font-size:0.8rem;">View SS</a>` : '';
 
@@ -231,7 +308,18 @@ auth.onAuthStateChanged((user) => {
         headerBtn.innerHTML = `👤 Profile`; headerBtn.style.color = "#34d399"; headerBtn.style.borderColor = "#34d399";
         loggedOutUI.style.display = 'none'; loggedInUI.style.display = 'block';
         document.getElementById('profile-name').innerText = user.displayName || "Store Member"; document.getElementById('profile-email').innerText = user.email; document.getElementById('profile-pic').src = user.photoURL || "https://via.placeholder.com/100/38bdf8/000000?text=USER";
-        db.ref('registeredUsers/' + user.uid).set({ name: user.displayName || "Store Member", email: user.email, lastLogin: new Date().toLocaleString() });
+        
+        // Load existing user data so we don't overwrite lastFreeClaim
+        db.ref('registeredUsers/' + user.uid).once('value').then(snap => {
+            const currentData = snap.val() || {};
+            db.ref('registeredUsers/' + user.uid).update({ 
+                name: user.displayName || "Store Member", 
+                email: user.email, 
+                lastLogin: new Date().toLocaleString(),
+                lastFreeClaim: currentData.lastFreeClaim || 0 
+            });
+        });
+        
         renderDynamicWebsite(); 
     } else {
         headerBtn.innerHTML = `👤 Login`; headerBtn.style.color = "#38bdf8"; headerBtn.style.borderColor = "#38bdf8";
