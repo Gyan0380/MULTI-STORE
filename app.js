@@ -130,7 +130,6 @@ async function processFreeClaim() {
     const itemIdx = activeItemData.itemIdx;
     let itemRef = appData[catKey].items[itemIdx];
 
-    // 🔥 FIX: Firebase Object array conversion handle
     let codesArray = itemRef.codes ? (Array.isArray(itemRef.codes) ? itemRef.codes : Object.values(itemRef.codes)) : [];
 
     if(codesArray.length === 0) {
@@ -208,6 +207,7 @@ function openOnlineCheckout() {
     document.getElementById('online-modal').style.display = 'flex';
 }
 
+// 🔥 YAHAN MAIN MAGIC HAI - BASE64 IMAGE UPLOAD (NO STORAGE NEEDED)
 async function verifyAndDeliverCode() {
     const fileInput = document.getElementById('payment-screenshot');
     const userGameUid = document.getElementById('game-uid').value.trim();
@@ -215,55 +215,70 @@ async function verifyAndDeliverCode() {
     if (fileInput.files.length === 0) return alert("Please upload a payment screenshot first!");
     
     let itemRef = appData[activeItemData.catKey].items[activeItemData.itemIdx];
-    // 🔥 FIX: Array object issue handle
     let codesArray = itemRef.codes ? (Array.isArray(itemRef.codes) ? itemRef.codes : Object.values(itemRef.codes)) : [];
     
     if(codesArray.length === 0) return alert("Sorry! Out of stock.");
     
     const file = fileInput.files[0];
-    const storagePath = 'receipts/' + Date.now() + '_' + file.name; 
-    const storageRef = firebase.storage().ref(storagePath);
-
-    document.getElementById('upload-status').style.display = 'block'; 
     const btnSubmit = document.getElementById('submit-order-btn');
+    document.getElementById('upload-status').style.display = 'block'; 
     btnSubmit.disabled = true;
-    btnSubmit.innerText = "Uploading...";
+    btnSubmit.innerText = "Processing Image...";
     
-    try {
-        const snapshot = await storageRef.put(file);
-        const downloadUrl = await snapshot.ref.getDownloadURL();
-        
-        const orderId = 'ORD_' + Date.now(); 
-        const user = auth.currentUser;
-        
-        await db.ref('orders/' + orderId).set({ 
-            orderId: orderId, 
-            uid: user.uid, 
-            email: user.email, 
-            itemName: itemRef.name, 
-            price: itemRef.price, 
-            gameUid: userGameUid ? userGameUid : 'N/A',
-            screenshotUrl: downloadUrl,
-            storagePath: storagePath,
-            status: "Pending Verification", 
-            code: "", 
-            catKey: activeItemData.catKey, 
-            itemIdx: activeItemData.itemIdx, 
-            timestamp: new Date().toLocaleString() 
-        });
-        
-        document.getElementById('upload-status').style.display = 'none';
-        btnSubmit.disabled = false;
-        btnSubmit.innerText = "Submit Order";
-        document.getElementById('online-modal').style.display = 'none'; 
-        document.getElementById('delivery-modal').style.display = 'flex';
-    } catch (error) {
-        alert("Upload failed: " + error.message);
-        document.getElementById('upload-status').style.display = 'none';
-        btnSubmit.disabled = false;
-        btnSubmit.innerText = "Submit Order";
-    }
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        const img = new Image();
+        img.onload = async function() {
+            const canvas = document.createElement('canvas');
+            const MAX_WIDTH = 500;
+            let width = img.width;
+            let height = img.height;
+
+            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+            canvas.width = width; canvas.height = height;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            
+            const base64String = canvas.toDataURL('image/jpeg', 0.6); 
+            
+            try {
+                const orderId = 'ORD_' + Date.now(); 
+                const user = auth.currentUser;
+                
+                await db.ref('orders/' + orderId).set({ 
+                    orderId: orderId, 
+                    uid: user.uid, 
+                    email: user.email, 
+                    itemName: itemRef.name, 
+                    price: itemRef.price, 
+                    gameUid: userGameUid ? userGameUid : 'N/A',
+                    screenshotUrl: base64String, // 🔥 Base64 Text Image
+                    storagePath: 'RTDB_BASE64',
+                    status: "Pending Verification", 
+                    code: "", 
+                    catKey: activeItemData.catKey, 
+                    itemIdx: activeItemData.itemIdx, 
+                    timestamp: new Date().toLocaleString() 
+                });
+                
+                document.getElementById('upload-status').style.display = 'none';
+                btnSubmit.disabled = false;
+                btnSubmit.innerText = "Submit Order";
+                document.getElementById('online-modal').style.display = 'none'; 
+                document.getElementById('delivery-modal').style.display = 'flex';
+            } catch (error) {
+                alert("Upload failed: " + error.message);
+                document.getElementById('upload-status').style.display = 'none';
+                btnSubmit.disabled = false;
+                btnSubmit.innerText = "Submit Order";
+            }
+        };
+        img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
 }
+// 🔥 END OF MAGIC
 
 function loadMyPurchases() {
     const list = document.getElementById('my-orders-list'); list.innerHTML = '<p style="text-align:center; color:#38bdf8;">Loading...</p>';
@@ -274,7 +289,7 @@ function loadMyPurchases() {
             const orders = snapshot.val(); const sortedKeys = Object.keys(orders).sort((a,b) => orders[b].timestamp.localeCompare(orders[a].timestamp));
             sortedKeys.forEach(key => {
                 const ord = orders[key]; let statusColor = ord.status === 'Approved' ? '#34d399' : (ord.status === 'Rejected' ? '#ef4444' : '#eab308');
-                let codeHtml = ord.status === 'Approved' ? `<div style="margin-top:15px; padding:10px; background:#05050a; border:1px dashed #34d399; border-radius:6px; color:#34d399; font-weight:bold; letter-spacing:1px; text-align:center;">VOUCHER CODE:<br><span style="font-size:1.3rem;">${ord.code}</span></div>` : (ord.status === 'Rejected' ? `<div style="margin-top:10px; color:#ef4444; font-size:0.9rem;">Admin Rejected UTR.</div>` : `<div style="margin-top:10px; color:#eab308; font-size:0.9rem;">Verifying Order...</div>`);
+                let codeHtml = ord.status === 'Approved' ? `<div style="margin-top:15px; padding:10px; background:#05050a; border:1px dashed #34d399; border-radius:6px; color:#34d399; font-weight:bold; letter-spacing:1px; text-align:center;">VOUCHER CODE:<br><span style="font-size:1.3rem;">${ord.code}</span></div>` : (ord.status === 'Rejected' ? `<div style="margin-top:10px; color:#ef4444; font-size:0.9rem;">Admin Rejected.</div>` : `<div style="margin-top:10px; color:#eab308; font-size:0.9rem;">Verifying Order...</div>`);
                 
                 let uidHtml = (ord.gameUid && ord.gameUid !== 'N/A') ? `<br><span style="color:#e879f9;">🎮 UID: ${ord.gameUid}</span>` : '';
                 let ssHtml = ord.screenshotUrl ? `<br><a href="${ord.screenshotUrl}" target="_blank" style="color:#38bdf8; text-decoration:underline; font-size:0.8rem;">View SS</a>` : '';
