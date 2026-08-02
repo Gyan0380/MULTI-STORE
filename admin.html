@@ -7,7 +7,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <!-- 🔥 Firebase Storage Script Added -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script>
         const firebaseConfig = {
@@ -22,7 +21,7 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const auth = firebase.auth();
-        const storage = firebase.storage(); // 🔥 Storage Initialized
+        const storage = firebase.storage();
     </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
@@ -99,7 +98,7 @@
                 </div>
             </div>
 
-            <!-- PENDING ORDERS (🔥 UPDATED TABLE HEADERS) -->
+            <!-- PENDING ORDERS -->
             <div class="box" style="border-color: #eab308; border-top: 4px solid #eab308;">
                 <h3 style="color: #eab308; margin-bottom: 15px;">⏳ Pending Payment Approvals</h3>
                 <div style="overflow-x: auto;">
@@ -132,7 +131,7 @@
                 <div class="form-group"><label>Description</label><input type="text" id="add-desc"></div>
                 
                 <div class="form-row" id="add-price-row">
-                    <div class="form-group"><label>Price</label><input type="text" id="add-price"></div>
+                    <div class="form-group"><label>Price</label><input type="text" id="add-price" placeholder="e.g. ₹99 or FREE"></div>
                     <div class="form-group">
                         <label>Status</label>
                         <select id="add-status">
@@ -148,7 +147,10 @@
                 <div class="optional-section" id="add-buttons-group">
                     <h4 style="color:#e879f9;">Select Buy Methods for this Item:</h4>
                     <div class="checkbox-group">
-                        <label><input type="checkbox" id="add-chk-online" checked> ⚡ Online UPI (Auto)</label>
+                        <!-- 🔥 NEW FREE CHECKBOX -->
+                        <label style="color: #f59e0b; font-weight: bold;"><input type="checkbox" id="add-chk-free"> 🎁 Free Claim (Auto)</label>
+                        
+                        <label><input type="checkbox" id="add-chk-online" checked> ⚡ Online UPI</label>
                         <label><input type="checkbox" id="add-chk-disc" checked> 🎮 Discord</label>
                         <label><input type="checkbox" id="add-chk-wa" checked> 💬 WhatsApp</label>
                         <label><input type="checkbox" id="add-chk-tg" checked> ✈️ Telegram</label>
@@ -181,7 +183,10 @@
                 <div class="optional-section" id="edit-buttons-group">
                     <h4 style="color:#e879f9;">Select Buy Methods:</h4>
                     <div class="checkbox-group">
-                        <label><input type="checkbox" id="edit-chk-online"> ⚡ Online UPI (Auto)</label>
+                        <!-- 🔥 NEW FREE CHECKBOX -->
+                        <label style="color: #f59e0b; font-weight: bold;"><input type="checkbox" id="edit-chk-free"> 🎁 Free Claim (Auto)</label>
+                        
+                        <label><input type="checkbox" id="edit-chk-online"> ⚡ Online UPI</label>
                         <label><input type="checkbox" id="edit-chk-disc"> 🎮 Discord</label>
                         <label><input type="checkbox" id="edit-chk-wa"> 💬 WhatsApp</label>
                         <label><input type="checkbox" id="edit-chk-tg"> ✈️ Telegram</label>
@@ -229,23 +234,14 @@
                 } else document.getElementById('total-users-count').innerText = "0";
             });
 
-            // 🔥 UPDATED: Display UID and Screenshot, and pass storagePath to buttons
             db.ref('orders').orderByChild('status').equalTo('Pending Verification').on('value', (snap) => {
                 const tbody = document.getElementById('orders-table-body'); tbody.innerHTML = '';
                 if(snap.exists()) {
                     const orders = snap.val();
                     Object.keys(orders).forEach(id => {
                         let order = orders[id];
-                        
-                        // Game UID Html
-                        let uidHtml = (order.gameUid && order.gameUid !== 'N/A') 
-                            ? `<br><span style="background: rgba(232, 121, 249, 0.2); color: #e879f9; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-top:5px; display:inline-block;">🎮 UID: ${order.gameUid}</span>` 
-                            : '';
-                        
-                        // Proof/Screenshot Html
-                        let proofHtml = order.screenshotUrl 
-                            ? `<a href="${order.screenshotUrl}" target="_blank"><img src="${order.screenshotUrl}" style="width: 70px; border-radius: 5px; border: 1px solid #38bdf8;"></a>` 
-                            : `<span style="color:#ef4444;">No Screenshot</span>`;
+                        let uidHtml = (order.gameUid && order.gameUid !== 'N/A') ? `<br><span style="background: rgba(232, 121, 249, 0.2); color: #e879f9; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-top:5px; display:inline-block;">🎮 UID: ${order.gameUid}</span>` : '';
+                        let proofHtml = order.screenshotUrl ? `<a href="${order.screenshotUrl}" target="_blank"><img src="${order.screenshotUrl}" style="width: 70px; border-radius: 5px; border: 1px solid #38bdf8;"></a>` : `<span style="color:#ef4444;">No Screenshot</span>`;
 
                         tbody.innerHTML += `<tr>
                             <td>${order.email}${uidHtml}</td>
@@ -283,7 +279,6 @@
             }).then(() => alert("Global Settings Saved!"));
         }
 
-        // 🔥 UPDATED: Accept Order & Delete Image
         function approveOrder(orderId, catKey, itemIdx, storagePath) {
             if(!confirm("Receive payment? Give 1 code?")) return;
             let itemRef = appData[catKey].items[itemIdx];
@@ -293,23 +288,16 @@
             db.ref('storeData/'+catKey+'/items/'+itemIdx).set(itemRef).then(() => {
                 db.ref('orders/'+orderId).update({status: 'Approved', code: codeToSend}).then(() => {
                     alert("Order Approved!");
-                    // Image ko auto-delete karein Firebase Storage se
-                    if(storagePath && storagePath !== 'undefined') {
-                        storage.ref(storagePath).delete().catch(e => console.log("Storage error:", e));
-                    }
+                    if(storagePath && storagePath !== 'undefined') storage.ref(storagePath).delete().catch(e => console.log("Storage error:", e));
                 });
             });
         }
         
-        // 🔥 UPDATED: Reject Order & Delete Image
         function rejectOrder(id, storagePath) { 
             if(confirm("Reject this order?")) {
                 db.ref('orders/'+id).update({status: 'Rejected'}).then(() => {
                     alert("Order Rejected!");
-                    // Kachra jama na ho isliye Reject par bhi image delete karein
-                    if(storagePath && storagePath !== 'undefined') {
-                        storage.ref(storagePath).delete().catch(e => console.log("Storage error:", e));
-                    }
+                    if(storagePath && storagePath !== 'undefined') storage.ref(storagePath).delete().catch(e => console.log("Storage error:", e));
                 });
             }
         }
@@ -337,9 +325,11 @@
             if(document.getElementById(m+'-buttons-group')) document.getElementById(m+'-buttons-group').style.display = t === 'folder' ? 'none' : 'block';
         }
 
+        // 🔥 UPDATED Checkbox Logic with 'free'
         function getCheckboxOptions(prefix) {
             return {
                 online: document.getElementById(prefix+'-chk-online').checked,
+                free: document.getElementById(prefix+'-chk-free') ? document.getElementById(prefix+'-chk-free').checked : false,
                 discord: document.getElementById(prefix+'-chk-disc').checked,
                 wa: document.getElementById(prefix+'-chk-wa').checked,
                 tg: document.getElementById(prefix+'-chk-tg').checked,
@@ -347,8 +337,9 @@
             };
         }
         function setCheckboxOptions(prefix, opts) {
-            if(!opts) opts = {online:true, discord:true, wa:true, tg:true, fb:false};
+            if(!opts) opts = {online:true, free:false, discord:true, wa:true, tg:true, fb:false};
             document.getElementById(prefix+'-chk-online').checked = opts.online;
+            if(document.getElementById(prefix+'-chk-free')) document.getElementById(prefix+'-chk-free').checked = opts.free || false;
             document.getElementById(prefix+'-chk-disc').checked = opts.discord;
             document.getElementById(prefix+'-chk-wa').checked = opts.wa;
             document.getElementById(prefix+'-chk-tg').checked = opts.tg;
