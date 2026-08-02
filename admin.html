@@ -230,6 +230,8 @@
                     Object.keys(orders).forEach(id => {
                         let order = orders[id];
                         let uidHtml = (order.gameUid && order.gameUid !== 'N/A') ? `<br><span style="background: rgba(232, 121, 249, 0.2); color: #e879f9; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-top:5px; display:inline-block;">🎮 UID: ${order.gameUid}</span>` : '';
+                        
+                        // 🔥 Admin panel me Realtime DB ki Base64 image show karne ka code
                         let proofHtml = order.screenshotUrl ? `<a href="${order.screenshotUrl}" target="_blank"><img src="${order.screenshotUrl}" style="width: 70px; border-radius: 5px; border: 1px solid #38bdf8;"></a>` : `<span style="color:#ef4444;">No Screenshot</span>`;
 
                         tbody.innerHTML += `<tr>
@@ -268,7 +270,7 @@
             }).then(() => alert("Global Settings Saved!"));
         }
 
-        // 🔥 FIX: Firebase Object array conversion in approval
+        // 🔥 YAHAN MAIN CHANGE HUA HAI: Image delete ho jayegi verify hote hi (Space Bachane ke liye)
         function approveOrder(orderId, catKey, itemIdx, storagePath) {
             if(!confirm("Receive payment? Give 1 code?")) return;
             let itemRef = appData[catKey].items[itemIdx];
@@ -281,18 +283,25 @@
             itemRef.status = codesArray.length === 0 ? "Out of Stock" : itemRef.status;
             
             db.ref('storeData/'+catKey+'/items/'+itemIdx).set(itemRef).then(() => {
-                db.ref('orders/'+orderId).update({status: 'Approved', code: codeToSend}).then(() => {
+                // screenshotUrl: '' kar diya taaki Realtime DB khali ho jaye approve hone ke baad
+                db.ref('orders/'+orderId).update({status: 'Approved', code: codeToSend, screenshotUrl: ''}).then(() => {
                     alert("Order Approved!");
-                    if(storagePath && storagePath !== 'undefined') storage.ref(storagePath).delete().catch(e => console.log("Storage error:", e));
+                    // Old firebase storage cleanup agar zaroorat ho (ab 'RTDB_BASE64' bypass karega ise)
+                    if(storagePath && storagePath !== 'RTDB_BASE64' && storagePath !== 'undefined') {
+                        storage.ref(storagePath).delete().catch(e => console.log("Storage error bypass:", e));
+                    }
                 });
             });
         }
         
         function rejectOrder(id, storagePath) { 
             if(confirm("Reject this order?")) {
-                db.ref('orders/'+id).update({status: 'Rejected'}).then(() => {
+                // screenshotUrl: '' kar diya taaki Realtime DB khali ho jaye reject hone ke baad
+                db.ref('orders/'+id).update({status: 'Rejected', screenshotUrl: ''}).then(() => {
                     alert("Order Rejected!");
-                    if(storagePath && storagePath !== 'undefined') storage.ref(storagePath).delete().catch(e => console.log("Storage error:", e));
+                    if(storagePath && storagePath !== 'RTDB_BASE64' && storagePath !== 'undefined') {
+                        storage.ref(storagePath).delete().catch(e => console.log("Storage error bypass:", e));
+                    }
                 });
             }
         }
@@ -340,7 +349,6 @@
             document.getElementById(prefix+'-chk-fb').checked = opts.fb;
         }
 
-        // 🔥 FIX: Codes will now split by Comma OR Enter smoothly
         function addEntity() {
             const mCat = document.getElementById('add-main-cat').value; const sCat = document.getElementById('add-sub-cat').value;
             const t = document.getElementById('add-type').value; const n = document.getElementById('add-name').value.trim();
@@ -370,7 +378,6 @@
                 if(!c.parentKey) t.innerHTML += `<tr style="background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981;"><td style="color:#10b981; font-weight:bold;">[MAIN]</td><td><strong style="color:#fff;">${c.title}</strong></td><td>-</td><td>-</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('main', '${key}')">✏️</button><button class="del-btn" onclick="deleteMainCat('${key}')">🗑️</button></td></tr>`;
                 if(c.subFolders) c.subFolders.forEach(f => t.innerHTML += `<tr style="background: rgba(56, 189, 248, 0.05);"><td>${c.title}</td><td style="color:#38bdf8;"><strong>📁 ${f.name}</strong></td><td>-</td><td>-</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('folder', '${key}', -1, '${f.key}')">✏️</button><button class="del-btn" onclick="deleteEntity('folder', '${key}', -1, '${f.key}')">🗑️</button></td></tr>`);
                 if(c.items) c.items.forEach((i, idx) => {
-                    // Safe Length check
                     let codesLen = i.codes ? (Array.isArray(i.codes) ? i.codes.length : Object.keys(i.codes).length) : 0;
                     t.innerHTML += `<tr><td>${c.title||key}</td><td><strong>${i.name}</strong></td><td style="color:#38bdf8; font-weight:bold;">${codesLen}</td><td>${i.status}</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('item', '${key}', ${idx})">✏️</button><button class="del-btn" onclick="deleteEntity('item', '${key}', ${idx})">🗑️</button></td></tr>`;
                 });
@@ -390,7 +397,6 @@
                 const item = appData[parentCat].items[itemIndex]; eName.value = item.name; eDesc.value = item.desc;
                 document.getElementById('edit-price').value = item.price; document.getElementById('edit-status').value = item.status;
                 
-                // Safe codes array to string
                 let codesArray = item.codes ? (Array.isArray(item.codes) ? item.codes : Object.values(item.codes)) : [];
                 document.getElementById('edit-codes').value = codesArray.join('\n');
                 
@@ -400,7 +406,6 @@
         }
         function closeEdit() { editData.active = false; document.getElementById('edit-box').style.display = 'none'; }
         
-        // 🔥 FIX: Edit save with Comma OR Enter split
         function saveEdit() {
             if(!editData.active) return; const n = document.getElementById('edit-name').value.trim(); const d = document.getElementById('edit-desc').value.trim(); if(!n) return;
             if(editData.type === 'main') { appData[editData.catKey].title=n; appData[editData.catKey].desc=d; }
