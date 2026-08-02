@@ -106,9 +106,7 @@ function openBuyModal(catKey, itemIdx) {
     document.getElementById('modal-item-title').innerText = item.name;
     document.getElementById('modal-item-price').innerText = "Price: " + item.price;
 
-    // 🔥 Show/Hide Free Button
     document.getElementById('opt-free').style.display = opts.free ? 'block' : 'none';
-    
     document.getElementById('opt-online').style.display = opts.online ? 'block' : 'none';
     const btnDisc = document.getElementById('opt-discord'); btnDisc.style.display = opts.discord ? 'block' : 'none';
     const btnWa = document.getElementById('opt-whatsapp'); btnWa.style.display = opts.wa ? 'block' : 'none';
@@ -124,7 +122,6 @@ function openBuyModal(catKey, itemIdx) {
 }
 function closeModal() { document.getElementById('buy-modal').style.display = 'none'; }
 
-// 🔥 NEW FUNCTION: Auto-Process Free Claims with Cooldown & Auto Stock-Out
 async function processFreeClaim() {
     if(!auth.currentUser) { alert("Please Login to your account first to claim free items!"); closeModal(); switchView('auth-view'); return; }
     
@@ -133,19 +130,20 @@ async function processFreeClaim() {
     const itemIdx = activeItemData.itemIdx;
     let itemRef = appData[catKey].items[itemIdx];
 
-    // 1. Stock Check
-    if(!itemRef.codes || itemRef.codes.length === 0) {
+    // 🔥 FIX: Firebase Object array conversion handle
+    let codesArray = itemRef.codes ? (Array.isArray(itemRef.codes) ? itemRef.codes : Object.values(itemRef.codes)) : [];
+
+    if(codesArray.length === 0) {
         alert("Sorry! This free item is Out of Stock right now. Please wait for refill.");
         return;
     }
 
-    // 2. Cooldown Check (24 Hours)
     try {
         const userRef = await db.ref('registeredUsers/' + user.uid).once('value');
         const userData = userRef.val() || {};
         const lastClaim = userData.lastFreeClaim || 0;
         const now = Date.now();
-        const cooldown = 24 * 60 * 60 * 1000; // 24 Hours in ms
+        const cooldown = 24 * 60 * 60 * 1000; 
         
         if (now - lastClaim < cooldown) {
             const remainingTime = cooldown - (now - lastClaim);
@@ -155,21 +153,17 @@ async function processFreeClaim() {
             return;
         }
 
-        // Close modal and start process
         closeModal();
         document.getElementById('opt-free').innerText = "Processing...";
 
-        // 3. Process the Claim
-        let codeToSend = itemRef.codes.shift(); // 1 Code minus kar diya
-        let newStatus = itemRef.codes.length === 0 ? "Out of Stock" : itemRef.status; // Auto Out of Stock
+        let codeToSend = codesArray.shift(); 
+        let newStatus = codesArray.length === 0 ? "Out of Stock" : itemRef.status; 
         
-        // Update Item Stock in DB
         await db.ref(`storeData/${catKey}/items/${itemIdx}`).update({
-            codes: itemRef.codes,
+            codes: codesArray,
             status: newStatus
         });
 
-        // Create Order as "Approved" (Auto-Delivery)
         const orderId = 'FREE_' + Date.now();
         await db.ref('orders/' + orderId).set({
             orderId: orderId,
@@ -179,14 +173,13 @@ async function processFreeClaim() {
             price: "FREE",
             gameUid: "N/A",
             screenshotUrl: "",
-            status: "Approved", // Direct Approval
+            status: "Approved", 
             code: codeToSend,
             catKey: catKey,
             itemIdx: itemIdx,
             timestamp: new Date().toLocaleString()
         });
 
-        // Update User's Time limit (Cooldown start)
         await db.ref('registeredUsers/' + user.uid).update({
             lastFreeClaim: now
         });
@@ -222,7 +215,10 @@ async function verifyAndDeliverCode() {
     if (fileInput.files.length === 0) return alert("Please upload a payment screenshot first!");
     
     let itemRef = appData[activeItemData.catKey].items[activeItemData.itemIdx];
-    if(!itemRef.codes || itemRef.codes.length === 0) return alert("Sorry! Out of stock.");
+    // 🔥 FIX: Array object issue handle
+    let codesArray = itemRef.codes ? (Array.isArray(itemRef.codes) ? itemRef.codes : Object.values(itemRef.codes)) : [];
+    
+    if(codesArray.length === 0) return alert("Sorry! Out of stock.");
     
     const file = fileInput.files[0];
     const storagePath = 'receipts/' + Date.now() + '_' + file.name; 
@@ -309,7 +305,6 @@ auth.onAuthStateChanged((user) => {
         loggedOutUI.style.display = 'none'; loggedInUI.style.display = 'block';
         document.getElementById('profile-name').innerText = user.displayName || "Store Member"; document.getElementById('profile-email').innerText = user.email; document.getElementById('profile-pic').src = user.photoURL || "https://via.placeholder.com/100/38bdf8/000000?text=USER";
         
-        // Load existing user data so we don't overwrite lastFreeClaim
         db.ref('registeredUsers/' + user.uid).once('value').then(snap => {
             const currentData = snap.val() || {};
             db.ref('registeredUsers/' + user.uid).update({ 
