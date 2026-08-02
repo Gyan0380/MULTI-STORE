@@ -62,9 +62,8 @@
 
         <div id="dashboard" style="display: none;">
             
-            <!-- GLOBAL SETTINGS -->
             <div class="box" style="border-color: #8b5cf6; border-top: 4px solid #8b5cf6;">
-                <h3 style="color: #8b5cf6; margin-bottom: 15px;">⚙️ Global Store Settings (Links & Payment)</h3>
+                <h3 style="color: #8b5cf6; margin-bottom: 15px;">⚙️ Global Store Settings</h3>
                 <div class="form-row">
                     <div class="form-group"><label>UPI QR Code Image URL</label><input type="text" id="set-qr" placeholder="Direct Image Link"></div>
                     <div class="form-group"><label>UPI ID (Text)</label><input type="text" id="set-upi" placeholder="developergyan@fam"></div>
@@ -80,7 +79,6 @@
                 <button class="btn" onclick="saveGlobalSettings()" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">Save Global Settings</button>
             </div>
 
-            <!-- ADVERTISEMENT MANAGER -->
             <div class="box" style="border-color: #e879f9; border-top: 4px solid #e879f9;">
                 <h3 style="color: #e879f9; margin-bottom: 15px;">📢 Post New Advertisement</h3>
                 <div class="form-row">
@@ -98,7 +96,6 @@
                 </div>
             </div>
 
-            <!-- PENDING ORDERS -->
             <div class="box" style="border-color: #eab308; border-top: 4px solid #eab308;">
                 <h3 style="color: #eab308; margin-bottom: 15px;">⏳ Pending Payment Approvals</h3>
                 <div style="overflow-x: auto;">
@@ -109,21 +106,18 @@
                 </div>
             </div>
 
-            <!-- REGISTERED USERS -->
             <div class="box" style="border-color: #f43f5e; border-top: 4px solid #f43f5e;">
                 <h3 style="color: #f43f5e; margin-bottom: 15px;">👥 Registered Customers</h3>
                 <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Total Users Logged in: <strong id="total-users-count" style="color: #fff; font-size: 1.2rem;">0</strong></p>
                 <div style="overflow-x: auto;"><table><thead><tr><th>Name</th><th>Email ID</th><th>Last Login</th></tr></thead><tbody id="users-table-body"></tbody></table></div>
             </div>
 
-            <!-- CREATE CATEGORY -->
             <div class="box" style="border-color: #10b981; border-top: 4px solid #10b981;">
                 <h3 style="color: #10b981; margin-bottom: 15px;">📁 1. Create New Main Category</h3>
                 <div class="form-row"><div class="form-group"><label>Category Name</label><input type="text" id="new-main-name"></div><div class="form-group"><label>Short Description</label><input type="text" id="new-main-desc"></div></div>
                 <button class="btn" onclick="addMainCategory()" style="background: linear-gradient(135deg, #10b981, #059669);">Create Main Category</button>
             </div>
 
-            <!-- ADD ITEM -->
             <div class="box" style="border-top: 4px solid #38bdf8;">
                 <h3 style="color: #38bdf8; margin-bottom: 15px;">🏪 2. Add Item / Sub-Folder</h3>
                 <div class="form-row"><div class="form-group"><label>Select Main Category</label><select id="add-main-cat" onchange="updateSubCatDropdown()"></select></div><div class="form-group"><label>Inside Folder?</label><select id="add-sub-cat"><option value="">-- Direct --</option></select></div></div>
@@ -142,14 +136,12 @@
                     </div>
                 </div>
 
-                <div class="form-group" id="code-pool-group"><label style="color:#38bdf8;">⚡ Voucher Codes</label><textarea id="add-codes" rows="3"></textarea></div>
+                <div class="form-group" id="code-pool-group"><label style="color:#38bdf8;">⚡ Voucher Codes</label><textarea id="add-codes" rows="3" placeholder="Use Comma (,) OR Enter for multiple codes..."></textarea></div>
 
                 <div class="optional-section" id="add-buttons-group">
                     <h4 style="color:#e879f9;">Select Buy Methods for this Item:</h4>
                     <div class="checkbox-group">
-                        <!-- 🔥 NEW FREE CHECKBOX -->
                         <label style="color: #f59e0b; font-weight: bold;"><input type="checkbox" id="add-chk-free"> 🎁 Free Claim (Auto)</label>
-                        
                         <label><input type="checkbox" id="add-chk-online" checked> ⚡ Online UPI</label>
                         <label><input type="checkbox" id="add-chk-disc" checked> 🎮 Discord</label>
                         <label><input type="checkbox" id="add-chk-wa" checked> 💬 WhatsApp</label>
@@ -161,7 +153,6 @@
                 <button class="btn" onclick="addEntity()">➕ Add to Live Store</button>
             </div>
 
-            <!-- EDIT SECTION -->
             <div class="box" id="edit-box" style="display: none; border-color: #f59e0b; border-top: 4px solid #f59e0b;">
                 <h3 style="color: #f59e0b; margin-bottom: 15px;">✏️ Edit Details</h3>
                 <div class="form-row"><div class="form-group"><label>Name / Title</label><input type="text" id="edit-name"></div><div class="form-group"><label>Description</label><input type="text" id="edit-desc"></div></div>
@@ -183,9 +174,7 @@
                 <div class="optional-section" id="edit-buttons-group">
                     <h4 style="color:#e879f9;">Select Buy Methods:</h4>
                     <div class="checkbox-group">
-                        <!-- 🔥 NEW FREE CHECKBOX -->
                         <label style="color: #f59e0b; font-weight: bold;"><input type="checkbox" id="edit-chk-free"> 🎁 Free Claim (Auto)</label>
-                        
                         <label><input type="checkbox" id="edit-chk-online"> ⚡ Online UPI</label>
                         <label><input type="checkbox" id="edit-chk-disc"> 🎮 Discord</label>
                         <label><input type="checkbox" id="edit-chk-wa"> 💬 WhatsApp</label>
@@ -279,11 +268,17 @@
             }).then(() => alert("Global Settings Saved!"));
         }
 
+        // 🔥 FIX: Firebase Object array conversion in approval
         function approveOrder(orderId, catKey, itemIdx, storagePath) {
             if(!confirm("Receive payment? Give 1 code?")) return;
             let itemRef = appData[catKey].items[itemIdx];
-            if(!itemRef.codes || itemRef.codes.length === 0) return alert("OUT OF STOCK!");
-            let codeToSend = itemRef.codes.shift();
+            
+            let codesArray = itemRef.codes ? (Array.isArray(itemRef.codes) ? itemRef.codes : Object.values(itemRef.codes)) : [];
+            if(codesArray.length === 0) return alert("OUT OF STOCK!");
+            
+            let codeToSend = codesArray.shift();
+            itemRef.codes = codesArray;
+            itemRef.status = codesArray.length === 0 ? "Out of Stock" : itemRef.status;
             
             db.ref('storeData/'+catKey+'/items/'+itemIdx).set(itemRef).then(() => {
                 db.ref('orders/'+orderId).update({status: 'Approved', code: codeToSend}).then(() => {
@@ -325,7 +320,6 @@
             if(document.getElementById(m+'-buttons-group')) document.getElementById(m+'-buttons-group').style.display = t === 'folder' ? 'none' : 'block';
         }
 
-        // 🔥 UPDATED Checkbox Logic with 'free'
         function getCheckboxOptions(prefix) {
             return {
                 online: document.getElementById(prefix+'-chk-online').checked,
@@ -346,6 +340,7 @@
             document.getElementById(prefix+'-chk-fb').checked = opts.fb;
         }
 
+        // 🔥 FIX: Codes will now split by Comma OR Enter smoothly
         function addEntity() {
             const mCat = document.getElementById('add-main-cat').value; const sCat = document.getElementById('add-sub-cat').value;
             const t = document.getElementById('add-type').value; const n = document.getElementById('add-name').value.trim();
@@ -358,7 +353,10 @@
                 const nk = 'cat_'+Date.now(); appData[mCat].subFolders.push({key:nk, name:n, desc:d}); appData[nk] = {title:n, desc:d, parentKey:mCat, items:[], subFolders:[]};
             } else {
                 const opts = getCheckboxOptions('add');
-                const raw = document.getElementById('add-codes').value; const cArr = raw?raw.split('\n').map(c=>c.trim()).filter(c=>c):[];
+                const raw = document.getElementById('add-codes').value; 
+                // Regex /[\n,]+/ makes it split by both Enter and Comma
+                const cArr = raw ? raw.split(/[\n,]+/).map(c=>c.trim()).filter(c=>c !== '') : [];
+                
                 const tgt = sCat ? sCat : mCat; if(!appData[tgt].items) appData[tgt].items = [];
                 appData[tgt].items.push({ id: Date.now(), name:n, desc:d, price:p, status: document.getElementById('add-status').value, codes: cArr, buyOptions: opts });
             }
@@ -371,7 +369,11 @@
                 const c = appData[key]; if(!c) continue;
                 if(!c.parentKey) t.innerHTML += `<tr style="background: rgba(16, 185, 129, 0.15); border-left: 3px solid #10b981;"><td style="color:#10b981; font-weight:bold;">[MAIN]</td><td><strong style="color:#fff;">${c.title}</strong></td><td>-</td><td>-</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('main', '${key}')">✏️</button><button class="del-btn" onclick="deleteMainCat('${key}')">🗑️</button></td></tr>`;
                 if(c.subFolders) c.subFolders.forEach(f => t.innerHTML += `<tr style="background: rgba(56, 189, 248, 0.05);"><td>${c.title}</td><td style="color:#38bdf8;"><strong>📁 ${f.name}</strong></td><td>-</td><td>-</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('folder', '${key}', -1, '${f.key}')">✏️</button><button class="del-btn" onclick="deleteEntity('folder', '${key}', -1, '${f.key}')">🗑️</button></td></tr>`);
-                if(c.items) c.items.forEach((i, idx) => t.innerHTML += `<tr><td>${c.title||key}</td><td><strong>${i.name}</strong></td><td style="color:#38bdf8; font-weight:bold;">${i.codes?i.codes.length:0}</td><td>${i.status}</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('item', '${key}', ${idx})">✏️</button><button class="del-btn" onclick="deleteEntity('item', '${key}', ${idx})">🗑️</button></td></tr>`);
+                if(c.items) c.items.forEach((i, idx) => {
+                    // Safe Length check
+                    let codesLen = i.codes ? (Array.isArray(i.codes) ? i.codes.length : Object.keys(i.codes).length) : 0;
+                    t.innerHTML += `<tr><td>${c.title||key}</td><td><strong>${i.name}</strong></td><td style="color:#38bdf8; font-weight:bold;">${codesLen}</td><td>${i.status}</td><td style="white-space:nowrap;"><button class="edit-btn" onclick="openEdit('item', '${key}', ${idx})">✏️</button><button class="del-btn" onclick="deleteEntity('item', '${key}', ${idx})">🗑️</button></td></tr>`;
+                });
             }
         }
 
@@ -387,21 +389,31 @@
             } else {
                 const item = appData[parentCat].items[itemIndex]; eName.value = item.name; eDesc.value = item.desc;
                 document.getElementById('edit-price').value = item.price; document.getElementById('edit-status').value = item.status;
-                document.getElementById('edit-codes').value = item.codes?item.codes.join('\n'):''; setCheckboxOptions('edit', item.buyOptions);
+                
+                // Safe codes array to string
+                let codesArray = item.codes ? (Array.isArray(item.codes) ? item.codes : Object.values(item.codes)) : [];
+                document.getElementById('edit-codes').value = codesArray.join('\n');
+                
+                setCheckboxOptions('edit', item.buyOptions);
                 document.getElementById('edit-price-status-row').style.display='flex'; document.getElementById('edit-code-pool-group').style.display='block'; document.getElementById('edit-buttons-group').style.display='block';
             }
         }
         function closeEdit() { editData.active = false; document.getElementById('edit-box').style.display = 'none'; }
+        
+        // 🔥 FIX: Edit save with Comma OR Enter split
         function saveEdit() {
             if(!editData.active) return; const n = document.getElementById('edit-name').value.trim(); const d = document.getElementById('edit-desc').value.trim(); if(!n) return;
             if(editData.type === 'main') { appData[editData.catKey].title=n; appData[editData.catKey].desc=d; }
             else if(editData.type === 'folder') { appData[editData.catKey].subFolders.find(f=>f.key==editData.folderKey).name=n; appData[editData.folderKey].title=n; appData[editData.folderKey].desc=d; }
             else {
-                const raw = document.getElementById('edit-codes').value.trim(); const cArr = raw?raw.split('\n').map(c=>c.trim()).filter(c=>c):[];
+                const raw = document.getElementById('edit-codes').value; 
+                const cArr = raw ? raw.split(/[\n,]+/).map(c=>c.trim()).filter(c=>c !== '') : [];
+                
                 appData[editData.catKey].items[editData.itemIndex] = { ...appData[editData.catKey].items[editData.itemIndex], name:n, desc:d, price:document.getElementById('edit-price').value.trim(), status:document.getElementById('edit-status').value, codes:cArr, buyOptions:getCheckboxOptions('edit') };
             }
             saveToDB(); closeEdit(); alert("Saved!");
         }
+        
         function deleteMainCat(key) { if(confirm(`Delete Main Category?`)) { if(appData[key].subFolders) appData[key].subFolders.forEach(sub => delete appData[sub.key]); delete appData[key]; saveToDB(); } }
         function deleteEntity(type, parentCat, itemIndex, folderKey) { if(confirm(`Delete?`)) { if(type === 'folder') { appData[parentCat].subFolders = appData[parentCat].subFolders.filter(f => f.key !== folderKey); delete appData[folderKey]; } else appData[parentCat].items.splice(itemIndex, 1); saveToDB(); closeEdit(); } }
     </script>
