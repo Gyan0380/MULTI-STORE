@@ -7,6 +7,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <!-- 🔥 Firebase Storage Script Added -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyDc8SBATauI9wMiwvIsrYsIuyXD_QOCKB8",
@@ -20,6 +22,7 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const auth = firebase.auth();
+        const storage = firebase.storage(); // 🔥 Storage Initialized
     </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
@@ -96,10 +99,15 @@
                 </div>
             </div>
 
-            <!-- PENDING ORDERS -->
+            <!-- PENDING ORDERS (🔥 UPDATED TABLE HEADERS) -->
             <div class="box" style="border-color: #eab308; border-top: 4px solid #eab308;">
                 <h3 style="color: #eab308; margin-bottom: 15px;">⏳ Pending Payment Approvals</h3>
-                <div style="overflow-x: auto;"><table><thead><tr><th>User Info</th><th>Item & Price</th><th>UTR Details</th><th>Action</th></tr></thead><tbody id="orders-table-body"></tbody></table></div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead><tr><th>User Info</th><th>Item & Price</th><th>Payment Proof</th><th>Action</th></tr></thead>
+                        <tbody id="orders-table-body"></tbody>
+                    </table>
+                </div>
             </div>
 
             <!-- REGISTERED USERS -->
@@ -221,11 +229,34 @@
                 } else document.getElementById('total-users-count').innerText = "0";
             });
 
+            // 🔥 UPDATED: Display UID and Screenshot, and pass storagePath to buttons
             db.ref('orders').orderByChild('status').equalTo('Pending Verification').on('value', (snap) => {
                 const tbody = document.getElementById('orders-table-body'); tbody.innerHTML = '';
                 if(snap.exists()) {
                     const orders = snap.val();
-                    Object.keys(orders).forEach(id => tbody.innerHTML += `<tr><td>${orders[id].email}</td><td><strong>${orders[id].itemName}</strong><br><span style="color:#34d399;">${orders[id].price}</span></td><td style="color:#eab308; font-family:monospace; font-size:1.1rem;">${orders[id].utr}</td><td><button class="app-btn" onclick="approveOrder('${id}', '${orders[id].catKey}', ${orders[id].itemIdx})">✅ Approve</button><button class="del-btn" onclick="rejectOrder('${id}')">❌ Reject</button></td></tr>`);
+                    Object.keys(orders).forEach(id => {
+                        let order = orders[id];
+                        
+                        // Game UID Html
+                        let uidHtml = (order.gameUid && order.gameUid !== 'N/A') 
+                            ? `<br><span style="background: rgba(232, 121, 249, 0.2); color: #e879f9; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-top:5px; display:inline-block;">🎮 UID: ${order.gameUid}</span>` 
+                            : '';
+                        
+                        // Proof/Screenshot Html
+                        let proofHtml = order.screenshotUrl 
+                            ? `<a href="${order.screenshotUrl}" target="_blank"><img src="${order.screenshotUrl}" style="width: 70px; border-radius: 5px; border: 1px solid #38bdf8;"></a>` 
+                            : `<span style="color:#ef4444;">No Screenshot</span>`;
+
+                        tbody.innerHTML += `<tr>
+                            <td>${order.email}${uidHtml}</td>
+                            <td><strong>${order.itemName}</strong><br><span style="color:#34d399;">${order.price}</span></td>
+                            <td>${proofHtml}</td>
+                            <td>
+                                <button class="app-btn" onclick="approveOrder('${id}', '${order.catKey}', ${order.itemIdx}, '${order.storagePath || ''}')">✅ Approve</button>
+                                <button class="del-btn" onclick="rejectOrder('${id}', '${order.storagePath || ''}')">❌ Reject</button>
+                            </td>
+                        </tr>`;
+                    });
                 } else tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#94a3b8;">No pending orders.</td></tr>`;
             });
 
@@ -252,16 +283,36 @@
             }).then(() => alert("Global Settings Saved!"));
         }
 
-        function approveOrder(orderId, catKey, itemIdx) {
+        // 🔥 UPDATED: Accept Order & Delete Image
+        function approveOrder(orderId, catKey, itemIdx, storagePath) {
             if(!confirm("Receive payment? Give 1 code?")) return;
             let itemRef = appData[catKey].items[itemIdx];
             if(!itemRef.codes || itemRef.codes.length === 0) return alert("OUT OF STOCK!");
             let codeToSend = itemRef.codes.shift();
+            
             db.ref('storeData/'+catKey+'/items/'+itemIdx).set(itemRef).then(() => {
-                db.ref('orders/'+orderId).update({status: 'Approved', code: codeToSend}); alert("Approved!");
+                db.ref('orders/'+orderId).update({status: 'Approved', code: codeToSend}).then(() => {
+                    alert("Order Approved!");
+                    // Image ko auto-delete karein Firebase Storage se
+                    if(storagePath && storagePath !== 'undefined') {
+                        storage.ref(storagePath).delete().catch(e => console.log("Storage error:", e));
+                    }
+                });
             });
         }
-        function rejectOrder(id) { if(confirm("Reject?")) db.ref('orders/'+id).update({status: 'Rejected'}); }
+        
+        // 🔥 UPDATED: Reject Order & Delete Image
+        function rejectOrder(id, storagePath) { 
+            if(confirm("Reject this order?")) {
+                db.ref('orders/'+id).update({status: 'Rejected'}).then(() => {
+                    alert("Order Rejected!");
+                    // Kachra jama na ho isliye Reject par bhi image delete karein
+                    if(storagePath && storagePath !== 'undefined') {
+                        storage.ref(storagePath).delete().catch(e => console.log("Storage error:", e));
+                    }
+                });
+            }
+        }
 
         function saveToDB() { db.ref('storeData').set(appData); }
         function addMainCategory() {
