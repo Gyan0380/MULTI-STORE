@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <!-- 🔥 Google Verification Code Yahan Add Ho Gaya Hai -->
     <meta name="google-site-verification" content="1ya2XQFxjoLEnIy5X_1wkK5d-1qzf-PU-UYlsGC3Vm8" />
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Developer Gyan - Digital Store</title>
@@ -11,7 +9,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <!-- 🔥 Firebase Storage Script Added -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script>
         const firebaseConfig = {
@@ -26,7 +23,7 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
         const auth = firebase.auth();
-        const storage = firebase.storage(); // 🔥 Storage Initialized
+        const storage = firebase.storage();
         const googleProvider = new firebase.auth.GoogleAuthProvider();
     </script>
 </head>
@@ -55,6 +52,9 @@
             <h3 id="modal-item-title" style="color:#e879f9; margin-bottom:10px;">Select Buy Option</h3>
             <p id="modal-item-price" style="color:#38bdf8; font-weight:bold; margin-bottom:20px;"></p>
             
+            <!-- 🔥 Naya FREE BUY Button -->
+            <button id="opt-free" onclick="processFreeClaim()" class="modal-btn" style="background: linear-gradient(135deg, #f59e0b, #ea580c); color:#fff; display:none; animation: pulseGlow 1.5s infinite alternate;">🎁 Claim for FREE (Auto-Delivery)</button>
+            
             <button id="opt-online" onclick="openOnlineCheckout()" class="modal-btn m-online">⚡ Buy Online (Auto-Delivery)</button>
             <a id="opt-discord" href="#" target="_blank" class="modal-btn m-disc">🎮 Buy via Discord</a>
             <a id="opt-whatsapp" href="#" target="_blank" class="modal-btn m-wa">💬 Buy via WhatsApp</a>
@@ -65,11 +65,11 @@
         </div>
     </div>
 
-    <!-- ONLINE UPI CHECKOUT MODAL (🔥 UPDATED UTR BYPASS) -->
+    <!-- ONLINE UPI CHECKOUT MODAL -->
     <div id="online-modal">
         <div class="modal-content" style="border-color:#10b981;">
-            <h3 style="color:#10b981; margin-bottom:10px;">⚡ Instant UPI Checkout</h3>
-            <p style="color:#cbd5e1; font-size:0.9rem; margin-bottom:15px;">QR Code par payment karein aur screenshot upload karein.</p>
+            <h3 style="color:#10b981; margin-bottom:10px;">⚡ Express Checkout</h3>
+            <p style="color:#cbd5e1; font-size:0.9rem; margin-bottom:15px;">Scan to complete your order and upload the receipt.</p>
             
             <div style="background:#fff; padding:10px; border-radius:8px; display:inline-block; margin-bottom:10px;">
                 <img id="dynamic-qr-img" src="" alt="UPI QR" style="width:160px; height:160px; display:none;">
@@ -77,11 +77,10 @@
             </div>
             <p id="dynamic-upi-text" style="color:#fde047; font-weight:bold; font-size:0.9rem; margin-bottom:15px;"></p>
             
-            <!-- 🔥 Game UID & Screenshot Inputs -->
             <label style="color: #cbd5e1; font-size: 0.9rem; text-align: left; display: block; margin-bottom: 5px;">Game UID (For Game Vouchers):</label>
             <input type="text" id="game-uid" placeholder="Enter your Player ID (Optional)" style="padding:10px; width:100%; background:#05050a; border:1px solid #e879f9; color:#fff; border-radius:6px; margin-bottom:15px; text-align:center;">
             
-            <label style="color: #cbd5e1; font-size: 0.9rem; text-align: left; display: block; margin-bottom: 5px;">Upload Payment Screenshot:</label>
+            <label style="color: #cbd5e1; font-size: 0.9rem; text-align: left; display: block; margin-bottom: 5px;">Upload Receipt Image:</label>
             <input type="file" id="payment-screenshot" accept="image/*" style="padding:10px; width:100%; background:#05050a; border:1px solid #10b981; color:#fff; border-radius:6px; margin-bottom:10px;">
             
             <p id="upload-status" style="color: #38bdf8; font-size: 0.9rem; margin-bottom: 10px; display: none;">⏳ Uploading image, please wait...</p>
@@ -104,7 +103,18 @@
         </div>
     </div>
 
-    <!-- BAQI KA CODE SAME HAIN (Container / Views etc) -->
+    <!-- 🔥 NAYA FREE SUCCESS MODAL -->
+    <div id="free-delivery-modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; justify-content: center; align-items: center; padding: 20px;">
+        <div class="modal-content" style="border-color:#f59e0b; border-width: 3px;">
+            <h3 style="color:#f59e0b; margin-bottom:10px; font-size: 1.5rem;">🎉 Free Item Claimed!</h3>
+            <p style="color:#cbd5e1; font-size:1.05rem; margin-bottom:20px; line-height:1.6;">
+                Click on the <strong>3 Lines Menu (☰)</strong> and go to <strong>My Purchases</strong> to see your item and code.<br><br>
+                <span style="color:#34d399; font-weight:bold;">Note: You can claim your next free item after 24 hours.</span>
+            </p>
+            <button onclick="location.reload()" class="modal-btn" style="background:linear-gradient(135deg, #f59e0b, #ea580c); color:#fff; font-size: 1.1rem;">Enjoy your Gift!</button>
+        </div>
+    </div>
+
     <div class="container">
         <!-- AUTH VIEW -->
         <div id="auth-view" class="view">
