@@ -101,7 +101,6 @@
                     <div class="form-group"><label>Timer (Minutes)</label><input type="number" id="ad-minutes" placeholder="60"></div>
                 </div>
                 
-                <!-- 🔥 NAYA ADVERTISER CONTACT SYSTEM -->
                 <div class="form-row">
                     <div class="form-group">
                         <label>Advertiser's Platform</label>
@@ -115,7 +114,6 @@
                     <div class="form-group">
                         <label>Advertiser's Detail (Link / Number / ID)</label>
                         <input type="text" id="ad-raw-input" placeholder="Paste custom direct link here..." oninput="generateAdLink()">
-                        <!-- Hidden final link jo database mein save hoga -->
                         <input type="hidden" id="ad-link"> 
                     </div>
                 </div>
@@ -168,6 +166,17 @@
 
                 <div class="form-group" id="code-pool-group"><label style="color:#38bdf8;">⚡ Voucher Codes</label><textarea id="add-codes" rows="3" placeholder="Use Comma (,) OR Enter for multiple codes..."></textarea></div>
 
+                <!-- 🔥 NAYA IMAGE UPLOAD (MULTIPLE PHOTOS) -->
+                <div class="form-group" id="add-images-group" style="margin-top:15px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <label style="color:#38bdf8;">📸 Upload Item Photos (Optional, Select Multiple)</label>
+                        <button onclick="clearImages('add-item-images', 'add-images-preview', 'add-images-data')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:0.8rem;">❌ Clear Photos</button>
+                    </div>
+                    <input type="file" id="add-item-images" accept="image/*" multiple onchange="processMultipleImages(this.files, 'add-images-preview', 'add-images-data')" style="background: rgba(56, 189, 248, 0.1);">
+                    <div id="add-images-preview" style="display:flex; gap:10px; margin-top:10px; overflow-x:auto;"></div>
+                    <input type="hidden" id="add-images-data" value="[]">
+                </div>
+
                 <div class="optional-section" id="add-buttons-group">
                     <h4 style="color:#e879f9;">Select Buy Methods for this Item:</h4>
                     <div class="checkbox-group">
@@ -201,6 +210,17 @@
 
                 <div class="form-group" id="edit-code-pool-group"><label style="color:#f59e0b;">⚡ Update Codes</label><textarea id="edit-codes" rows="3"></textarea></div>
                 
+                <!-- 🔥 EDIT ITEM IMAGE UPLOAD -->
+                <div class="form-group" id="edit-images-group" style="margin-top:15px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <label style="color:#f59e0b;">📸 Upload New Item Photos (Overrides old photos)</label>
+                        <button onclick="clearImages('edit-item-images', 'edit-images-preview', 'edit-images-data')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:0.8rem;">❌ Clear Photos</button>
+                    </div>
+                    <input type="file" id="edit-item-images" accept="image/*" multiple onchange="processMultipleImages(this.files, 'edit-images-preview', 'edit-images-data')" style="background: rgba(245, 158, 11, 0.1);">
+                    <div id="edit-images-preview" style="display:flex; gap:10px; margin-top:10px; overflow-x:auto;"></div>
+                    <input type="hidden" id="edit-images-data" value="[]">
+                </div>
+
                 <div class="optional-section" id="edit-buttons-group">
                     <h4 style="color:#e879f9;">Select Buy Methods:</h4>
                     <div class="checkbox-group">
@@ -222,8 +242,9 @@
         </div>
     </div>
 
-    <!-- 🔥 YAHAN JS KA JADOO HAI PHOTO SELECT AUR LINK GEN KE LIYE -->
+    <!-- 🔥 YAHAN MULTIPLE PHOTOS KA JADOO HAI -->
     <script>
+        // Normal Single Image process (QR and Ads)
         function processImageToBase64(file, callback) {
             const reader = new FileReader();
             reader.onload = function(event) {
@@ -240,6 +261,44 @@
                 img.src = event.target.result;
             };
             reader.readAsDataURL(file);
+        }
+
+        // Multiple Item Images Process
+        async function processMultipleImages(files, previewId, dataId) {
+            if(!files || files.length === 0) return;
+            const previewDiv = document.getElementById(previewId);
+            previewDiv.innerHTML = '<span style="color:#eab308; font-size:0.9rem;">Compressing images...</span>';
+            let base64Array = [];
+            
+            for (let i = 0; i < files.length; i++) {
+                let b64 = await new Promise(resolve => {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = new Image();
+                        img.onload = function() {
+                            const canvas = document.createElement('canvas');
+                            const MAX_WIDTH = 500; 
+                            let width = img.width; let height = img.height;
+                            if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+                            canvas.width = width; canvas.height = height;
+                            const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                            resolve(canvas.toDataURL('image/jpeg', 0.5)); // 0.5 size aur space bachane ke liye
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(files[i]);
+                });
+                base64Array.push(b64);
+            }
+            
+            document.getElementById(dataId).value = JSON.stringify(base64Array);
+            previewDiv.innerHTML = base64Array.map(img => `<img src="${img}" style="width:70px; height:70px; object-fit:cover; border-radius:6px; border:2px solid #38bdf8;">`).join('');
+        }
+
+        function clearImages(inputId, previewId, dataId) {
+            document.getElementById(inputId).value = '';
+            document.getElementById(previewId).innerHTML = '';
+            document.getElementById(dataId).value = '[]';
         }
 
         function compressAndSaveQR(event) {
@@ -262,13 +321,10 @@
             });
         }
 
-        // 🔥 MAGIC: Advertiser Ke Platform Ke Hisaab Se Link Auto-Generate Karna
         function updateAdInputPlaceholder() {
             const type = document.getElementById('ad-action-type').value;
             const input = document.getElementById('ad-raw-input');
-            input.value = '';
-            document.getElementById('ad-link').value = '';
-            
+            input.value = ''; document.getElementById('ad-link').value = '';
             if(type === 'custom') input.placeholder = "Enter custom direct link...";
             else if(type === 'discord') input.placeholder = "Enter Discord User ID OR Server Link";
             else if(type === 'whatsapp') input.placeholder = "Enter Advertiser's WhatsApp (e.g. 91999...)";
@@ -279,20 +335,11 @@
             const type = document.getElementById('ad-action-type').value;
             let val = document.getElementById('ad-raw-input').value.trim();
             const linkInput = document.getElementById('ad-link');
-            
             if(!val) { linkInput.value = ''; return; }
-
-            if (type === 'custom') {
-                linkInput.value = val;
-            } else if (type === 'whatsapp') {
-                val = val.replace(/\D/g, ''); // Sirf Number Rakhega
-                linkInput.value = 'https://wa.me/' + val;
-            } else if (type === 'discord') {
-                // Agar sirf number hai (User ID) to DM link banayega, nahi to Server link banega
-                linkInput.value = /^\d+$/.test(val) ? 'https://discord.com/users/' + val : val;
-            } else if (type === 'telegram') {
-                linkInput.value = val.startsWith('http') ? val : 'https://t.me/' + val.replace('@', '');
-            }
+            if (type === 'custom') { linkInput.value = val; } 
+            else if (type === 'whatsapp') { linkInput.value = 'https://wa.me/' + val.replace(/\D/g, ''); } 
+            else if (type === 'discord') { linkInput.value = /^\d+$/.test(val) ? 'https://discord.com/users/' + val : val; } 
+            else if (type === 'telegram') { linkInput.value = val.startsWith('http') ? val : 'https://t.me/' + val.replace('@', ''); }
         }
 
         function postNewAdWrapper() {
@@ -438,6 +485,7 @@
             document.getElementById(m+'-price-row').style.display = t === 'folder' ? 'none' : 'flex';
             if(document.getElementById(m+'-code-pool-group')) document.getElementById(m+'-code-pool-group').style.display = t === 'folder' ? 'none' : 'block';
             if(document.getElementById(m+'-buttons-group')) document.getElementById(m+'-buttons-group').style.display = t === 'folder' ? 'none' : 'block';
+            if(document.getElementById(m+'-images-group')) document.getElementById(m+'-images-group').style.display = t === 'folder' ? 'none' : 'block';
         }
 
         function getCheckboxOptions(prefix) { return { online: document.getElementById(prefix+'-chk-online').checked, free: document.getElementById(prefix+'-chk-free') ? document.getElementById(prefix+'-chk-free').checked : false, discord: document.getElementById(prefix+'-chk-disc').checked, wa: document.getElementById(prefix+'-chk-wa').checked, tg: document.getElementById(prefix+'-chk-tg').checked, fb: document.getElementById(prefix+'-chk-fb').checked }; }
@@ -458,10 +506,14 @@
                 const raw = document.getElementById('add-codes').value; 
                 const cArr = raw ? raw.split(/[\n,]+/).map(c=>c.trim()).filter(c=>c !== '') : [];
                 
+                // 🔥 NAYA: Phtoos Array
+                let imgDataRaw = document.getElementById('add-images-data').value;
+                let imagesArray = imgDataRaw ? JSON.parse(imgDataRaw) : [];
+
                 const tgt = sCat ? sCat : mCat; if(!appData[tgt].items) appData[tgt].items = [];
-                appData[tgt].items.push({ id: Date.now(), name:n, desc:d, price:p, status: document.getElementById('add-status').value, codes: cArr, buyOptions: opts });
+                appData[tgt].items.push({ id: Date.now(), name:n, desc:d, price:p, status: document.getElementById('add-status').value, codes: cArr, buyOptions: opts, images: imagesArray });
             }
-            saveToDB(); alert("Added!");
+            saveToDB(); alert("Added!"); clearImages('add-item-images', 'add-images-preview', 'add-images-data');
         }
 
         function renderInventory() {
@@ -485,7 +537,7 @@
             if(type === 'main' || type === 'folder') {
                 const data = type === 'main' ? appData[parentCat] : appData[folderKey];
                 eName.value = type === 'main' ? data.title : appData[parentCat].subFolders.find(f=>f.key===folderKey).name; eDesc.value = data.desc||'';
-                document.getElementById('edit-price-status-row').style.display='none'; document.getElementById('edit-code-pool-group').style.display='none'; document.getElementById('edit-buttons-group').style.display='none';
+                document.getElementById('edit-price-status-row').style.display='none'; document.getElementById('edit-code-pool-group').style.display='none'; document.getElementById('edit-buttons-group').style.display='none'; document.getElementById('edit-images-group').style.display='none';
             } else {
                 const item = appData[parentCat].items[itemIndex]; eName.value = item.name; eDesc.value = item.desc;
                 document.getElementById('edit-price').value = item.price; document.getElementById('edit-status').value = item.status;
@@ -494,7 +546,13 @@
                 document.getElementById('edit-codes').value = codesArray.join('\n');
                 
                 setCheckboxOptions('edit', item.buyOptions);
-                document.getElementById('edit-price-status-row').style.display='flex'; document.getElementById('edit-code-pool-group').style.display='block'; document.getElementById('edit-buttons-group').style.display='block';
+                document.getElementById('edit-price-status-row').style.display='flex'; document.getElementById('edit-code-pool-group').style.display='block'; document.getElementById('edit-buttons-group').style.display='block'; document.getElementById('edit-images-group').style.display='block';
+
+                // 🔥 Puraani item images show karna
+                let imgData = item.images || [];
+                document.getElementById('edit-images-data').value = JSON.stringify(imgData);
+                document.getElementById('edit-images-preview').innerHTML = imgData.map(img => `<img src="${img}" style="width:70px; height:70px; object-fit:cover; border-radius:6px; border:2px solid #e879f9;">`).join('');
+                document.getElementById('edit-item-images').value = ''; 
             }
         }
         function closeEdit() { editData.active = false; document.getElementById('edit-box').style.display = 'none'; }
@@ -507,7 +565,11 @@
                 const raw = document.getElementById('edit-codes').value; 
                 const cArr = raw ? raw.split(/[\n,]+/).map(c=>c.trim()).filter(c=>c !== '') : [];
                 
-                appData[editData.catKey].items[editData.itemIndex] = { ...appData[editData.catKey].items[editData.itemIndex], name:n, desc:d, price:document.getElementById('edit-price').value.trim(), status:document.getElementById('edit-status').value, codes:cArr, buyOptions:getCheckboxOptions('edit') };
+                // 🔥 NAYA: Photos update karna
+                let imgDataRaw = document.getElementById('edit-images-data').value;
+                let imagesArray = imgDataRaw ? JSON.parse(imgDataRaw) : [];
+
+                appData[editData.catKey].items[editData.itemIndex] = { ...appData[editData.catKey].items[editData.itemIndex], name:n, desc:d, price:document.getElementById('edit-price').value.trim(), status:document.getElementById('edit-status').value, codes:cArr, buyOptions:getCheckboxOptions('edit'), images: imagesArray };
             }
             saveToDB(); closeEdit(); alert("Saved!");
         }
