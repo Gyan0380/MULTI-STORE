@@ -24,7 +24,7 @@ db.ref('reviews').on('value', (snap) => {
     list.innerHTML = '';
     if(snap.exists()) {
         const reviews = snap.val();
-        const sortedKeys = Object.keys(reviews).sort((a,b) => b.localeCompare(a)); // Newest first
+        const sortedKeys = Object.keys(reviews).sort((a,b) => b.localeCompare(a)); 
         sortedKeys.forEach(key => {
             const rev = reviews[key];
             const starString = '⭐'.repeat(rev.stars);
@@ -60,10 +60,11 @@ function renderDynamicWebsite() {
     
     storeGrid.innerHTML = ''; homeCards.innerHTML = ''; let tickerHtml = '';
     
+    // 🔥 REVIEWS ADDED IN SIDEBAR
     let sidebarLinks = `<li><a href="#" onclick="switchView('welcome-view'); toggleSidebar();">🏠 Home</a></li>
         <li><a href="#" onclick="switchView('ads-view'); toggleSidebar();" style="color: #e879f9;">📢 Special Offers</a></li>
         <li><a href="#" onclick="switchView('store-view'); toggleSidebar();">🏪 Main Store</a></li>
-        <li><a href="#" onclick="switchView('reviews-view'); toggleSidebar();" style="color: #fbbf24;">⭐ Store Reviews</a></li>`; // 🔥 REVIEWS LINK IN MENU
+        <li><a href="#" onclick="switchView('reviews-view'); toggleSidebar();" style="color: #fbbf24;">⭐ Store Reviews</a></li>`; 
     
     if(auth.currentUser) sidebarLinks += `<li><a href="#" onclick="switchView('purchases-view'); toggleSidebar();" style="color: #34d399;">🛒 My Purchases</a></li>`;
 
@@ -154,7 +155,6 @@ function openBuyModal(catKey, itemIdx) {
 }
 function closeModal() { document.getElementById('buy-modal').style.display = 'none'; }
 
-// FAST CHECKOUTS & FREE CLAIMS LOGIC SAME AS BEFORE
 async function processFreeClaim() {
     if(!auth.currentUser) { alert("Please Login to claim free items!"); closeModal(); switchView('auth-view'); return; }
     const user = auth.currentUser; const catKey = activeItemData.catKey; const itemIdx = activeItemData.itemIdx; let itemRef = appData[catKey].items[itemIdx];
@@ -163,10 +163,7 @@ async function processFreeClaim() {
     try {
         const userRef = await db.ref('registeredUsers/' + user.uid).once('value'); const userData = userRef.val() || {};
         const lastClaim = userData.lastFreeClaim || 0; const now = Date.now(); const cooldown = 24 * 60 * 60 * 1000; 
-        if (now - lastClaim < cooldown) {
-            const remainingTime = cooldown - (now - lastClaim);
-            alert(`⏳ Come back after ${Math.floor(remainingTime / (1000 * 60 * 60))} hours!`); return;
-        }
+        if (now - lastClaim < cooldown) { alert(`⏳ Come back after ${Math.floor((cooldown - (now - lastClaim)) / (1000 * 60 * 60))} hours!`); return; }
         closeModal(); document.getElementById('opt-free').innerText = "Processing...";
         let codeToSend = codesArray.shift(); let newStatus = codesArray.length === 0 ? "Out of Stock" : itemRef.status; 
         await db.ref(`storeData/${catKey}/items/${itemIdx}`).update({ codes: codesArray, status: newStatus });
@@ -234,7 +231,9 @@ function toggleAuthMode() {
     document.getElementById('auth-title').innerText = isSignUpMode ? "Create Account" : "Login"; 
     document.getElementById('auth-submit-btn').innerText = isSignUpMode ? "Sign Up" : "Login"; 
     document.getElementById('auth-toggle-text').innerText = isSignUpMode ? "Already have account? Login" : "Don't have account? Sign Up"; 
-    document.getElementById('auth-name').style.display = isSignUpMode ? 'block' : 'none'; // 🔥 Show Name Box on Signup
+    
+    // 🔥 FIXED: Show Name Box properly when Sign Up is active
+    document.getElementById('auth-name').style.display = isSignUpMode ? 'block' : 'none'; 
 }
 
 function handleEmailAuth() { 
@@ -246,22 +245,25 @@ function handleEmailAuth() {
     if(isSignUpMode) {
         if(!name) return alert("Please enter your name!");
         auth.createUserWithEmailAndPassword(email, pass).then((userCredential) => {
-            // Setup User Name during Signup
             userCredential.user.updateProfile({ displayName: name }).then(() => {
                 db.ref('registeredUsers/' + userCredential.user.uid).set({
                     name: name, email: email, lastLogin: new Date().toLocaleString(), photo: ""
                 });
                 alert("Account Created!");
+                switchView('welcome-view');
             });
         }).catch(e => alert(e.message));
     } else {
-        auth.signInWithEmailAndPassword(email, pass).then(() => alert("Logged in!")).catch(e => alert("Login Failed: " + e.message)); 
+        auth.signInWithEmailAndPassword(email, pass).then(() => {
+            alert("Logged in!");
+            switchView('welcome-view');
+        }).catch(e => alert("Login Failed: " + e.message)); 
     }
 }
 
 function signInWithGoogle() { auth.signInWithRedirect(googleProvider); }
 auth.getRedirectResult().then((r) => { if(r && r.user) switchView('welcome-view'); }).catch((e) => {});
-function logout() { auth.signOut().then(() => alert("Logged out.")); }
+function logout() { auth.signOut().then(() => { alert("Logged out."); switchView('welcome-view'); }); }
 
 auth.onAuthStateChanged((user) => {
     const headerBtn = document.getElementById('header-auth-btn'); const loggedOutUI = document.getElementById('logged-out-section'); const loggedInUI = document.getElementById('logged-in-section');
@@ -269,7 +271,6 @@ auth.onAuthStateChanged((user) => {
         headerBtn.innerHTML = `👤 Profile`; headerBtn.style.color = "#34d399"; headerBtn.style.borderColor = "#34d399"; 
         loggedOutUI.style.display = 'none'; loggedInUI.style.display = 'block'; 
         
-        // Fetch Realtime DB for Custom Photo and Name
         db.ref('registeredUsers/' + user.uid).once('value').then(snap => { 
             const currentData = snap.val() || {}; 
             const displayPhoto = currentData.photo || user.photoURL || "https://via.placeholder.com/100/38bdf8/000000?text=USER";
@@ -294,38 +295,26 @@ auth.onAuthStateChanged((user) => {
     }
 });
 
-// 🔥 UPLOAD PROFILE PIC FUNCTION (BASE64)
+// 🔥 UPLOAD PROFILE PIC FUNCTION
 function uploadProfilePic(event) {
     const file = event.target.files[0];
     if(!file || !auth.currentUser) return;
-    
     document.getElementById('profile-upload-status').style.display = 'block';
-    
     const reader = new FileReader();
     reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-            const canvas = document.createElement('canvas');
-            const MAX_WIDTH = 150; // Chota size profile ke liye
-            let width = img.width; let height = img.height;
+            const canvas = document.createElement('canvas'); const MAX_WIDTH = 150; let width = img.width; let height = img.height;
             if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
-            canvas.width = width; canvas.height = height;
-            const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
-            
+            canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
             const base64Photo = canvas.toDataURL('image/jpeg', 0.6);
-            
-            // Save to Database
-            db.ref('registeredUsers/' + auth.currentUser.uid).update({
-                photo: base64Photo
-            }).then(() => {
+            db.ref('registeredUsers/' + auth.currentUser.uid).update({ photo: base64Photo }).then(() => {
                 document.getElementById('profile-pic').src = base64Photo;
                 document.getElementById('profile-upload-status').style.display = 'none';
                 alert("Profile Photo Updated!");
             });
-        };
-        img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+        }; img.src = e.target.result;
+    }; reader.readAsDataURL(file);
 }
 
 // 🔥 SUBMIT REVIEW FUNCTION
@@ -333,26 +322,16 @@ async function submitReview() {
     if(!auth.currentUser) { alert("Please login first to submit a review!"); return; }
     const text = document.getElementById('review-text').value.trim();
     const stars = parseInt(document.getElementById('review-stars').value);
-    
     if(!text) { alert("Please write something in the review box."); return; }
     
-    const user = auth.currentUser;
-    const reviewId = 'REV_' + Date.now();
-    
-    // Get latest profile details
+    const user = auth.currentUser; const reviewId = 'REV_' + Date.now();
     db.ref('registeredUsers/' + user.uid).once('value').then(snap => {
         const userData = snap.val() || {};
         const userName = userData.name || user.displayName || "Store Customer";
         const userPhoto = userData.photo || user.photoURL || "https://via.placeholder.com/100/38bdf8/000000?text=USER";
         
         db.ref('reviews/' + reviewId).set({
-            reviewId: reviewId,
-            uid: user.uid,
-            name: userName,
-            photoURL: userPhoto,
-            stars: stars,
-            text: text,
-            timestamp: new Date().toLocaleDateString()
+            reviewId: reviewId, uid: user.uid, name: userName, photoURL: userPhoto, stars: stars, text: text, timestamp: new Date().toLocaleDateString()
         }).then(() => {
             document.getElementById('review-text').value = '';
             alert("Thanks for your review! It's posted successfully.");
